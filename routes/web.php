@@ -17,4 +17,3 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/getcert',\App\Http\Controllers\GetCertInfoController::class)->name('get-cert-info');
