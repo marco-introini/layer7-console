@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         User::create([
            'name' => 'admin',
            'email' => 'xmlfw@popso.it',
-           'password' => Hash::make('Klq23g!'),
+           'password' => Hash::make('xmlfw'),
         ]);
     }
 }

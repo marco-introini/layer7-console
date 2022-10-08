@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('common-name')->unique();
+            $table->string('userid')->unique();
             $table->dateTime('valid_from');
             $table->dateTime('valid_to');
 

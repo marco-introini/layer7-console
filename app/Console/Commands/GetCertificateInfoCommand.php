@@ -18,8 +18,8 @@ class GetCertificateInfoCommand extends Command
 
     public function handle()
     {
-        $response = Http::withBasicAuth('admin', 'Viola_2013')
-            ->get('https://apigwinbound.popso.it/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users');
+        $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
+            ->get("https://".config('apigw.hostname')."/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users");
 
         //dump($response->body());
 
@@ -39,9 +39,9 @@ class GetCertificateInfoCommand extends Command
                 continue;
             }
             echo "Getting info for ".$userId."\n";
-            $response = Http::withBasicAuth('admin', 'Viola_2013')
+            $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
-                    'https://apigwinbound.popso.it/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
+                    'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
                 );
 
             $fromCertificateToEnd = substr($response->body(), strpos($response->body(), "<l7:Encoded>") + 12, null);
@@ -61,7 +61,7 @@ class GetCertificateInfoCommand extends Command
             }
             catch (\Exception $e){
                 // alcuni vecchi certificati non hanno il CN
-                $cn = "NOT FOUND - UserID $userId";
+                $cn = "NOT FOUND";
             }
 
 
@@ -70,6 +70,7 @@ class GetCertificateInfoCommand extends Command
 
             Certificate::create([
                 'common-name' => $cn,
+                'userid' => $userId,
                 'valid_from' => Carbon::make($valid_from),
                 'valid_to' => Carbon::make($valid_to)
             ]);
