@@ -69,7 +69,7 @@ class GetCertificateInfoCommand extends Command
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
             Certificate::create([
-                'common-name' => $cn,
+                'common_name' => $cn,
                 'userid' => $userId,
                 'valid_from' => Carbon::make($valid_from),
                 'valid_to' => Carbon::make($valid_to)

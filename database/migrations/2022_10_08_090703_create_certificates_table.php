@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
 
-            $table->string('common-name')->unique();
+            $table->string('common_name')->unique();
             $table->string('userid')->unique();
             $table->dateTime('valid_from');
             $table->dateTime('valid_to');
