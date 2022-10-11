@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Helpers\CertificateHelper;
-use App\Models\Certificate;
+use App\Models\Gatewayuser;
 use Illuminate\Console\Command;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -19,7 +19,7 @@ class GetCertificateNotificationCommand extends Command
         $scaduti = [];
         $inScadenza = [];
 
-        foreach (Certificate::all() as $certificate) {
+        foreach (Gatewayuser::all() as $certificate) {
             if (!$certificate->valid) {
                 $scaduti[] = $certificate;
                 continue;

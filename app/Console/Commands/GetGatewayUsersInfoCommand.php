@@ -3,18 +3,19 @@
 namespace App\Console\Commands;
 
 use App\Http\Helpers\CertificateHelper;
-use App\Models\Certificate;
+use App\Http\Helpers\XmlHelper;
+use App\Models\Gatewayuser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
-class GetCertificateInfoCommand extends Command
+class GetGatewayUsersInfoCommand extends Command
 {
-    protected $signature = 'certificates:get';
+    protected $signature = 'gateway:users';
 
-    protected $description = 'Get all certificates form API Gateway';
+    protected $description = 'Get all users and certificates form API Gateway';
 
     public function handle()
     {
@@ -23,29 +24,37 @@ class GetCertificateInfoCommand extends Command
 
         //dump($response->body());
 
-        DB::table('certificates')->truncate();
+        DB::table('gatewayusers')->truncate();
 
-        preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
+        //preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
+
+        $listaUtenti = XmlHelper::xml2array($response->body());
 
         $number = 0;
 
-        foreach ($out[0] as $line) {
-            // prendo quello che c'è dopo id= e poi faccio replace degli ultimi caratteri >' con vuoto
-            $userId = str_replace('">', "", substr($line, strpos($line, "id=") + 4, null));
+        foreach($listaUtenti['l7:List']['l7:Item'] as $utente) {
+            //dd($utente);
+            $userId = $utente['l7:Id'];
+            //$userId = str_replace('">', "", substr($line, strpos($line, "id=") + 4, null));
             if (($userId === "00000000000000000000000000000003")  // admin
                 || ($userId === "da2b9b245c56435a4ae977ac0cc3c47a") // mint_migration
             )
             {
                 continue;
             }
+            $username = $utente['l7:Name'];
+            $detailUri=$utente['l7:Link_attr']['uri'];
+
             echo "Getting info for ".$userId."\n";
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
                     'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
                 );
 
-            $fromCertificateToEnd = substr($response->body(), strpos($response->body(), "<l7:Encoded>") + 12, null);
-            $certificate = substr($fromCertificateToEnd, 0, strpos($fromCertificateToEnd, "</l7:Encoded>"));
+            //$fromCertificateToEnd = substr($response->body(), strpos($response->body(), "<l7:Encoded>") + 12, null);
+            //$certificate = substr($fromCertificateToEnd, 0, strpos($fromCertificateToEnd, "</l7:Encoded>"));
+
+            $certificate = XmlHelper::xml2array($response->body())['l7:Item']['l7:Resource']['l7:CertificateData']['l7:Encoded'];
 
             //dd($certificate);
             if ($certificate === "") {
@@ -68,9 +77,11 @@ class GetCertificateInfoCommand extends Command
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
-            Certificate::create([
-                'common_name' => $cn,
+            Gatewayuser::create([
                 'userid' => $userId,
+                'username' => $username,
+                'detail_uri' => $detailUri,
+                'common_name' => $cn,
                 'valid_from' => Carbon::make($valid_from),
                 'valid_to' => Carbon::make($valid_to)
             ]);

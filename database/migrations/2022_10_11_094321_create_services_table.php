@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
 
-            $table->string('common_name')->unique();
-            $table->string('userid')->unique();
-            $table->dateTime('valid_from');
-            $table->dateTime('valid_to');
+            $table->text('name');
+            $table->text('url');
 
             $table->timestamps();
         });
@@ -21,6 +19,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('services');
     }
 };
