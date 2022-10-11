@@ -42,6 +42,10 @@ class GetCertificateNotificationCommand extends Command
     {
         $ret = $title.PHP_EOL.PHP_EOL;
 
+        if (empty($certificates)){
+            $ret .= "Nessuno".PHP_EOL;
+        }
+
         foreach ($certificates as $certificate) {
             $ret .= $certificate->common_name." - Scadenza: ".$certificate->valid_to.PHP_EOL;
         }

@@ -1,5 +1,14 @@
 # Console API Gateway Inbound
 
+## Console commands
+
+Sono stati creati i seguenti comandi console:
+
+- php artisan gateway:users
+- php artisan gateway:service
+- 
+
+
 ## Estrazione Certificati API Gateway
 
 Si potrebbero anche estrarre usando il servizio "RESTMan", praticamente facendo l'inverso di quello che fa lo script di caricamento
