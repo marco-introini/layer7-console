@@ -37,8 +37,8 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nome Servizio')->searchable(),
-                TextColumn::make('url')->label('Endpoint Esposto')->searchable(),
+                TextColumn::make('name')->label('Nome Servizio')->searchable()->sortable(),
+                TextColumn::make('url')->label('Endpoint Esposto')->searchable()->sortable(),
             ])
             ->filters([
                 //
