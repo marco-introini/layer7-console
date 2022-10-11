@@ -1,5 +1,7 @@
-# Certificati API Gateway
+# Console API Gateway Inbound
 
+
+Certificati API Gateway
 
 Si potrebbero anche estrarre usando il servizio "RESTMan", praticamente facendo l'inverso di quello che fa lo script di caricamento
 

@@ -26,7 +26,7 @@ class Certificate extends Model
 
     protected function verificaSeInScadenza(): bool
     {
-        if ($this->valid_to >= Carbon::today()->addDay(20))
+        if ($this->valid_to >= Carbon::today()->addDay(config('apigw.giorni_anticipo_scadenza_certificati')))
             return true;
         else
             return false;

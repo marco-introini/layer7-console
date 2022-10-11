@@ -30,9 +30,9 @@ class GetCertificateNotificationCommand extends Command
         }
 
         $toSlack = $this->format("Certificati Scaduti",$scaduti).PHP_EOL;
-        $toSlack .= $this->format("Certificati in Prossima Scadenza",$inScadenza);
+        $toSlack .= $this->format("Certificati in Prossima Scadenza (entro ".config('apigw.giorni_anticipo_scadenza_certificati')." giorni)",$inScadenza);
         echo $toSlack;
-        SlackAlert::message($toSlack);
+        //SlackAlert::message($toSlack);
 
     }
 
