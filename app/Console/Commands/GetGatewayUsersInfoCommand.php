@@ -7,6 +7,7 @@ use App\Http\Helpers\XmlHelper;
 use App\Models\Gatewayuser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -92,7 +93,9 @@ class GetGatewayUsersInfoCommand extends Command
 
         echo "Found $number records";
 
-        //SlackAlert::message("Caricati $number certificati da API Gateway su DB locale");
+        if (App::environment('production')) {
+            SlackAlert::message("Caricati $number utenti da API Gateway su DB locale");
+        }
 
     }
 

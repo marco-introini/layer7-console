@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Helpers\CertificateHelper;
 use App\Models\Gatewayuser;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
@@ -32,8 +33,9 @@ class GetCertificateNotificationCommand extends Command
         $toSlack = $this->format("Certificati Scaduti",$scaduti).PHP_EOL;
         $toSlack .= $this->format("Certificati in Prossima Scadenza (entro ".config('apigw.giorni_anticipo_scadenza_certificati')." giorni)",$inScadenza);
         echo $toSlack;
-        //SlackAlert::message($toSlack);
-
+        if (App::environment('production')) {
+            SlackAlert::message($toSlack);
+        }
     }
 
     private function format(string $title, array $certificates): string

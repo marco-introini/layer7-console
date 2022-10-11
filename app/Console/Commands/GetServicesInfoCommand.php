@@ -8,6 +8,7 @@ use App\Models\Gatewayuser;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -48,7 +49,9 @@ class GetServicesInfoCommand extends Command
 
         echo "Caricati $number servizi";
 
-        //SlackAlert::message("Caricati $number servizi da API Gateway su DB locale");
+        if (App::environment('production')) {
+            SlackAlert::message("Caricati $number servizi da API Gateway su DB locale");
+        }
 
     }
 
