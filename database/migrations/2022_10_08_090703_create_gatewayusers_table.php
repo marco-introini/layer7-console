@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('gatewayusers', function (Blueprint $table) {
             $table->id();
 
-            $table->string('userid')->unique();
+            $table->string('userid');
             $table->string('username');
             $table->string('detail_uri');
             $table->string('common_name')->unique();
