@@ -6,7 +6,6 @@ use App\Http\Helpers\CertificateHelper;
 use App\Models\Gatewayuser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
-use SebastianBergmann\CodeCoverage\Report\PHP;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class GetCertificateNotificationCommand extends Command

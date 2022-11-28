@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('userid');
             $table->string('username');
             $table->string('detail_uri');
-            $table->string('common_name')->unique();
+            $table->string('common_name');
             $table->dateTime('valid_from');
             $table->dateTime('valid_to');
 
