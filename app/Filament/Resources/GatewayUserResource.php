@@ -12,14 +12,14 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class GatewayuserResource extends Resource
+class GatewayUserResource extends Resource
 {
     protected static ?string $model = GatewayUser::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $label = "Utente API Gateway";
-    protected static ?string $pluralLabel = "Utenti API Gateway";
+    protected static ?string $label = "API Gateway User";
+    protected static ?string $pluralLabel = "API Gateway Users";
 
     protected static ?int $navigationSort = 3;
 
@@ -82,7 +82,7 @@ class GatewayuserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGatewayuser::route('/'),
+            'index' => Pages\ListGatewayUser::route('/'),
         ];
     }
 }
