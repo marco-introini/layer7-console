@@ -1,28 +1,39 @@
-# Console API Gateway Inbound
+# Layer 7 API Gateway mTLS Certificates Console
 
 ## Console commands
 
-Sono stati creati i seguenti comandi console:
+### Import from API Gateway
 
-- php artisan gateway:users
-- php artisan gateway:service
-- 
+To import users and certificates from the API Gateway
 
+```bash
+php artisan gateway:users
+```
 
-## Estrazione Certificati API Gateway
+To import services from API Gateway
 
-Si potrebbero anche estrarre usando il servizio "RESTMan", praticamente facendo l'inverso di quello che fa lo script di caricamento
+```bash
+php artisan gateway:service
+```
 
-1. Si tira fuori la lista degli utenti
+## How this works
 
+To get certificate information we can use the RESTman url on Layer 7, with Basic Auth credentials:
+
+1. Users list
+
+```
 GET /restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users
-(autenticazione Basic)
+```
 
-2. Per ogni utente recuperiamo il certificato
+2. For each user we can obtain the mTLS certificate
 
+```
 GET /restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/{{USER_ID}}/certificate
-(autenticazione Basic)
+```
 
-3. Dal certificato estraiamo le date di scadenza
+3. Finally from the certificate we can get the expiration date with openSSL
 
+```
 base64 -d <<< $cert | openssl x509 -inform DER -noout -dates
+```
