@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Helpers\CertificateHelper;
-use App\Models\Gatewayuser;
+use App\Models\GatewayUser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -14,23 +13,23 @@ class GetCertificateNotificationCommand extends Command
 
     protected $description = 'Check all certificates form API Gateway';
 
-    public function handle()
+    public function handle(): void
     {
-        $scaduti = [];
-        $inScadenza = [];
+        $numExpiredCerts = [];
+        $numExpiringCerts = [];
 
-        foreach (Gatewayuser::all() as $certificate) {
+        foreach (GatewayUser::all() as $certificate) {
             if (!$certificate->valid) {
-                $scaduti[] = $certificate;
+                $numExpiredCerts[] = $certificate;
                 continue;
             }
             if (!$certificate->scadenza){
-                $inScadenza[] = $certificate;
+                $numExpiringCerts[] = $certificate;
             }
         }
 
-        $toSlack = $this->format("Certificati Scaduti",$scaduti).PHP_EOL;
-        $toSlack .= $this->format("Certificati in Prossima Scadenza (entro ".config('apigw.giorni_anticipo_scadenza_certificati')." giorni)",$inScadenza);
+        $toSlack = $this->format("Expired Certificates",$numExpiredCerts).PHP_EOL;
+        $toSlack .= $this->format("Expiring Certificates (in the next ".config('apigw.days_before_expiration')." days)",$numExpiringCerts);
         echo $toSlack;
         if (App::environment('production')) {
             SlackAlert::message($toSlack);
@@ -42,11 +41,11 @@ class GetCertificateNotificationCommand extends Command
         $ret = $title.PHP_EOL.PHP_EOL;
 
         if (empty($certificates)){
-            $ret .= "Nessuno".PHP_EOL;
+            $ret .= "None".PHP_EOL;
         }
 
         foreach ($certificates as $certificate) {
-            $ret .= $certificate->common_name." - Scadenza: ".$certificate->valid_to.PHP_EOL;
+            $ret .= $certificate->common_name." - Expire date: ".$certificate->valid_to.PHP_EOL;
         }
 
         return $ret;

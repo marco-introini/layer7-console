@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
-use App\Models\Gatewayuser;
+use App\Models\GatewayUser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -78,7 +78,7 @@ class GetGatewayUsersInfoCommand extends Command
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
-            Gatewayuser::create([
+            GatewayUser::create([
                 'userid' => $userId,
                 'username' => $username,
                 'detail_uri' => $detailUri,

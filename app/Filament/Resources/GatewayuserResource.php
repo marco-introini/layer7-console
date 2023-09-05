@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GatewayuserResource\Pages;
 //use App\Filament\Resources\GatewayuserResource\RelationManagers;
-use App\Models\Gatewayuser;
+use App\Models\GatewayUser;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -15,7 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 
 class GatewayuserResource extends Resource
 {
-    protected static ?string $model = Gatewayuser::class;
+    protected static ?string $model = GatewayUser::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -79,11 +79,11 @@ class GatewayuserResource extends Resource
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListGatewayuser::route('/'),
         ];
-    }    
+    }
 }

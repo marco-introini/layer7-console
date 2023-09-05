@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-class Gatewayuser extends Model
+class GatewayUser extends Model
 {
     protected $guarded =[];
 
@@ -26,7 +26,7 @@ class Gatewayuser extends Model
 
     protected function verificaSeInScadenza(): bool
     {
-        if ($this->valid_to >= Carbon::today()->addDay(config('apigw.giorni_anticipo_scadenza_certificati')))
+        if ($this->valid_to >= Carbon::today()->addDay(config('apigw.days_before_expiration')))
             return true;
         else
             return false;

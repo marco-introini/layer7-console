@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
-use App\Models\Gatewayuser;
+use App\Models\GatewayUser;
 use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
