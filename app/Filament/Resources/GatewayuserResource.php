@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\GatewayuserResource\Pages;
-//use App\Filament\Resources\GatewayuserResource\RelationManagers;
 use App\Models\GatewayUser;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class GatewayuserResource extends Resource
 {
