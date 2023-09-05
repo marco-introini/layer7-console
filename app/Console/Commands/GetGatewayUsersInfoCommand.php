@@ -6,10 +6,12 @@ use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
 use App\Models\GatewayUser;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class GetGatewayUsersInfoCommand extends Command
@@ -18,14 +20,12 @@ class GetGatewayUsersInfoCommand extends Command
 
     protected $description = 'Get all users and certificates form API Gateway';
 
-    public function handle()
+    public function handle(): void
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
             ->get("https://".config('apigw.hostname')."/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users");
 
-        //dump($response->body());
-
-        DB::table('gatewayusers')->truncate();
+        DB::table('gateway_users')->truncate();
 
         //preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
 
@@ -34,9 +34,9 @@ class GetGatewayUsersInfoCommand extends Command
         $number = 0;
 
         foreach($listaUtenti['l7:List']['l7:Item'] as $utente) {
-            //dd($utente);
             $userId = $utente['l7:Id'];
             //$userId = str_replace('">', "", substr($line, strpos($line, "id=") + 4, null));
+            // TODO: add ignore users table
             if (($userId === "00000000000000000000000000000003")  // admin
                 || ($userId === "da2b9b245c56435a4ae977ac0cc3c47a") // mint_migration
             )
@@ -46,7 +46,7 @@ class GetGatewayUsersInfoCommand extends Command
             $username = $utente['l7:Name'];
             $detailUri=$utente['l7:Link_attr']['uri'];
 
-            echo "Getting info for ".$userId."\n";
+            $this->info("Getting info for ".$userId);
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
                     'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
@@ -59,7 +59,8 @@ class GetGatewayUsersInfoCommand extends Command
 
             //dd($certificate);
             if ($certificate === "") {
-                // utente senza certificato, ignoro
+                Log::warning("Certificate not found for {$userId}");
+                $this->warn("Certificate not found for {$userId}");
                 continue;
             }
             $certificateDer = base64_decode($certificate);
@@ -69,8 +70,9 @@ class GetGatewayUsersInfoCommand extends Command
             try {
                 $cn = $info["subject"]["CN"];
             }
-            catch (\Exception $e){
-                // alcuni vecchi certificati non hanno il CN
+            catch (Exception $e){
+                Log::error("CN not found for {$userId}");
+                $this->error("CN not found for {$userId}");
                 $cn = "NOT FOUND";
             }
 
@@ -91,10 +93,11 @@ class GetGatewayUsersInfoCommand extends Command
             $number++;
         }
 
-        echo "Found $number records";
+        $this->info("Found $number users");
+        Log::info("Imported $number users from API Gateway");
 
         if (App::environment('production')) {
-            SlackAlert::message("Caricati $number utenti da API Gateway su DB locale");
+            SlackAlert::message("Imported $number users from Layer7 API Gateway");
         }
 
     }
