@@ -9,24 +9,13 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         User::create([
            'name' => 'admin',
-           'email' => 'xmlfw@popso.it',
-           'password' => Hash::make('xmlfw'),
+           'email' => 'layer7@admin.com',
+           'password' => Hash::make('layer7'),
         ]);
     }
 }

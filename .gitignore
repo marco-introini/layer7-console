@@ -17,3 +17,4 @@ yarn-error.log
 /ray.php
 /.env.production
 /public/js/filament/
+/public/css/filament/
