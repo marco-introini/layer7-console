@@ -16,6 +16,8 @@ To import services from API Gateway
 php artisan gateway:service
 ```
 
+
+
 ## How this works
 
 To get certificate information we can use the RESTman url on Layer 7, with Basic Auth credentials:
@@ -32,7 +34,7 @@ GET /restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users
 GET /restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/{{USER_ID}}/certificate
 ```
 
-3. Finally from the certificate we can get the expiration date with openSSL
+3. Finally, from the certificate we can get the expiration date with openSSL
 
 ```
 base64 -d <<< $cert | openssl x509 -inform DER -noout -dates
