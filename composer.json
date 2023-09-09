@@ -1,7 +1,7 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "Console API Gateway BPS",
+    "description": "Console Layer7 API Gateway",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
@@ -22,7 +22,7 @@
         "spatie/laravel-tail": "^4.4"
     },
     "require-dev": {
-        "fakerphp/faker": "^2",
+        "fakerphp/faker": "^v1.23.0",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7",

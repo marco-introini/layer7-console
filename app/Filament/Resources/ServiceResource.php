@@ -55,6 +55,7 @@ class ServiceResource extends Resource
     {
         return [
             'index' => Pages\ListServices::route('/'),
+            'create' => Pages\CreateService::route('/add'),
         ];
     }
 

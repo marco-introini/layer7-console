@@ -25,26 +25,28 @@ class GetGatewayUsersInfoCommand extends Command
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
             ->get("https://".config('apigw.hostname')."/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users");
 
-        DB::table('gateway_users')->truncate();
-
         //preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
 
         $listaUtenti = XmlHelper::xml2array($response->body());
 
         $number = 0;
 
-        foreach($listaUtenti['l7:List']['l7:Item'] as $utente) {
+        foreach ($listaUtenti['l7:List']['l7:Item'] as $utente) {
             $userId = $utente['l7:Id'];
             //$userId = str_replace('">', "", substr($line, strpos($line, "id=") + 4, null));
-            // TODO: add ignore users table
+            if (GatewayUser::where('userid', value: $userId)
+                ->where('ignored', value: '1')
+                ->exists()) {
+                Log::info("{$userId} is present and disabled");
+                continue;
+            };
             if (($userId === "00000000000000000000000000000003")  // admin
                 || ($userId === "da2b9b245c56435a4ae977ac0cc3c47a") // mint_migration
-            )
-            {
+            ) {
                 continue;
             }
             $username = $utente['l7:Name'];
-            $detailUri=$utente['l7:Link_attr']['uri'];
+            $detailUri = $utente['l7:Link_attr']['uri'];
 
             $this->info("Getting info for ".$userId);
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
@@ -69,8 +71,7 @@ class GetGatewayUsersInfoCommand extends Command
 
             try {
                 $cn = $info["subject"]["CN"];
-            }
-            catch (Exception $e){
+            } catch (Exception $e) {
                 Log::error("CN not found for {$userId}");
                 $this->error("CN not found for {$userId}");
                 $cn = "NOT FOUND";
@@ -80,15 +81,16 @@ class GetGatewayUsersInfoCommand extends Command
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
-            GatewayUser::create([
+            GatewayUser::updateOrInsert([
                 'userid' => $userId,
-                'username' => $username,
-                'detail_uri' => $detailUri,
-                'common_name' => $cn,
-                'valid_from' => Carbon::make($valid_from),
-                'valid_to' => Carbon::make($valid_to)
-            ]);
-
+            ],
+                [
+                    'username' => $username,
+                    'detail_uri' => $detailUri,
+                    'common_name' => $cn,
+                    'valid_from' => Carbon::make($valid_from),
+                    'valid_to' => Carbon::make($valid_to)
+                ]);
 
             $number++;
         }
@@ -101,7 +103,6 @@ class GetGatewayUsersInfoCommand extends Command
         }
 
     }
-
 
 
 }

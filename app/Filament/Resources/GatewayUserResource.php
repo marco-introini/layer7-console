@@ -67,11 +67,6 @@ class GatewayUserResource extends Resource
             ->defaultSort('valid_to');
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
     public static function getRelations(): array
     {
         return [
