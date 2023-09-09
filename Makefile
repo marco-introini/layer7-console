@@ -21,7 +21,6 @@ first_production: production
 
 clear_all: clear
 	rm -f .idea/httpRequests/*
-	rm -f storage/backup/*
 	rm -f storage/app/livewire-tmp/*
 
 clear:
@@ -40,7 +39,6 @@ update:
 	php artisan config:clear
 	php artisan route:clear
 	php artisan view:clear
-	php artisan livewire:discover
 	php artisan filament:upgrade
 	@echo "UPDATED Laravel Version"
 	php artisan --version
@@ -51,5 +49,3 @@ backup:
 recreate: clear_all
 	php artisan migrate:fresh --seed
 
-format_code:
-	./vendor/bin/pint

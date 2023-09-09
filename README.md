@@ -16,7 +16,12 @@ To import services from API Gateway
 php artisan gateway:service
 ```
 
+## Default data
 
+The seeders data are:
+
+- user: layer7@admin.com
+- password: layer7
 
 ## How this works
 
