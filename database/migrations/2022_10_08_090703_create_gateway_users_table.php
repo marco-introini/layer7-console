@@ -13,11 +13,18 @@ return new class extends Migration {
 
             $table->string('userid');
             $table->string('username');
-            $table->string('detail_uri');
-            $table->string('common_name');
-            $table->dateTime('valid_from');
-            $table->dateTime('valid_to');
+            $table->string('detail_uri')
+                ->nullable();
+            $table->string('common_name')
+                ->nullable();
+            $table->dateTime('valid_from')
+                ->nullable();
+            $table->dateTime('valid_to')
+                ->nullable();
+            $table->boolean('ignored')
+                ->default(true);
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
