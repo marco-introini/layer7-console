@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\GatewayuserResource\Pages;
+namespace App\Filament\Resources\GatewayUserResource\Pages;
 
 use App\Filament\Resources\GatewayUserResource;
 use Filament\Actions\CreateAction;

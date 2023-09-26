@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -44,23 +43,23 @@ class GatewayUserResource extends Resource
                 TextColumn::make('username')
                     ->sortable()
                     ->searchable(),
-                BooleanColumn::make('valid')
-                    ->trueColor('success')
-                    ->falseColor('warning')
-                    ->label('Valido'),
-                BooleanColumn::make('scadenza')
-                    ->trueColor('success')
-                    ->falseColor('warning')
-                    ->label("Verifica Scadenza"),
+                Tables\Columns\ToggleColumn::make('valid')
+                    ->onColor('success')
+                    ->offColor('warning')
+                    ->label('Valid'),
+                Tables\Columns\ToggleColumn::make('scadenza')
+                    ->onColor('success')
+                    ->offColor('warning')
+                    ->label("Expiration Verify"),
                 TextColumn::make('valid_to')
                     ->sortable()
-                    ->label('Data Scadenza'),
+                    ->label('Expiration Data'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Dettagli'),
+                Tables\Actions\ViewAction::make()->label('Detail Url'),
             ])
             ->bulkActions([
             ])
