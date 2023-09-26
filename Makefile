@@ -12,6 +12,10 @@ production:
 	php artisan migrate
 	npm install
 	npm run build
+	php artisan config:clear
+	php artisan route:clear
+	php artisan view:clear
+	php artisan filament:upgrade
 	#uncomment if using queues
 	#php artisan queue:restart
 
