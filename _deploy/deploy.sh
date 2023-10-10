@@ -6,9 +6,9 @@ cd /var/www/layer7-console
 
 php artisan down
 
+sudo chown -R marco:www-data .
 git pull
 composer install --no-interaction --optimize-autoloader --no-dev
-sudo chown -R www-data:www-data
 npm install
 npm run build
 
@@ -23,6 +23,6 @@ php artisan route:cache
 php artisan view:cache
 php artisan filament:upgrade
 
-php artisan up
+sudo chown -R www-data:www-data .
 
-sudo chown -R www-data:www-data
+php artisan up
