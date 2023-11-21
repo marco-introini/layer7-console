@@ -26,15 +26,15 @@ class GatewayUser extends Model
         );
     }
 
-    protected function isExpiring(): bool
+    public function isExpiring(): bool
     {
         if ($this->valid_to >= Carbon::today()->addDays(config('apigw.days_before_expiration')))
-            return true;
-        else
             return false;
+        else
+            return true;
     }
 
-    protected function isValid(): bool
+    public function isValid(): bool
     {
         if ($this->valid_to >= Carbon::today())
             return true;
