@@ -2,7 +2,7 @@
 
 # Deploy - to be executed as normal user
 
-cd /var/www/layer7-console
+cd /var/www/layer7-console || exit
 
 php artisan down
 
