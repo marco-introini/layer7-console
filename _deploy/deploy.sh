@@ -12,7 +12,6 @@ composer install --no-interaction --optimize-autoloader --no-dev
 npm install
 npm run build
 
-php artisan storage:link
 php artisan optimize:clear
 
 php artisan down

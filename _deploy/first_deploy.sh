@@ -13,3 +13,6 @@ certbot --nginx
 chown -R www-data:www-data /var/www/layer7-console/
 
 echo "* * * * * www-data cd /var/www/layer7-console && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontab
+
+cd /var/www/layer7-console || exit
+php artisan storage:link
