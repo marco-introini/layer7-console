@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
 use App\Models\GatewayUser;
+use App\Models\IgnoredUser;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Console\Command;
@@ -33,18 +34,10 @@ class GetGatewayUsersInfoCommand extends Command
 
         foreach ($listaUtenti['l7:List']['l7:Item'] as $utente) {
             $userId = $utente['l7:Id'];
-            //$userId = str_replace('">', "", substr($line, strpos($line, "id=") + 4, null));
-            if (GatewayUser::where('userid', value: $userId)
-                ->where('ignored', value: '1')
-                ->exists()) {
-                Log::info("{$userId} is present and disabled");
-                continue;
-            };
-            if (($userId === "00000000000000000000000000000003")  // admin
-                || ($userId === "da2b9b245c56435a4ae977ac0cc3c47a") // mint_migration
-            ) {
+            if (IgnoredUser::where('userid', 'like', $userId)->exists()) {
                 continue;
             }
+
             $username = $utente['l7:Name'];
             $detailUri = $utente['l7:Link_attr']['uri'];
 
@@ -77,7 +70,6 @@ class GetGatewayUsersInfoCommand extends Command
                 $cn = "NOT FOUND";
             }
 
-
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
@@ -103,6 +95,5 @@ class GetGatewayUsersInfoCommand extends Command
         }
 
     }
-
 
 }
