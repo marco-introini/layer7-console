@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class GetServicesInfoCommand extends Command
@@ -19,7 +20,7 @@ class GetServicesInfoCommand extends Command
 
     protected $description = 'Get all services form API Gateway';
 
-    public function handle()
+    public function handle(): void
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
             ->get("https://".config('apigw.hostname')."/restman/1.0/services");
@@ -28,29 +29,29 @@ class GetServicesInfoCommand extends Command
 
         DB::table('services')->truncate();
 
-        $listaServizi = XmlHelper::xml2array($response->body());
+        $serviceList = XmlHelper::xml2array($response->body());
 
         $number = 0;
 
-        foreach($listaServizi['l7:List']['l7:Item'] as $servizio) {
+        foreach($serviceList['l7:List']['l7:Item'] as $sservice) {
 
-            $serviceName = $servizio['l7:Name'];
-            $serviceDetail = $servizio['l7:Resource']['l7:Service']['l7:ServiceDetail'];
-            $urlEsposto = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
+            $serviceName = $sservice['l7:Name'];
+            $serviceDetail = $sservice['l7:Resource']['l7:Service']['l7:ServiceDetail'];
+            $urlPattern = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
 
             Service::create([
                 'name' => $serviceName,
-                'url' => $urlEsposto,
+                'url' => $urlPattern,
             ]);
 
 
             $number++;
         }
 
-        echo "Caricati $number servizi";
+        Log::info("Imported $number services from API Gateway");
 
         if (App::environment('production')) {
-            SlackAlert::message("Caricati $number servizi da API Gateway su DB locale");
+            SlackAlert::message("Imported $number services from API Gateway");
         }
 
     }

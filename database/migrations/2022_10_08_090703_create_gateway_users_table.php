@@ -11,8 +11,10 @@ return new class extends Migration {
         Schema::create('gateway_users', function (Blueprint $table) {
             $table->id();
 
-            $table->string('userid');
-            $table->string('username');
+            $table->string('userid')
+                ->unique();
+            $table->string('username')
+                ->unique();
             $table->string('detail_uri')
                 ->nullable();
             $table->string('common_name')
@@ -21,8 +23,6 @@ return new class extends Migration {
                 ->nullable();
             $table->dateTime('valid_to')
                 ->nullable();
-            $table->boolean('ignored')
-                ->default(true);
 
             $table->softDeletes();
             $table->timestamps();

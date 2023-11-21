@@ -43,14 +43,12 @@ class GatewayUserResource extends Resource
                 TextColumn::make('username')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('valid')
-                    ->onColor('success')
-                    ->offColor('warning')
+                Tables\Columns\IconColumn::make('valid')
+                    ->boolean()
                     ->label('Valid'),
-                Tables\Columns\ToggleColumn::make('scadenza')
-                    ->onColor('success')
-                    ->offColor('warning')
-                    ->label("Expiration Verify"),
+                Tables\Columns\IconColumn::make('expiration_date')
+                    ->boolean()
+                    ->label("Expiring"),
                 TextColumn::make('valid_to')
                     ->sortable()
                     ->label('Expiration Data'),

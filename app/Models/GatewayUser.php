@@ -15,26 +15,26 @@ class GatewayUser extends Model
     protected function valid(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->checkValidity(),
+            get: fn ($value) => $this->isValid(),
         );
     }
 
-    protected function scadenza(): Attribute
+    protected function expirationDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->verificaSeInScadenza(),
+            get: fn ($value) => $this->isExpiring(),
         );
     }
 
-    protected function verificaSeInScadenza(): bool
+    protected function isExpiring(): bool
     {
-        if ($this->valid_to >= Carbon::today()->addDay(config('apigw.days_before_expiration')))
+        if ($this->valid_to >= Carbon::today()->addDays(config('apigw.days_before_expiration')))
             return true;
         else
             return false;
     }
 
-    protected function checkValidity(): bool
+    protected function isValid(): bool
     {
         if ($this->valid_to >= Carbon::today())
             return true;
