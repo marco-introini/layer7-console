@@ -3,17 +3,17 @@
 namespace App\Filament\Resources\IgnoredUserResource\Pages;
 
 use App\Filament\Resources\IgnoredUserResource;
-use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Actions;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListIgnoredUsers extends ListRecords
+class ManageIgnoredUsers extends ManageRecords
 {
     protected static string $resource = IgnoredUserResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }
