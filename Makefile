@@ -7,25 +7,6 @@ check:
 test:
 	./vendor/bin/pest
 
-production:
-	php artisan down
-	git pull
-	composer install --prefer-dist --optimize-autoloader
-	php artisan migrate --force
-	npm install
-	npm run build
-	php artisan config:clear
-	php artisan route:clear
-	php artisan view:clear
-	php artisan filament:upgrade
-	php artisan up
-	#uncomment if using queues
-	#php artisan queue:restart
-
-first_production: production
-	php artisan storage:link
-	chmod -R 777 storage bootstrap/cache
-
 clear_all: clear
 	rm -f .idea/httpRequests/*
 	rm -f storage/app/livewire-tmp/*
@@ -55,4 +36,5 @@ backup:
 
 recreate: clear_all
 	php artisan migrate:fresh --seed
+	php artisan db:seed --class IgnoredUserSeeder
 

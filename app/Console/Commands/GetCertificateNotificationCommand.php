@@ -11,20 +11,20 @@ class GetCertificateNotificationCommand extends Command
 {
     protected $signature = 'certificates:check';
 
-    protected $description = 'Check all certificates form API Gateway';
+    protected $description = 'Check all certificates from API Gateway';
 
     public function handle(): void
     {
         $numExpiredCerts = [];
         $numExpiringCerts = [];
 
-        foreach (GatewayUser::all() as $certificate) {
-            if (!$certificate->valid) {
-                $numExpiredCerts[] = $certificate;
+        foreach (GatewayUser::all() as $gatewayUser) {
+            if (!$gatewayUser->valid) {
+                $numExpiredCerts[] = $gatewayUser;
                 continue;
             }
-            if (!$certificate->scadenza){
-                $numExpiringCerts[] = $certificate;
+            if (!$gatewayUser->scadenza){
+                $numExpiringCerts[] = $gatewayUser;
             }
         }
 

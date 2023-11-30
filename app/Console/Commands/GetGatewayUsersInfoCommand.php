@@ -62,13 +62,7 @@ class GetGatewayUsersInfoCommand extends Command
 
             $info = openssl_x509_parse(CertificateHelper::der2pem($certificateDer));
 
-            try {
-                $cn = $info["subject"]["CN"];
-            } catch (Exception $e) {
-                Log::error("CN not found for {$userId}");
-                $this->error("CN not found for {$userId}");
-                $cn = "NOT FOUND";
-            }
+            $cn = $info["subject"]["CN"];
 
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);

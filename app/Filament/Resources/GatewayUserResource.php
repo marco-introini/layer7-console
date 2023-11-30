@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GatewayuserResource\Pages;
+use App\Filament\Resources\GatewayUserResource\Pages;
 use App\Models\GatewayUser;
 use Filament\Forms;
 use Filament\Forms\Form;

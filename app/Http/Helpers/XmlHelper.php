@@ -4,7 +4,6 @@ namespace App\Http\Helpers;
 
 class XmlHelper
 {
-
     public static function xml2array(string $contents, int $get_attributes = 1, string $priority = 'tag'): array|null
     {
         $parser = xml_parser_create('');
