@@ -19,17 +19,17 @@ class GetCertificateNotificationCommand extends Command
         $numExpiringCerts = [];
 
         foreach (GatewayUser::all() as $gatewayUser) {
-            if (!$gatewayUser->valid) {
+            if (! $gatewayUser->isValid()) {
                 $numExpiredCerts[] = $gatewayUser;
                 continue;
             }
-            if (!$gatewayUser->scadenza){
+            if ($gatewayUser->isExpiring()) {
                 $numExpiringCerts[] = $gatewayUser;
             }
         }
 
-        $toSlack = $this->format("Expired Certificates",$numExpiredCerts).PHP_EOL;
-        $toSlack .= $this->format("Expiring Certificates (in the next ".config('apigw.days_before_expiration')." days)",$numExpiringCerts);
+        $toSlack = $this->format('Expired Certificates', $numExpiredCerts).PHP_EOL;
+        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $numExpiringCerts);
         echo $toSlack;
         if (App::environment('production')) {
             SlackAlert::message($toSlack);
@@ -40,15 +40,14 @@ class GetCertificateNotificationCommand extends Command
     {
         $ret = $title.PHP_EOL.PHP_EOL;
 
-        if (empty($certificates)){
-            $ret .= "None".PHP_EOL;
+        if (empty($certificates)) {
+            $ret .= 'None'.PHP_EOL;
         }
 
         foreach ($certificates as $certificate) {
-            $ret .= $certificate->common_name." - Expire date: ".$certificate->valid_to.PHP_EOL;
+            $ret .= $certificate->common_name.' - Expire date: '.$certificate->valid_to.PHP_EOL;
         }
 
         return $ret;
     }
-
 }
