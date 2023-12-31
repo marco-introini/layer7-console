@@ -7,12 +7,11 @@ use App\Http\Helpers\XmlHelper;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB; // Import DB
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class GetGatewayUsersInfoCommand extends Command
@@ -24,13 +23,15 @@ class GetGatewayUsersInfoCommand extends Command
     public function handle(): void
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
-            ->get("https://".config('apigw.hostname')."/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users");
+            ->get('https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users');
 
         //preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
 
         $listaUtenti = XmlHelper::xml2array($response->body());
-
         $number = 0;
+
+        // Truncate GatewayUser table
+        DB::table('gateway_users')->truncate();
 
         foreach ($listaUtenti['l7:List']['l7:Item'] as $utente) {
             $userId = $utente['l7:Id'];
@@ -41,7 +42,7 @@ class GetGatewayUsersInfoCommand extends Command
             $username = $utente['l7:Name'];
             $detailUri = $utente['l7:Link_attr']['uri'];
 
-            $this->info("Getting info for ".$userId);
+            $this->info('Getting info for '.$userId);
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
                     'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
@@ -53,16 +54,17 @@ class GetGatewayUsersInfoCommand extends Command
             $certificate = XmlHelper::xml2array($response->body())['l7:Item']['l7:Resource']['l7:CertificateData']['l7:Encoded'];
 
             //dd($certificate);
-            if ($certificate === "") {
+            if ($certificate === '') {
                 Log::warning("Certificate not found for {$userId}");
                 $this->warn("Certificate not found for {$userId}");
+
                 continue;
             }
             $certificateDer = base64_decode($certificate);
 
             $info = openssl_x509_parse(CertificateHelper::der2pem($certificateDer));
 
-            $cn = $info["subject"]["CN"];
+            $cn = $info['subject']['CN'] ?? 'CN NOT FOUND';
 
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
@@ -75,7 +77,7 @@ class GetGatewayUsersInfoCommand extends Command
                     'detail_uri' => $detailUri,
                     'common_name' => $cn,
                     'valid_from' => Carbon::make($valid_from),
-                    'valid_to' => Carbon::make($valid_to)
+                    'valid_to' => Carbon::make($valid_to),
                 ]);
 
             $number++;
@@ -89,5 +91,4 @@ class GetGatewayUsersInfoCommand extends Command
         }
 
     }
-
 }
