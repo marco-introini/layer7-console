@@ -10,7 +10,8 @@ use Illuminate\Support\Carbon;
 class GatewayUser extends Model
 {
     use HasFactory;
-    protected $guarded =[];
+
+    protected $guarded = [];
 
     protected function valid(): Attribute
     {
@@ -28,18 +29,19 @@ class GatewayUser extends Model
 
     public function isExpiring(): bool
     {
-        if ($this->valid_to >= Carbon::today()->addDays(config('apigw.days_before_expiration')))
+        if ($this->valid_to >= Carbon::today()->addDays(config('apigw.days_before_expiration'))) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
 
     public function isValid(): bool
     {
-        if ($this->valid_to >= Carbon::today())
+        if ($this->valid_to >= Carbon::today()) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-
 }

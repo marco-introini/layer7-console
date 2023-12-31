@@ -17,8 +17,9 @@ class GatewayUserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    protected static ?string $label = "API Gateway User";
-    protected static ?string $pluralLabel = "API Gateway Users";
+    protected static ?string $label = 'API Gateway User';
+
+    protected static ?string $pluralLabel = 'API Gateway Users';
 
     protected static ?int $navigationSort = 3;
 
@@ -48,7 +49,7 @@ class GatewayUserResource extends Resource
                     ->label('Valid'),
                 Tables\Columns\IconColumn::make('expiration_date')
                     ->boolean()
-                    ->label("Expiring"),
+                    ->label('Expiring'),
                 TextColumn::make('valid_to')
                     ->sortable()
                     ->label('Expiration Data'),
