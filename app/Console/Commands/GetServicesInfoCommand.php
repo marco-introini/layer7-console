@@ -2,11 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
-use App\Models\GatewayUser;
 use App\Models\Service;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +20,7 @@ class GetServicesInfoCommand extends Command
     public function handle(): void
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
-            ->get("https://".config('apigw.hostname')."/restman/1.0/services");
+            ->get('https://'.config('apigw.hostname').'/restman/1.0/services');
 
         //dump($response->body());
 
@@ -33,7 +30,7 @@ class GetServicesInfoCommand extends Command
 
         $number = 0;
 
-        foreach($serviceList['l7:List']['l7:Item'] as $sservice) {
+        foreach ($serviceList['l7:List']['l7:Item'] as $sservice) {
 
             $serviceName = $sservice['l7:Name'];
             $serviceDetail = $sservice['l7:Resource']['l7:Service']['l7:ServiceDetail'];
@@ -43,7 +40,6 @@ class GetServicesInfoCommand extends Command
                 'name' => $serviceName,
                 'url' => $urlPattern,
             ]);
-
 
             $number++;
         }
@@ -55,7 +51,4 @@ class GetServicesInfoCommand extends Command
         }
 
     }
-
-
-
 }
