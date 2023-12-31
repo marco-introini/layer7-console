@@ -15,6 +15,11 @@ To import services from API Gateway
 ```bash
 php artisan gateway:service
 ```
+To check the validity of mTLS certificates
+
+```bash
+php artisan certificates:check
+```
 
 ## Default data
 
