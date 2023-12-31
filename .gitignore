@@ -18,4 +18,3 @@ yarn-error.log
 /.env.production
 /public/js/filament/
 /public/css/filament/
-/.env.production
