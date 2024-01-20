@@ -19,7 +19,6 @@ clear:
 update:
 	@echo "Running php version:"
 	@php --version
-	@echo "Are you sure is it OK? [y/N] " && read ans && [ $${ans:-N} = y ]
 	@echo "Current Laravel Version"
 	php artisan --version
 	@echo "\nUpdating..."
@@ -30,6 +29,7 @@ update:
 	php artisan filament:upgrade
 	@echo "UPDATED Laravel Version"
 	php artisan --version
+	npm update
 
 backup:
 	php artisan backup:run

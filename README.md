@@ -28,7 +28,7 @@ The seeders data are:
 - user: layer7@admin.com
 - password: layer7
 
-## How this works
+## How this program works
 
 To get certificate information we can use the RESTman url on Layer 7, with Basic Auth credentials:
 
