@@ -15,27 +15,33 @@ class GetCertificateNotificationCommand extends Command
 
     public function handle(): void
     {
-        $numExpiredCerts = [];
-        $numExpiringCerts = [];
+        $expiredUsers = [];
+        $expiringUsers = [];
 
         foreach (GatewayUser::all() as $gatewayUser) {
             if (! $gatewayUser->isValid()) {
-                $numExpiredCerts[] = $gatewayUser;
+                $expiredUsers[] = $gatewayUser;
                 continue;
             }
             if ($gatewayUser->isExpiring()) {
-                $numExpiringCerts[] = $gatewayUser;
+                $expiringUsers[] = $gatewayUser;
             }
         }
 
-        $toSlack = $this->format('Expired Certificates', $numExpiredCerts).PHP_EOL;
-        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $numExpiringCerts);
+        $toSlack = $this->format('Expired Certificates', $expiredUsers).PHP_EOL;
+        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $expiringUsers);
         echo $toSlack;
         if (App::environment('production')) {
             SlackAlert::message($toSlack);
         }
     }
 
+
+    /**
+     * @param  string  $title
+     * @param  array<GatewayUser>  $certificates
+     * @return string
+     */
     private function format(string $title, array $certificates): string
     {
         $ret = $title.PHP_EOL.PHP_EOL;
