@@ -19,7 +19,7 @@ class GatewayUser extends Model
     ];
 
     /**
-     * @return Attribute<bool>
+     * @return Attribute<bool,null>
      */
     protected function valid(): Attribute
     {
@@ -28,6 +28,9 @@ class GatewayUser extends Model
         );
     }
 
+    /**
+     * @return Attribute<bool,null>
+     */
     protected function expirationDate(): Attribute
     {
         return Attribute::make(
