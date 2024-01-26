@@ -78,4 +78,9 @@ class GatewayUserResource extends Resource
             'index' => Pages\ListGatewayUser::route('/'),
         ];
     }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 }

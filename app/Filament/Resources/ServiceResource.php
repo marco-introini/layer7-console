@@ -17,8 +17,9 @@ class ServiceResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $pluralLabel = "Services";
-    protected static ?string $label = "Service";
+    protected static ?string $pluralLabel = 'Services';
+
+    protected static ?string $label = 'Service';
 
     public static function form(Form $form): Form
     {
@@ -61,10 +62,8 @@ class ServiceResource extends Resource
     {
         return [
             'index' => Pages\ListServices::route('/'),
-            'create' => Pages\CreateService::route('/add'),
         ];
     }
-
 
     public static function canCreate(): bool
     {
