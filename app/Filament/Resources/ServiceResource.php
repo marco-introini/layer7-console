@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
@@ -26,7 +29,13 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name'),
+                TextInput::make('url')
+                    ->label('Exposed Endpoint'),
+                TextInput::make('gateway_id'),
+                KeyValue::make('backends')
+                    ->keyLabel('Type')
+                    ->valueLabel('Url'),
             ]);
     }
 
@@ -67,6 +76,7 @@ class ServiceResource extends Resource
     {
         return [
             'index' => Pages\ListServices::route('/'),
+            'view' => Pages\ViewService::route('/{record}'),
         ];
     }
 

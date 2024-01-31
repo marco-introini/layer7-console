@@ -13,8 +13,9 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->name(),
-            'url' => $this->faker->url(),
+            'name' => fake()->unique()->name(),
+            'gateway_id' => fake()->unique()->uuid(),
+            'url' => fake()->url(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

@@ -13,10 +13,10 @@ class GatewayUserFactory extends Factory
     public function definition(): array
     {
         return [
-            'userid' => $this->faker->unique()->uuid(),
-            'username' => $this->faker->unique()->userName(),
-            'detail_uri' => $this->faker->url(),
-            'common_name' => $this->faker->name(),
+            'userid' => fake()->unique()->uuid(),
+            'username' => fake()->unique()->userName(),
+            'detail_uri' => fake()->url(),
+            'common_name' => fake()->name(),
             'valid_from' => Carbon::now(),
             'valid_to' => Carbon::now(),
             'created_at' => Carbon::now(),
