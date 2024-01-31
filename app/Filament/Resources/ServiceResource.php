@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 
 class ServiceResource extends Resource
 {
@@ -44,6 +45,10 @@ class ServiceResource extends Resource
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                ExportAction::make('export')
+                    ->label('Export in Excel'),
             ])
             ->actions([
             ])
