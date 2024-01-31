@@ -5,13 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use Filament\Forms\Components\KeyValue;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Maatwebsite\Excel\Excel;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ServiceResource extends Resource
 {
@@ -35,7 +37,8 @@ class ServiceResource extends Resource
                 TextInput::make('gateway_id'),
                 KeyValue::make('backends')
                     ->keyLabel('Type')
-                    ->valueLabel('Url'),
+                    ->valueLabel('Url')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -57,7 +60,20 @@ class ServiceResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make('export')
-                    ->label('Export in Excel'),
+                    ->label('Excel Export')
+                    ->exports([
+                        ExcelExport::make()
+                            ->withFilename(date('Y-m-d').'-Services')
+                            ->withWriterType(Excel::XLSX)
+                            ->withColumns([
+                                Column::make('name')
+                                    ->heading('Name'),
+                                Column::make('url')
+                                    ->heading('Exposed Url'),
+                                Column::make('backends')
+                                    ->heading('Backends'),
+                            ]),
+                    ]),
             ])
             ->actions([
             ])
