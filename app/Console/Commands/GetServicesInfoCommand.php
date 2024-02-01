@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\outro;
 
 class GetServicesInfoCommand extends Command
 {
@@ -31,7 +32,8 @@ class GetServicesInfoCommand extends Command
 
         $serviceList = XmlHelper::xml2array($response->body());
 
-        $number = 0;
+        $numberOfServices = 0;
+        $numberOfBackends = 0;
 
         foreach ($serviceList['l7:List']['l7:Item'] as $gwService) {
 
@@ -54,12 +56,15 @@ class GetServicesInfoCommand extends Command
             try {
                 $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
                 $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
+                $numberOfBackends++;
             } catch (Exception) {
                 try {
                     $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
                     $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
+                    $numberOfBackends++;
                 } catch (Exception) {
                     error("Error getting details for {$serviceName} (ID {$serviceId})");
+                    Log::error("Error getting details for {$serviceName} (ID {$serviceId})");
                 }
             }
 
@@ -70,13 +75,14 @@ class GetServicesInfoCommand extends Command
                 $serviceModel->save();
             }
 
-            $number++;
+            $numberOfServices++;
         }
 
-        Log::info("Imported $number services from API Gateway");
+        Log::info("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
+        outro("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
 
         if (App::environment('production')) {
-            SlackAlert::message("Imported $number services from API Gateway");
+            SlackAlert::message("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
         }
 
     }

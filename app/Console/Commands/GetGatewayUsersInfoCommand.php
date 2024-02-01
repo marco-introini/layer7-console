@@ -9,9 +9,9 @@ use App\Models\IgnoredUser;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB; // Import DB
+use Illuminate\Support\Facades\Log; // Import DB
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
 class GetGatewayUsersInfoCommand extends Command
@@ -24,8 +24,6 @@ class GetGatewayUsersInfoCommand extends Command
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
             ->get('https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users');
-
-        //preg_match_all("|([^\n]+.*<l7:User.*)|", $response->body(), $out);
 
         $listaUtenti = XmlHelper::xml2array($response->body());
         $number = 0;
@@ -53,7 +51,6 @@ class GetGatewayUsersInfoCommand extends Command
 
             $certificate = XmlHelper::xml2array($response->body())['l7:Item']['l7:Resource']['l7:CertificateData']['l7:Encoded'];
 
-            //dd($certificate);
             if ($certificate === '') {
                 Log::warning("Certificate not found for {$userId}");
                 $this->warn("Certificate not found for {$userId}");
