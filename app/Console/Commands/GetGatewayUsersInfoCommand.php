@@ -23,7 +23,7 @@ class GetGatewayUsersInfoCommand extends Command
     public function handle(): void
     {
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
-            ->get('https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users');
+            ->get('https://'.config('apigw.hostname').'/restman/1.0/identityProviders/'.config('apigw.identityProvider').'/users');
 
         $listaUtenti = XmlHelper::xml2array($response->body());
         $number = 0;
@@ -43,7 +43,7 @@ class GetGatewayUsersInfoCommand extends Command
             $this->info('Getting info for '.$userId);
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
-                    'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/'.$userId.'/certificate'
+                    'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/'.config('apigw.identityProvider').'/users/'.$userId.'/certificate'
                 );
 
             //$fromCertificateToEnd = substr($response->body(), strpos($response->body(), "<l7:Encoded>") + 12, null);
