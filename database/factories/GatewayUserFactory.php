@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Certificate;
 use App\Models\GatewayUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -16,11 +17,7 @@ class GatewayUserFactory extends Factory
             'userid' => fake()->unique()->uuid(),
             'username' => fake()->unique()->userName(),
             'detail_uri' => fake()->url(),
-            'common_name' => fake()->name(),
-            'valid_from' => Carbon::now(),
-            'valid_to' => Carbon::now(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'certificate_id' => Certificate::factory()->create()->id,
         ];
     }
 }
