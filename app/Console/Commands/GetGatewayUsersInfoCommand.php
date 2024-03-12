@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Enumerations\CertificateType;
 use App\Http\Helpers\CertificateHelper;
 use App\Http\Helpers\XmlHelper;
+use App\Models\Certificate;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
 use Carbon\Carbon;
@@ -52,8 +54,8 @@ class GetGatewayUsersInfoCommand extends Command
             $certificate = XmlHelper::xml2array($response->body())['l7:Item']['l7:Resource']['l7:CertificateData']['l7:Encoded'];
 
             if ($certificate === '') {
-                Log::warning("Certificate not found for {$userId}");
-                $this->warn("Certificate not found for {$userId}");
+                Log::warning("Certificate not found for $userId");
+                $this->warn("Certificate not found for $userId");
 
                 continue;
             }
@@ -66,15 +68,20 @@ class GetGatewayUsersInfoCommand extends Command
             $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
             $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
 
+            $certificate = Certificate::createOrFirst([
+                'type' => CertificateType::USER_CERTIFICATE,
+                'common_name' => $cn,
+                'valid_from' => Carbon::make($valid_from),
+                'valid_to' => Carbon::make($valid_to),
+            ]);
+
             GatewayUser::updateOrInsert([
                 'userid' => $userId,
             ],
                 [
                     'username' => $username,
                     'detail_uri' => $detailUri,
-                    'common_name' => $cn,
-                    'valid_from' => Carbon::make($valid_from),
-                    'valid_to' => Carbon::make($valid_to),
+                    'certificate_id' => $certificate->id,
                 ]);
 
             $number++;

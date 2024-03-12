@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Certificate;
 use App\Models\GatewayUser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -15,22 +16,22 @@ class GetCertificateNotificationCommand extends Command
 
     public function handle(): void
     {
-        $expiredUsers = [];
-        $expiringUsers = [];
+        $expiredCerts = [];
+        $expiringCerts = [];
 
-        foreach (GatewayUser::all() as $gatewayUser) {
-            if (! $gatewayUser->isValid()) {
-                $expiredUsers[] = $gatewayUser;
+        foreach (Certificate::all() as $certificate) {
+            if (! $certificate->isValid()) {
+                $expiredCerts[] = $certificate;
                 continue;
             }
-            if ($gatewayUser->certificate->isExpiring()) {
-                $expiringUsers[] = $gatewayUser;
+            if ($certificate->certificate->isExpiring()) {
+                $expiringCerts[] = $certificate;
             }
         }
 
-        $toSlack = $this->format('Expired Certificates', $expiredUsers).PHP_EOL;
-        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $expiringUsers);
-        echo $toSlack;
+        $toSlack = $this->format('Expired Certificates', $expiredCerts).PHP_EOL;
+        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $expiringCerts);
+        info($toSlack);
         if (App::environment('production')) {
             SlackAlert::message($toSlack);
         }

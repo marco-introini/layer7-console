@@ -13,6 +13,7 @@ class Certificate extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     protected $casts = [
         'type' => CertificateType::class,
         'valid_from' => 'datetime',
@@ -21,7 +22,7 @@ class Certificate extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(GatewayUser::class,'gateway_users','certificate_id');
+        return $this->belongsToMany(GatewayUser::class, 'gateway_users', 'certificate_id');
     }
 
     /**
