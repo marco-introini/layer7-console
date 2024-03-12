@@ -23,7 +23,7 @@ class GetCertificateNotificationCommand extends Command
                 $expiredUsers[] = $gatewayUser;
                 continue;
             }
-            if ($gatewayUser->isExpiring()) {
+            if ($gatewayUser->certificate->isExpiring()) {
                 $expiringUsers[] = $gatewayUser;
             }
         }
