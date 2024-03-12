@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
 use App\Filament\Resources\CertificateResource\Pages;
 use App\Models\Certificate;
@@ -85,9 +85,9 @@ class CertificateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCertificates::route('/'),
-            'create' => Pages\CreateCertificate::route('/create'),
-            'edit' => Pages\EditCertificate::route('/{record}/edit'),
+            'index' => \App\Filament\Admin\Resources\CertificateResource\Pages\ListCertificates::route('/'),
+            'create' => \App\Filament\Admin\Resources\CertificateResource\Pages\CreateCertificate::route('/create'),
+            'edit' => \App\Filament\Admin\Resources\CertificateResource\Pages\EditCertificate::route('/{record}/edit'),
         ];
     }
 

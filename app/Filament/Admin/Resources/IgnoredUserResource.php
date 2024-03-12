@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
 use App\Filament\Resources\IgnoredUserResource\Pages;
 use App\Filament\Resources\IgnoredUserResource\RelationManagers;
@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class IgnoredUserResource extends Resource
 {
@@ -52,7 +50,7 @@ class IgnoredUserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageIgnoredUsers::route('/'),
+            'index' => \App\Filament\Admin\Resources\IgnoredUserResource\Pages\ManageIgnoredUsers::route('/'),
         ];
     }
 }

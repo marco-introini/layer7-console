@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\ServiceResource\Pages;
+namespace App\Filament\Admin\Resources\ServiceResource\Pages;
 
-use App\Filament\Resources\ServiceResource;
+use App\Filament\Admin\Resources\ServiceResource;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewService extends ViewRecord

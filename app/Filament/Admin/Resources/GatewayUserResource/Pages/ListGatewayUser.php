@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\GatewayUserResource\Pages;
+namespace App\Filament\Admin\Resources\GatewayUserResource\Pages;
 
-use App\Filament\Resources\GatewayUserResource;
+use App\Filament\Admin\Resources\GatewayUserResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

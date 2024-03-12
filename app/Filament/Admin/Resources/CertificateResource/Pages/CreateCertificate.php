@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\CertificateResource\Pages;
+namespace App\Filament\Admin\Resources\CertificateResource\Pages;
 
-use App\Filament\Resources\CertificateResource;
+use App\Filament\Admin\Resources\CertificateResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCertificate extends CreateRecord

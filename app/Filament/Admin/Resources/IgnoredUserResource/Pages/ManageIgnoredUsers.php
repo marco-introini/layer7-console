@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\IgnoredUserResource\Pages;
+namespace App\Filament\Admin\Resources\IgnoredUserResource\Pages;
 
-use App\Filament\Resources\IgnoredUserResource;
+use App\Filament\Admin\Resources\IgnoredUserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

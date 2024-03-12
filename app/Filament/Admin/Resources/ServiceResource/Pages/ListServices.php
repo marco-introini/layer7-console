@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\ServiceResource\Pages;
+namespace App\Filament\Admin\Resources\ServiceResource\Pages;
 
-use App\Filament\Resources\ServiceResource;
+use App\Filament\Admin\Resources\ServiceResource;
 use Filament\Actions\CreateAction;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListServices extends ListRecords

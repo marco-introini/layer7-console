@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
@@ -91,8 +91,8 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListServices::route('/'),
-            'view' => Pages\ViewService::route('/{record}'),
+            'index' => \App\Filament\Admin\Resources\ServiceResource\Pages\ListServices::route('/'),
+            'view' => \App\Filament\Admin\Resources\ServiceResource\Pages\ViewService::route('/{record}'),
         ];
     }
 

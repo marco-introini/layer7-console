@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
 
 use App\Filament\Resources\GatewayUserResource\Pages;
 use App\Models\GatewayUser;
@@ -75,7 +75,7 @@ class GatewayUserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGatewayUser::route('/'),
+            'index' => \App\Filament\Admin\Resources\GatewayUserResource\Pages\ListGatewayUser::route('/'),
         ];
     }
 
