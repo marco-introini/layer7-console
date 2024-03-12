@@ -11,7 +11,7 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlreader": "*",
-        "filament/filament": "^3.0-stable",
+        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10",
         "laravel/pail": "^1.1",
