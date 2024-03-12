@@ -28,23 +28,29 @@ class CertificateResource extends Resource
     {
         return $form
             ->schema([
-                Placeholder::make('created_at')
-                    ->label('Created Date')
-                    ->content(fn (?Certificate $record): string => $record?->created_at?->diffForHumans() ?? '-'),
-
-                Placeholder::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->content(fn (?Certificate $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
-
                 TextInput::make('type')
                     ->required(),
 
                 TextInput::make('common_name')
                     ->required(),
 
-                DatePicker::make('valid_from'),
+                DatePicker::make('valid_from')
+                    ->format('Yd/m/y H:i'),
 
-                DatePicker::make('valid_to'),
+                DatePicker::make('valid_to')
+                    ->format('Yd/m/y H:i'),
+
+                Placeholder::make('created_at')
+                    ->label('Created Date')
+                    ->visibleOn('edit')
+                    ->disabled()
+                    ->content(fn (?Certificate $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+
+                Placeholder::make('updated_at')
+                    ->label('Last Modified Date')
+                    ->visibleOn('edit')
+                    ->disabled()
+                    ->content(fn (?Certificate $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
             ]);
     }
 
