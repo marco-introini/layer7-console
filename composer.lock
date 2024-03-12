@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dbfedc42d5536e0fc7d92c5d25ef16a",
+    "content-hash": "74e98cd107ca00098dc5b7413f449d80",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -71,6 +71,86 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.20"
             },
             "time": "2024-03-08T14:48:54+00:00"
+        },
+        {
+            "name": "better-futures-studio/filament-local-logins",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/better-futures-studio/filament-local-logins.git",
+                "reference": "50ff8a312f633792869fd0f5bd09705aefe04a25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/better-futures-studio/filament-local-logins/zipball/50ff8a312f633792869fd0f5bd09705aefe04a25",
+                "reference": "50ff8a312f633792869fd0f5bd09705aefe04a25",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^2.0.1",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.8",
+                "orchestra/testbench": "^8.8",
+                "pestphp/pest": "^2.20",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BetterFuturesStudio\\FilamentLocalLogins\\FilamentLocalLoginsServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentLocalLogins": "BetterFuturesStudio\\FilamentLocalLogins\\Facades\\FilamentLocalLogins"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BetterFuturesStudio\\FilamentLocalLogins\\": "src/",
+                    "BetterFuturesStudio\\FilamentLocalLogins\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Karim Ali",
+                    "email": "karim@boca.pro",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package filament-local-logins",
+            "homepage": "https://github.com/better-futures-studio/filament-local-logins",
+            "keywords": [
+                "better-futures-studio",
+                "filament-local-logins",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/better-futures-studio/filament-local-logins/issues",
+                "source": "https://github.com/better-futures-studio/filament-local-logins/tree/1.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/better-futures-studio",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-01-27T21:41:11+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
