@@ -28,6 +28,8 @@ class GatewayUser extends Model
         );
     }
 
+
+
     /**
      * @return Attribute<bool,null>
      */
