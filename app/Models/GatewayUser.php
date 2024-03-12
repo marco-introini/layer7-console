@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 class GatewayUser extends Model
@@ -28,16 +30,9 @@ class GatewayUser extends Model
         );
     }
 
-
-
-    /**
-     * @return Attribute<bool,null>
-     */
-    protected function expirationDate(): Attribute
+    public function certificate(): BelongsTo
     {
-        return Attribute::make(
-            get: fn ($value) => $this->isExpiring(),
-        );
+        return $this->belongsTo(Certificate::class);
     }
 
     public function isExpiring(): bool
