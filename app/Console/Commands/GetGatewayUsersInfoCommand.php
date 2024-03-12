@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log; // Import DB
 use Spatie\SlackAlerts\Facades\SlackAlert;
 
+use function Laravel\Prompts\info;
+
 class GetGatewayUsersInfoCommand extends Command
 {
     protected $signature = 'gateway:users';
@@ -87,7 +89,7 @@ class GetGatewayUsersInfoCommand extends Command
             $number++;
         }
 
-        $this->info("Found $number users");
+        info("Found $number users");
         Log::info("Imported $number users from API Gateway");
 
         if (App::environment('production')) {

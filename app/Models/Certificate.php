@@ -46,7 +46,7 @@ class Certificate extends Model
 
     public function isValid(): bool
     {
-        if ($this->valid_to >= Carbon::today()) {
+        if ($this->valid_to >= Carbon::now()) {
             return true;
         } else {
             return false;

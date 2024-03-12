@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10",
         "laravel/pail": "^1.1",
+        "laravel/prompts": "^0.1.16",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "pxlrbt/filament-excel": "^2.3",

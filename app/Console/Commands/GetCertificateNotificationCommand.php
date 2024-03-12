@@ -3,10 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Certificate;
-use App\Models\GatewayUser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Spatie\SlackAlerts\Facades\SlackAlert;
+
+use function Laravel\Prompts\info;
 
 class GetCertificateNotificationCommand extends Command
 {
@@ -24,7 +25,7 @@ class GetCertificateNotificationCommand extends Command
                 $expiredCerts[] = $certificate;
                 continue;
             }
-            if ($certificate->certificate->isExpiring()) {
+            if ($certificate->isExpiring()) {
                 $expiringCerts[] = $certificate;
             }
         }
@@ -40,7 +41,7 @@ class GetCertificateNotificationCommand extends Command
 
     /**
      * @param  string  $title
-     * @param  array<GatewayUser>  $certificates
+     * @param  array<Certificate>  $certificates
      * @return string
      */
     private function format(string $title, array $certificates): string
