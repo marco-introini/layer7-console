@@ -2,18 +2,17 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\CertificateResource\Pages;
+use App\Enumerations\CertificateType;
+use App\Filament\Admin\Resources\CertificateResource\Pages\ListCertificates;
+use App\Filament\Admin\Resources\CertificateResource\Pages\ViewCertificate;
 use App\Models\Certificate;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class CertificateResource extends Resource
@@ -21,6 +20,8 @@ class CertificateResource extends Resource
     protected static ?string $model = Certificate::class;
 
     protected static ?string $slug = 'certificates';
+
+    protected static ?string $recordTitleAttribute = 'common_name';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -58,36 +59,37 @@ class CertificateResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('type'),
+                TextColumn::make('type')
+                    ->searchable()
+                    ->sortable(),
 
-                TextColumn::make('common_name'),
+                TextColumn::make('common_name')
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('valid_from')
+                    ->sortable()
                     ->date(),
 
                 TextColumn::make('valid_to')
+                    ->sortable()
                     ->date(),
             ])
             ->filters([
-                //
+                SelectFilter::make('type')
+                    ->options(CertificateType::associativeForFilamentFilter()),
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Admin\Resources\CertificateResource\Pages\ListCertificates::route('/'),
-            'create' => \App\Filament\Admin\Resources\CertificateResource\Pages\CreateCertificate::route('/create'),
-            'edit' => \App\Filament\Admin\Resources\CertificateResource\Pages\EditCertificate::route('/{record}/edit'),
+            'index' => ListCertificates::route('/'),
+            'view' => ViewCertificate::route('/{record}'),
         ];
     }
 

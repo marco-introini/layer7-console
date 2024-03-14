@@ -46,6 +46,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
+        // add role manager
         return true;
     }
 

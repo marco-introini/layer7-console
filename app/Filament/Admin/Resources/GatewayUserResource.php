@@ -2,7 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\GatewayUserResource\Pages;
+use App\Filament\Admin\Resources\GatewayUserResource\Pages;
 use App\Models\GatewayUser;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,9 +28,9 @@ class GatewayUserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('username'),
-                Forms\Components\TextInput::make('common_name'),
-                Forms\Components\TextInput::make('valid_from'),
-                Forms\Components\TextInput::make('valid_to'),
+                Forms\Components\TextInput::make('certificate.common_name'),
+                Forms\Components\TextInput::make('certificate.valid_from'),
+                Forms\Components\TextInput::make('certificate.valid_to'),
                 Forms\Components\TextInput::make('userid'),
                 Forms\Components\Placeholder::make(''),
                 Forms\Components\TextInput::make('detail_uri')->columnSpan(2),
@@ -44,7 +44,7 @@ class GatewayUserResource extends Resource
                 TextColumn::make('username')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('valid')
+                Tables\Columns\IconColumn::make('certificate.valid')
                     ->boolean()
                     ->label('Valid'),
                 Tables\Columns\IconColumn::make('expiration_date')
@@ -61,8 +61,7 @@ class GatewayUserResource extends Resource
                 Tables\Actions\ViewAction::make()->label('Detail Url'),
             ])
             ->bulkActions([
-            ])
-            ->defaultSort('valid_to');
+            ]);
     }
 
     public static function getRelations(): array

@@ -15,6 +15,8 @@ class GatewayUser extends Model
 
     protected $guarded = [];
 
+    protected $with = ['certificate'];
+
     protected $casts = [
         'valid_to' => 'datetime',
         'valid_from' => 'datetime',
