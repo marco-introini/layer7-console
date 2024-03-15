@@ -54,7 +54,6 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->plugin(new LocalLogins());
+            ]);
     }
 }
