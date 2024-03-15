@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enumerations\UserRoleEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable;
+    use HasFactory, MustVerifyEmail, Notifiable;
     use HasRoles;
 
     /**
@@ -47,8 +48,13 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // add role manager
-        return true;
-    }
+        if ($panel->getId() == 'admin') {
+            return $this->hasRole(UserRoleEnum::ADMIN);
+        }
+        if ($panel->getId() == 'user') {
+            return $this->hasRole(UserRoleEnum::SOLO_USER) || $this->hasRole(UserRoleEnum::COMPANY_USER);
+        }
 
+        return false;
+    }
 }
