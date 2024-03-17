@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('gateway_users', function (Blueprint $table) {
             $table->id();
 
-            $table->string('userid')
+            $table->string('gateway_id')
                 ->unique();
             $table->string('username')
                 ->unique();

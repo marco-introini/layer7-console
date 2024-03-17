@@ -11,6 +11,8 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
+            $table->string('gateway_id')
+                ->nullable();
             $table->string('type')
                 ->default(CertificateType::TRUSTED_CERT);
             $table->string('common_name');

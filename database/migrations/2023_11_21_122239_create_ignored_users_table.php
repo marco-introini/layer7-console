@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('ignored_users', function (Blueprint $table) {
             $table->id();
-            $table->string('userid');
+            $table->string('gateway_id');
             $table->timestamps();
         });
     }

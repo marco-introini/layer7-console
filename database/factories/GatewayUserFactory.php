@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Certificate;
 use App\Models\GatewayUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 class GatewayUserFactory extends Factory
 {
@@ -14,7 +13,7 @@ class GatewayUserFactory extends Factory
     public function definition(): array
     {
         return [
-            'userid' => fake()->unique()->uuid(),
+            'gateway_id' => fake()->unique()->uuid(),
             'username' => fake()->unique()->userName(),
             'detail_uri' => fake()->url(),
             'certificate_id' => Certificate::factory()->create()->id,
