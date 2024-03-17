@@ -20,6 +20,8 @@ class Certificate extends Model
         'valid_to' => 'datetime',
     ];
 
+
+    /** @return BelongsToMany<GatewayUser> */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(GatewayUser::class, 'gateway_users', 'certificate_id');

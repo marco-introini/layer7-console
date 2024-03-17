@@ -5,15 +5,15 @@ namespace App\Models;
 use App\Enumerations\UserRoleEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
-    use HasFactory, MustVerifyEmail, Notifiable;
+    use HasFactory, Notifiable;
     use HasRoles;
 
     /**
@@ -56,5 +56,16 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return false;
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            // here we must decide which role the created user has
+            // for now the default is SOLO
+            if (! $user->hasAnyRole()) {
+                $user->assignRole(UserRoleEnum::SOLO_USER);
+            }
+        });
     }
 }
