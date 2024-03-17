@@ -7,13 +7,25 @@
 To import users and certificates from the API Gateway
 
 ```bash
-php artisan gateway:users
+php artisan gateway:get-users
+```
+
+To import trusted certificates
+
+```bash
+php artisan gateway:get-trusted-certs
+```
+
+To import private keys
+
+```bash
+php artisan gateway:get-private-keys
 ```
 
 To import services from API Gateway
 
 ```bash
-php artisan gateway:service
+php artisan gateway:get-services
 ```
 To check the validity of mTLS certificates
 
