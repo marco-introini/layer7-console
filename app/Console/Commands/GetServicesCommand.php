@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Helpers\XmlHelper;
+use App\Helpers\XmlHelper;
 use App\Models\Service;
 use Exception;
 use Illuminate\Console\Command;
@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\outro;
 

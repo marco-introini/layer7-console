@@ -3,20 +3,22 @@
 namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
-use App\Http\Helpers\CertificateHelper;
-use App\Http\Helpers\XmlHelper;
+use App\Helpers\CertificateHelper;
+use App\Helpers\XmlHelper;
 use App\Models\Certificate;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
+use App\ValueObjects\CertificateVO;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log; // Import DB
+use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
-
 use function Laravel\Prompts\info;
+
+// Import DB
 
 class GetGatewayUsersCommand extends Command
 {
@@ -55,23 +57,16 @@ class GetGatewayUsersCommand extends Command
             if ($certificate === '') {
                 Log::warning("Certificate not found for $userId");
                 $this->warn("Certificate not found for $userId");
-
                 continue;
             }
-            $certificateDer = base64_decode($certificate);
 
-            $info = openssl_x509_parse(CertificateHelper::der2pem($certificateDer));
-
-            $cn = $info['subject']['CN'] ?? 'CN NOT FOUND';
-
-            $valid_from = date(DATE_RFC2822, $info['validFrom_time_t']);
-            $valid_to = date(DATE_RFC2822, $info['validTo_time_t']);
+            $certVO = CertificateVO::fromLayer7EncodedCertificate($certificate);
 
             $certificate = Certificate::createOrFirst([
                 'type' => CertificateType::USER_CERTIFICATE,
-                'common_name' => $cn,
-                'valid_from' => Carbon::make($valid_from),
-                'valid_to' => Carbon::make($valid_to),
+                'common_name' => $certVO->commonName,
+                'valid_from' => $certVO->validFrom,
+                'valid_to' => $certVO->validTo,
             ]);
 
             GatewayUser::updateOrInsert([

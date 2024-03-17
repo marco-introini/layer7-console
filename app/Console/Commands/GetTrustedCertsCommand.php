@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Helpers\XmlHelper;
+use App\Helpers\XmlHelper;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -20,7 +20,9 @@ class GetTrustedCertsCommand extends Command
 
         $certs = XmlHelper::xml2array($response->body());
 
-        foreach ($certs['l7:List']['l7:Item'] as $cert) {
+        foreach ($certs['l7:List']['l7:Item']['l7:Resource'] as $cert) {
+            $name = $cert['l7:Name'];
+            dd($cert);
         }
 
     }
