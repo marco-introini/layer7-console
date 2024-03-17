@@ -18,9 +18,9 @@ use Spatie\SlackAlerts\Facades\SlackAlert;
 
 use function Laravel\Prompts\info;
 
-class GetGatewayUsersInfoCommand extends Command
+class GetGatewayUsersCommand extends Command
 {
-    protected $signature = 'gateway:users';
+    protected $signature = 'gateway:get-users';
 
     protected $description = 'Get all users and certificates form API Gateway';
 
@@ -29,29 +29,26 @@ class GetGatewayUsersInfoCommand extends Command
         $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
             ->get('https://'.config('apigw.hostname').'/restman/1.0/identityProviders/'.config('apigw.identityProvider').'/users');
 
-        $listaUtenti = XmlHelper::xml2array($response->body());
+        $userList = XmlHelper::xml2array($response->body());
         $number = 0;
 
         // Truncate GatewayUser table
         DB::table('gateway_users')->truncate();
 
-        foreach ($listaUtenti['l7:List']['l7:Item'] as $utente) {
-            $userId = $utente['l7:Id'];
-            if (IgnoredUser::where('userid', 'like', $userId)->exists()) {
+        foreach ($userList['l7:List']['l7:Item'] as $user) {
+            $userId = $user['l7:Id'];
+            if (IgnoredUser::where('gateway_id', 'like', $userId)->exists()) {
                 continue;
             }
 
-            $username = $utente['l7:Name'];
-            $detailUri = $utente['l7:Link_attr']['uri'];
+            $username = $user['l7:Name'];
+            $detailUri = $user['l7:Link_attr']['uri'];
 
             $this->info('Getting info for '.$userId);
             $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
                 ->get(
                     'https://'.config('apigw.hostname').'/restman/1.0/identityProviders/'.config('apigw.identityProvider').'/users/'.$userId.'/certificate'
                 );
-
-            //$fromCertificateToEnd = substr($response->body(), strpos($response->body(), "<l7:Encoded>") + 12, null);
-            //$certificate = substr($fromCertificateToEnd, 0, strpos($fromCertificateToEnd, "</l7:Encoded>"));
 
             $certificate = XmlHelper::xml2array($response->body())['l7:Item']['l7:Resource']['l7:CertificateData']['l7:Encoded'];
 
@@ -78,7 +75,7 @@ class GetGatewayUsersInfoCommand extends Command
             ]);
 
             GatewayUser::updateOrInsert([
-                'userid' => $userId,
+                'gateway_id' => $userId,
             ],
                 [
                     'username' => $username,

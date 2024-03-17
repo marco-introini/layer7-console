@@ -9,7 +9,7 @@ use Spatie\SlackAlerts\Facades\SlackAlert;
 
 use function Laravel\Prompts\info;
 
-class GetCertificateNotificationCommand extends Command
+class CheckCertificatesCommand extends Command
 {
     protected $signature = 'certificates:check';
 

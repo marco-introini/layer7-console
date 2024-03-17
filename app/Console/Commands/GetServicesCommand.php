@@ -15,9 +15,9 @@ use Spatie\SlackAlerts\Facades\SlackAlert;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\outro;
 
-class GetServicesInfoCommand extends Command
+class GetServicesCommand extends Command
 {
-    protected $signature = 'gateway:services';
+    protected $signature = 'gateway:get-services';
 
     protected $description = 'Get all services form API Gateway';
 
