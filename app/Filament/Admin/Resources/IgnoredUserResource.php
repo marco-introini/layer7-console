@@ -21,7 +21,7 @@ class IgnoredUserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('userid'),
+                Forms\Components\TextInput::make('gateway_id'),
             ]);
     }
 
@@ -29,7 +29,7 @@ class IgnoredUserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('userid'),
+                Tables\Columns\TextColumn::make('gateway_id'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->date('d/m/Y H:i'),
             ])
