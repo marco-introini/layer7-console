@@ -24,6 +24,8 @@ class CertificateResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'common_name';
 
+    protected static ?int $navigationSort = 5;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -35,7 +37,7 @@ class CertificateResource extends Resource
 
                 Select::make('gateway_id')
                     ->required()
-                    ->relationship('gateway','name'),
+                    ->relationship('gateway', 'name'),
 
                 TextInput::make('common_name')
                     ->required(),

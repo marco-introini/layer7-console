@@ -2,8 +2,6 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\IgnoredUserResource\Pages;
-use App\Filament\Resources\IgnoredUserResource\RelationManagers;
 use App\Models\IgnoredUser;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -18,13 +16,15 @@ class IgnoredUserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('gateway_id')
                     ->required()
-                    ->relationship('gateway','name'),
+                    ->relationship('gateway', 'name'),
                 Forms\Components\TextInput::make('gateway_user_id'),
             ]);
     }

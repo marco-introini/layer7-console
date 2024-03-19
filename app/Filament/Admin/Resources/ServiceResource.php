@@ -2,7 +2,8 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Resources\ServiceResource\Pages;
+use App\Filament\Admin\Resources\ServiceResource\Pages\ListServices;
+use App\Filament\Admin\Resources\ServiceResource\Pages\ViewService;
 use App\Models\Service;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
@@ -22,7 +23,7 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $pluralLabel = 'Services';
 
@@ -34,7 +35,7 @@ class ServiceResource extends Resource
             ->schema([
                 Select::make('gateway_id')
                     ->required()
-                    ->relationship('gateway','name'),
+                    ->relationship('gateway', 'name'),
                 TextInput::make('name'),
                 TextInput::make('url')
                     ->label('Exposed Endpoint'),
@@ -95,8 +96,8 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Admin\Resources\ServiceResource\Pages\ListServices::route('/'),
-            'view' => \App\Filament\Admin\Resources\ServiceResource\Pages\ViewService::route('/{record}'),
+            'index' => ListServices::route('/'),
+            'view' => ViewService::route('/{record}'),
         ];
     }
 

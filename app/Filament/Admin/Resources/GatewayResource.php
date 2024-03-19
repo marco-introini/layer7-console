@@ -3,15 +3,13 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\GatewayResource\Pages;
-use App\Filament\Admin\Resources\GatewayResource\RelationManagers;
 use App\Models\Gateway;
-use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GatewayResource extends Resource
 {
@@ -19,11 +17,28 @@ class GatewayResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->unique(ignoreRecord: true),
+                TextInput::make('host')
+                    ->required()
+                    ->url()
+                    ->startsWith('http'),
+                TextInput::make('identity_provider')
+                    ->required(),
+                Section::make('Layer7 Administrator Info')
+                    ->schema([
+                        TextInput::make('admin_user')
+                            ->required(),
+                        TextInput::make('admin_password')
+                            ->required(),
+                    ]),
             ]);
     }
 
@@ -31,7 +46,7 @@ class GatewayResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //

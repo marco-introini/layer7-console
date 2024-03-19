@@ -13,7 +13,7 @@ class CheckCertificatesCommand extends Command
 {
     protected $signature = 'certificates:check';
 
-    protected $description = 'Check all certificates from API Gateway';
+    protected $description = 'Check all certificates from API Gateways';
 
     public function handle(): void
     {
@@ -23,6 +23,7 @@ class CheckCertificatesCommand extends Command
         foreach (Certificate::all() as $certificate) {
             if (! $certificate->isValid()) {
                 $expiredCerts[] = $certificate;
+
                 continue;
             }
             if ($certificate->isExpiring()) {
@@ -31,18 +32,16 @@ class CheckCertificatesCommand extends Command
         }
 
         $toSlack = $this->format('Expired Certificates', $expiredCerts).PHP_EOL;
-        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)', $expiringCerts);
+        $toSlack .= $this->format('Expiring Certificates (in the next '.config('apigw.days_before_expiration').' days)',
+            $expiringCerts);
         info($toSlack);
         if (App::environment('production')) {
             SlackAlert::message($toSlack);
         }
     }
 
-
     /**
-     * @param  string  $title
      * @param  array<Certificate>  $certificates
-     * @return string
      */
     private function format(string $title, array $certificates): string
     {
@@ -53,7 +52,7 @@ class CheckCertificatesCommand extends Command
         }
 
         foreach ($certificates as $certificate) {
-            $ret .= $certificate->common_name.' - Expire date: '.$certificate->valid_to.PHP_EOL;
+            $ret .= 'Gateway '.$certificate->gateway->name.' '.$certificate->common_name.' - Expire date: '.$certificate->valid_to.PHP_EOL;
         }
 
         return $ret;

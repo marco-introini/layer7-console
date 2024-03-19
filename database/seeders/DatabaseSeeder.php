@@ -4,16 +4,13 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Enumerations\UserRoleEnum;
-use App\Models\GatewayUser;
-use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use \App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-
     public function run(): void
     {
         Role::create(['name' => UserRoleEnum::ADMIN]);
@@ -38,7 +35,5 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('layer7'),
         ])->assignRole(UserRoleEnum::SOLO_USER);
 
-        GatewayUser::factory(20)->create();
-        Service::factory(5)->create();
     }
 }
