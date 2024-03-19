@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->string('gateway_id')
+            $table->string('gateway_service_id')
                 ->unique()
                 ->after('name');
             $table->json('backends')
@@ -21,7 +21,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->dropColumn('gateway_id');
+            $table->dropColumn('gateway_service_id');
             $table->dropColumn('backends');
         });
     }

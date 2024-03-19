@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\CertificateResource\Pages\ViewCertificate;
 use App\Models\Certificate;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,6 +35,7 @@ class CertificateResource extends Resource
 
                 TextInput::make('common_name')
                     ->required(),
+
 
                 DatePicker::make('valid_from')
                     ->format('Yd/m/y H:i'),

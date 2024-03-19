@@ -43,7 +43,7 @@ class GetServicesCommand extends Command
 
             $serviceModel = Service::create([
                 'name' => $serviceName,
-                'gateway_id' => $serviceId,
+                'gateway_service_id' => $serviceId,
                 'url' => $urlPattern,
             ]);
 

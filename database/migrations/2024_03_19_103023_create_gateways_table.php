@@ -7,15 +7,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('ignored_users', function (Blueprint $table) {
+        Schema::create('gateways', function (Blueprint $table) {
             $table->id();
-            $table->string('gateway_user_id');
+            $table->string('host');
+            $table->string('identity_provider');
+            $table->string('admin_user');
+            $table->string('admin_password');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('ignored_users');
+        Schema::dropIfExists('gateways');
     }
 };

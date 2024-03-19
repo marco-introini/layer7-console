@@ -31,7 +31,7 @@ class GatewayUserResource extends Resource
                 Forms\Components\TextInput::make('certificate.common_name'),
                 Forms\Components\TextInput::make('certificate.valid_from'),
                 Forms\Components\TextInput::make('certificate.valid_to'),
-                Forms\Components\TextInput::make('gateway_id'),
+                Forms\Components\TextInput::make('gateway_user_id'),
                 Forms\Components\Placeholder::make(''),
                 Forms\Components\TextInput::make('detail_uri')->columnSpan(2),
             ]);

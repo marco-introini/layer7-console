@@ -34,7 +34,7 @@ class ServiceResource extends Resource
                 TextInput::make('name'),
                 TextInput::make('url')
                     ->label('Exposed Endpoint'),
-                TextInput::make('gateway_id'),
+                TextInput::make('gateway_user_id'),
                 KeyValue::make('backends')
                     ->keyLabel('Type')
                     ->valueLabel('Url')

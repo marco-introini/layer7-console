@@ -37,7 +37,7 @@ class GetGatewayUsersCommand extends Command
 
         foreach ($userList['l7:List']['l7:Item'] as $user) {
             $userId = $user['l7:Id'];
-            if (IgnoredUser::where('gateway_id', 'like', $userId)->exists()) {
+            if (IgnoredUser::where('gateway_user_id', 'like', $userId)->exists()) {
                 continue;
             }
 
@@ -68,7 +68,7 @@ class GetGatewayUsersCommand extends Command
             ]);
 
             GatewayUser::updateOrInsert([
-                'gateway_id' => $userId,
+                'gateway_user_id' => $userId,
             ],
                 [
                     'username' => $username,
