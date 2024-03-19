@@ -3,13 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
-use App\Helpers\CertificateHelper;
 use App\Helpers\XmlHelper;
 use App\Models\Certificate;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
 use App\ValueObjects\CertificateVO;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
