@@ -13,9 +13,10 @@ class GatewayFactory extends Factory
     public function definition(): array
     {
         return [
-            'host' => $this->faker->word(),
-            'identity_provider' => $this->faker->word(),
-            'admin_user' => $this->faker->word(),
+            'name' => fake()->unique()->word(),
+            'host' => fake()->domainName(),
+            'identity_provider' => $this->faker->uuid(),
+            'admin_user' => $this->faker->userName(),
             'admin_password' => bcrypt($this->faker->password()),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

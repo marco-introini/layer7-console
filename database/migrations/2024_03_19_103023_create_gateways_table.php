@@ -9,6 +9,8 @@ return new class extends Migration {
     {
         Schema::create('gateways', function (Blueprint $table) {
             $table->id();
+            $table->string('name')
+                ->unique();
             $table->string('host');
             $table->string('identity_provider');
             $table->string('admin_user');

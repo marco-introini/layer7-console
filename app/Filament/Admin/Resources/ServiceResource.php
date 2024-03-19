@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Models\Service;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -31,6 +32,9 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('gateway_id')
+                    ->required()
+                    ->relationship('gateway','name'),
                 TextInput::make('name'),
                 TextInput::make('url')
                     ->label('Exposed Endpoint'),

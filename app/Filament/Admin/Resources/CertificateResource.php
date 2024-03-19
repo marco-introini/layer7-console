@@ -33,9 +33,12 @@ class CertificateResource extends Resource
                 TextInput::make('type')
                     ->required(),
 
+                Select::make('gateway_id')
+                    ->required()
+                    ->relationship('gateway','name'),
+
                 TextInput::make('common_name')
                     ->required(),
-
 
                 DatePicker::make('valid_from')
                     ->format('Yd/m/y H:i'),

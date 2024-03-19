@@ -22,4 +22,10 @@ class GatewayUser extends Model
     {
         return $this->belongsTo(Certificate::class);
     }
+
+    /** @return BelongsTo<Certificate, Gateway> */
+    public function gateway(): BelongsTo
+    {
+        return $this->belongsTo(Gateway::class);
+    }
 }

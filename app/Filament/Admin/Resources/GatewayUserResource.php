@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\GatewayUserResource\Pages;
 use App\Models\GatewayUser;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,6 +28,8 @@ class GatewayUserResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('gateway_id')
+                    ->relationship('gateway','name'),
                 Forms\Components\TextInput::make('username'),
                 Forms\Components\TextInput::make('certificate.common_name'),
                 Forms\Components\TextInput::make('certificate.valid_from'),

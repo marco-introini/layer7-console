@@ -6,6 +6,7 @@ use App\Filament\Resources\IgnoredUserResource\Pages;
 use App\Filament\Resources\IgnoredUserResource\RelationManagers;
 use App\Models\IgnoredUser;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,6 +22,9 @@ class IgnoredUserResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('gateway_id')
+                    ->required()
+                    ->relationship('gateway','name'),
                 Forms\Components\TextInput::make('gateway_user_id'),
             ]);
     }
