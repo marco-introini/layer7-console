@@ -36,5 +36,9 @@ backup:
 
 recreate: clear_all
 	php artisan migrate:fresh --seed
-	php artisan db:seed --class IgnoredUserSeeder
 
+recreate_with_fake_data: recreate
+	php artisan db:seed --class FakeDataSeeder
+
+recreate_with_real_data: recreate
+	php artisan db:seed --class RealDataSeeder
