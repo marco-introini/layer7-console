@@ -2,11 +2,13 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\GatewayUserResource\Pages;
 use App\Models\GatewayUser;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -24,20 +26,26 @@ class GatewayUserResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return $form
-            ->schema([
-                Select::make('gateway_id')
-                    ->relationship('gateway','name'),
-                Forms\Components\TextInput::make('username'),
-                Forms\Components\TextInput::make('certificate.common_name'),
-                Forms\Components\TextInput::make('certificate.valid_from'),
-                Forms\Components\TextInput::make('certificate.valid_to'),
-                Forms\Components\TextInput::make('gateway_user_id'),
-                Forms\Components\Placeholder::make(''),
-                Forms\Components\TextInput::make('detail_uri')->columnSpan(2),
-            ]);
+        return $infolist->schema([
+           TextEntry::make('gateway.name'),
+            TextEntry::make('username'),
+            Section::make('Certificate Info')->schema([
+               TextEntry::make('certificate.common_name')
+                   ->label('Common Name'),
+               TextEntry::make('certificate.type')
+                   ->label('Type'),
+               TextEntry::make('certificate.valid_from')
+                    ->label('Valid From'),
+               TextEntry::make('certificate.valid_to')
+                    ->label('Valid To'),
+            ])->columns(2),
+            Section::make('User Creation Info')->schema([
+                TextEntry::make('created_at'),
+                TextEntry::make('updated_at_at'),
+            ])->columns(2)
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -47,13 +55,15 @@ class GatewayUserResource extends Resource
                 TextColumn::make('username')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('certificate.valid')
+                Tables\Columns\IconColumn::make('certificate')
                     ->boolean()
-                    ->label('Valid'),
-                Tables\Columns\IconColumn::make('expiration_date')
-                    ->boolean()
+                    ->state(fn(GatewayUser $gatewayUser) => $gatewayUser->certificate->isExpiring() ?? false)
+                    ->trueIcon('heroicon-o-x-circle')
+                    ->falseIcon('heroicon-o-check-circle')
+                    ->trueColor('danger')
+                    ->falseColor('success')
                     ->label('Expiring'),
-                TextColumn::make('valid_to')
+                TextColumn::make('certificate.valid_to')
                     ->sortable()
                     ->label('Expiration Data'),
             ])

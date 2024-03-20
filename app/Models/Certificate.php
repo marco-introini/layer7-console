@@ -28,16 +28,6 @@ class Certificate extends Model
         return $this->belongsToMany(GatewayUser::class, 'gateway_users', 'certificate_id');
     }
 
-    /**
-     * @return Attribute<bool,null>
-     */
-    protected function expirationDate(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $this->isExpiring(),
-        );
-    }
-
     public function isExpiring(): bool
     {
         if ($this->valid_to >= Carbon::today()->addDays(config('apigw.days_before_expiration'))) {
