@@ -16,4 +16,6 @@ class ManageIgnoredUsers extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
+
+
 }
