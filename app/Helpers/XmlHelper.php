@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+
 class XmlHelper
 {
     public static function xml2array(string $contents, int $get_attributes = 1, string $priority = 'tag'): ?array
@@ -105,5 +108,23 @@ class XmlHelper
         }
 
         return $xml_array;
+    }
+
+    static public function findValuesOfKey($array, $keyToFind): array
+    {
+        $iterator  = new RecursiveArrayIterator($array);
+        $recursive = new RecursiveIteratorIterator(
+            $iterator,
+            RecursiveIteratorIterator::SELF_FIRST
+        );
+        $keysFound = [];
+
+        foreach ($recursive as $key => $value) {
+            if ($key === $keyToFind) {
+                $keysFound[] = $value;
+            }
+        }
+
+        return $keysFound;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helpers\XmlHelper;
+use App\Models\Gateway;
 use App\Models\Service;
 use Exception;
 use Illuminate\Console\Command;
@@ -22,67 +23,69 @@ class GetServicesCommand extends Command
 
     public function handle(): void
     {
-        $response = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
-            ->get('https://'.config('apigw.hostname').'/restman/1.0/services');
+        foreach (Gateway::all() as $gateway) {
+            $response = Http::withBasicAuth($gateway->admin_user, $gateway->admin_password)
+                ->get('https://'.$gateway->host.'/restman/1.0/services');
 
-        //dump($response->body());
+            //dump($response->body());
 
-        DB::table('services')->truncate();
+            Service::where('gateway_id', '=', $gateway->id)->delete();
 
-        $serviceList = XmlHelper::xml2array($response->body());
+            $serviceList = XmlHelper::xml2array($response->body());
 
-        $numberOfServices = 0;
-        $numberOfBackends = 0;
+            $numberOfServices = 0;
+            $numberOfBackends = 0;
 
-        foreach ($serviceList['l7:List']['l7:Item'] as $gwService) {
+            foreach ($serviceList['l7:List']['l7:Item'] as $gwService) {
 
-            $serviceName = $gwService['l7:Name'];
-            $serviceId = $gwService['l7:Id'];
-            $serviceDetail = $gwService['l7:Resource']['l7:Service']['l7:ServiceDetail'];
-            $urlPattern = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
+                $serviceName = $gwService['l7:Name'];
+                $serviceId = $gwService['l7:Id'];
+                $serviceDetail = $gwService['l7:Resource']['l7:Service']['l7:ServiceDetail'];
+                $urlPattern = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
 
-            $serviceModel = Service::create([
-                'name' => $serviceName,
-                'gateway_service_id' => $serviceId,
-                'url' => $urlPattern,
-            ]);
+                $serviceModel = Service::create([
+                    'name' => $serviceName,
+                    'gateway_service_id' => $serviceId,
+                    'url' => $urlPattern,
+                ]);
 
-            $responseDetails = Http::withBasicAuth(config('apigw.user'), config('apigw.password'))
-                ->get('https://'.config('apigw.hostname').'/restman/1.0/services/'.$serviceId);
+                $responseDetails = Http::withBasicAuth($gateway->admin_user, $gateway->admin_password)
+                    ->get('https://'.$gateway->host.'/restman/1.0/services/'.$serviceId);
 
-            $serviceResponseDetail = XmlHelper::xml2array($responseDetails->body());
+                $serviceResponseDetail = XmlHelper::xml2array($responseDetails->body());
 
-            try {
-                $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
-                $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
-                $numberOfBackends++;
-            } catch (Exception) {
                 try {
-                    $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
+                    $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
                     $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
                     $numberOfBackends++;
                 } catch (Exception) {
-                    error("Error getting details for {$serviceName} (ID {$serviceId})");
-                    Log::error("Error getting details for {$serviceName} (ID {$serviceId})");
+                    try {
+                        $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
+                        $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
+                        $numberOfBackends++;
+                    } catch (Exception) {
+                        error("Error getting details for $serviceName (ID $serviceId)");
+                        Log::error("Error getting details for $serviceName (ID $serviceId)");
+                    }
                 }
+
+                if (isset($backend)) {
+                    $serviceModel->backends = [
+                        'backend' => $backend,
+                    ];
+                    $serviceModel->save();
+                }
+
+                $numberOfServices++;
             }
 
-            if (isset($backend)) {
-                $serviceModel->backends = [
-                    'backend' => $backend,
-                ];
-                $serviceModel->save();
+            Log::info("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
+            outro("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
+
+            if (App::environment('production')) {
+                SlackAlert::message("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
             }
 
-            $numberOfServices++;
         }
-
-        Log::info("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
-        outro("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
-
-        if (App::environment('production')) {
-            SlackAlert::message("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
-        }
-
     }
 }
