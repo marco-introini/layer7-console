@@ -2,14 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\GatewayConnectionException;
 use App\Helpers\XmlHelper;
 use App\Models\Gateway;
 use App\Models\Service;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
 use function Laravel\Prompts\error;
@@ -24,14 +23,15 @@ class GetServicesCommand extends Command
     public function handle(): void
     {
         foreach (Gateway::all() as $gateway) {
-            $response = Http::withBasicAuth($gateway->admin_user, $gateway->admin_password)
-                ->get('https://'.$gateway->host.'/restman/1.0/services');
-
-            //dump($response->body());
+            try {
+                $serviceList = $gateway->getGatewayResponse('/restman/1.0/services');
+            } catch (GatewayConnectionException $e) {
+                error('Error obtaining services: '.$e->getConnectionError());
+                continue;
+            }
 
             Service::where('gateway_id', '=', $gateway->id)->delete();
 
-            $serviceList = XmlHelper::xml2array($response->body());
 
             $numberOfServices = 0;
             $numberOfBackends = 0;
@@ -44,36 +44,39 @@ class GetServicesCommand extends Command
                 $urlPattern = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
 
                 $serviceModel = Service::create([
+                    'gateway_id' => $gateway->id,
                     'name' => $serviceName,
                     'gateway_service_id' => $serviceId,
                     'url' => $urlPattern,
                 ]);
 
-                $responseDetails = Http::withBasicAuth($gateway->admin_user, $gateway->admin_password)
-                    ->get('https://'.$gateway->host.'/restman/1.0/services/'.$serviceId);
-
-                $serviceResponseDetail = XmlHelper::xml2array($responseDetails->body());
-
                 try {
-                    $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
-                    $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
-                    $numberOfBackends++;
-                } catch (Exception) {
+                    $serviceResponseDetail = $gateway->getGatewayResponse('/restman/1.0/services/'.$serviceId);
                     try {
-                        $dettagli = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
-                        $backend = $dettagli['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
+                        $details = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
+                        $backend = $details['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
                         $numberOfBackends++;
                     } catch (Exception) {
-                        error("Error getting details for $serviceName (ID $serviceId)");
-                        Log::error("Error getting details for $serviceName (ID $serviceId)");
+                        try {
+                            $details = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
+                            $backend = $details['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
+                            $numberOfBackends++;
+                        } catch (Exception) {
+                            error("Error getting details for $serviceName (ID $serviceId)");
+                            Log::error("Error getting details for $serviceName (ID $serviceId)");
+                        }
                     }
-                }
 
-                if (isset($backend)) {
-                    $serviceModel->backends = [
-                        'backend' => $backend,
-                    ];
-                    $serviceModel->save();
+                    if (isset($backend)) {
+                        $serviceModel->backends = [
+                            'backend' => $backend,
+                        ];
+                        $serviceModel->save();
+                    }
+
+                } catch (GatewayConnectionException $e) {
+                    error("Error obtaining service details for $serviceName - $serviceId: ".$e->getConnectionError());
+                    continue;
                 }
 
                 $numberOfServices++;

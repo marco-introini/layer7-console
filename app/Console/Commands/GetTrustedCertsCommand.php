@@ -3,12 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
+use App\Exceptions\GatewayConnectionException;
 use App\Helpers\XmlHelper;
 use App\Models\Certificate;
 use App\Models\Gateway;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
 class GetTrustedCertsCommand extends Command
@@ -20,10 +22,14 @@ class GetTrustedCertsCommand extends Command
     public function handle(): void
     {
         foreach (Gateway::all() as $gateway) {
-            $response = Http::withBasicAuth($gateway->admin_user, $gateway->admin_password)
-                ->get('https://'.$gateway->host.'/restman/1.0/trustedCertificates');
+            try {
+                $response = $gateway->getGatewayResponse('/restman/1.0/trustedCertificates');
+            } catch (GatewayConnectionException $e) {
+                error("Error obtaining certificate details: ".$e->getConnectionError());
+                continue;
+            }
 
-            $certs = XmlHelper::findValuesOfKey(XmlHelper::xml2array($response->body()),'l7:TrustedCertificate');
+            $certs = XmlHelper::findValuesOfKey($response, 'l7:TrustedCertificate');
 
             foreach ($certs as $single) {
                 $name = $single['l7:Name'];

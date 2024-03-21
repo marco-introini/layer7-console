@@ -38,7 +38,7 @@ class GatewayResource extends Resource
                             ->required(),
                         TextInput::make('admin_password')
                             ->required(),
-                    ]),
+                    ])->columns(2),
             ]);
     }
 
