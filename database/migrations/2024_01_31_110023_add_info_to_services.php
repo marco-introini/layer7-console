@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('services', function (Blueprint $table) {
             $table->string('gateway_service_id')
-                ->unique()
                 ->after('name');
             $table->json('backends')
                 ->nullable()

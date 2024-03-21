@@ -19,6 +19,7 @@ return new class extends Migration {
         });
         Schema::table('services', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
+            $table->unique(['gateway_service_id','gateway_id']);
         });
     }
 
