@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\outro;
 
@@ -27,11 +28,11 @@ class GetServicesCommand extends Command
                 $serviceList = $gateway->getGatewayResponse('/restman/1.0/services');
             } catch (GatewayConnectionException $e) {
                 error('Error obtaining services: '.$e->getConnectionError());
+
                 continue;
             }
 
             Service::where('gateway_id', '=', $gateway->id)->delete();
-
 
             $numberOfServices = 0;
             $numberOfBackends = 0;
@@ -76,6 +77,7 @@ class GetServicesCommand extends Command
 
                 } catch (GatewayConnectionException $e) {
                     error("Error obtaining service details for $serviceName - $serviceId: ".$e->getConnectionError());
+
                     continue;
                 }
 

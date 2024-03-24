@@ -9,6 +9,7 @@ use App\Models\Certificate;
 use App\Models\Gateway;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
@@ -33,9 +34,9 @@ class GetPrivateKeysCommand extends Command
             foreach ($response['l7:List']['l7:Item'] as $single) {
                 $name = $single['l7:Name'];
 
-                $multiCert = XmlHelper::findValuesOfKey($single['l7:Resource']['l7:PrivateKey'],'l7:Encoded');
+                $multiCert = XmlHelper::findValuesOfKey($single['l7:Resource']['l7:PrivateKey'], 'l7:Encoded');
 
-                foreach ($multiCert as $singleCert){
+                foreach ($multiCert as $singleCert) {
                     $certVO = CertificateVO::fromLayer7EncodedCertificate($singleCert);
 
                     Certificate::updateOrCreate(
@@ -43,13 +44,13 @@ class GetPrivateKeysCommand extends Command
                             'gateway_id' => $gateway->id,
                             'common_name' => $certVO->commonName,
                         ], [
-                        'type' => CertificateType::PRIVATE_KEY,
-                        'common_name' => $certVO->commonName,
-                        'gateway_cert_id' => $name,
-                        'valid_from' => $certVO->validFrom,
-                        'valid_to' => $certVO->validTo,
-                        'updated_at' => now(),
-                    ]);
+                            'type' => CertificateType::PRIVATE_KEY,
+                            'common_name' => $certVO->commonName,
+                            'gateway_cert_id' => $name,
+                            'valid_from' => $certVO->validFrom,
+                            'valid_to' => $certVO->validTo,
+                            'updated_at' => now(),
+                        ]);
                 }
 
                 info("Found private key $name");

@@ -5,7 +5,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::table('gateway_users', function (Blueprint $table) {
@@ -19,7 +20,7 @@ return new class extends Migration {
         });
         Schema::table('services', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
-            $table->unique(['gateway_service_id','gateway_id']);
+            $table->unique(['gateway_service_id', 'gateway_id']);
         });
     }
 

@@ -33,7 +33,8 @@ class GetGatewayUsersCommand extends Command
             try {
                 $userList = $gateway->getGatewayResponse('/restman/1.0/identityProviders/'.$gateway->identity_provider.'/users');
             } catch (GatewayConnectionException $e) {
-                error("Error obtaining users details: ".$e->getConnectionError());
+                error('Error obtaining users details: '.$e->getConnectionError());
+
                 continue;
             }
             $number = 0;
@@ -57,6 +58,7 @@ class GetGatewayUsersCommand extends Command
                     $detailsResponse = $gateway->getGatewayResponse('/restman/1.0/identityProviders/'.$gateway->identity_provider.'/users/'.$userId.'/certificate');
                 } catch (GatewayConnectionException $e) {
                     error("Error obtaining user certificare details for $userId: ".$e->getConnectionError());
+
                     continue;
                 }
 
