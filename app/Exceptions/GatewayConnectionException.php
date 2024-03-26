@@ -3,13 +3,12 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class GatewayConnectionException extends Exception
 {
-    public function __construct(private string $connectionError)
+    public function __construct(private readonly string $connectionError)
     {
+        parent::__construct();
     }
 
 
