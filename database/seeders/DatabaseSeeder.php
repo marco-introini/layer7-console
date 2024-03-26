@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         Role::create(['name' => UserRoleEnum::ADMIN]);
         Role::create(['name' => UserRoleEnum::COMPANY_USER]);
-        Role::create(['name' => UserRoleEnum::SOLO_USER]);
 
         User::create([
             'name' => 'admin',
@@ -28,12 +27,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@mycompany.com',
             'password' => Hash::make('layer7'),
         ])->assignRole(UserRoleEnum::COMPANY_USER);
-
-        User::create([
-            'name' => 'solouser',
-            'email' => 'solo@user.com',
-            'password' => Hash::make('layer7'),
-        ])->assignRole(UserRoleEnum::SOLO_USER);
 
     }
 }

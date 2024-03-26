@@ -7,6 +7,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -52,7 +53,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             return $this->hasRole(UserRoleEnum::ADMIN);
         }
         if ($panel->getId() == 'user') {
-            return $this->hasRole(UserRoleEnum::SOLO_USER) || $this->hasRole(UserRoleEnum::COMPANY_USER);
+            return $this->hasRole(UserRoleEnum::COMPANY_USER);
         }
 
         return false;
@@ -61,11 +62,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected static function booted(): void
     {
         static::created(function (User $user) {
-            // here we must decide which role the created user has
-            // for now the default is SOLO
+            // default created User
             if (! $user->hasAnyRole()) {
-                $user->assignRole(UserRoleEnum::SOLO_USER);
+                $user->assignRole(UserRoleEnum::COMPANY_USER);
             }
         });
     }
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
+
 }
