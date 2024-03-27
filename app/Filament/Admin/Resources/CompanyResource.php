@@ -23,7 +23,10 @@ class CompanyResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->alphaDash()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +34,8 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('users_count'),
             ])
             ->filters([
                 //
