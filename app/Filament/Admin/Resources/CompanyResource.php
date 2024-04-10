@@ -27,6 +27,10 @@ class CompanyResource extends Resource
                     ->required()
                     ->alphaDash()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('city')
+                    ->required()
+                    ->alphaDash()
+                    ->maxLength(255),
             ]);
     }
 
@@ -35,7 +39,7 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('users_count'),
+                Tables\Columns\TextColumn::make('users_count')->counts('users'),
             ])
             ->filters([
                 //
@@ -53,7 +57,7 @@ class CompanyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 
