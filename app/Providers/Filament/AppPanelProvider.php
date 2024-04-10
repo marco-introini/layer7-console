@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use App\Filament\Admin\Pages\Auth\Login;
 use BetterFuturesStudio\FilamentLocalLogins\LocalLogins;
 use Filament\Http\Middleware\Authenticate;
@@ -55,6 +56,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make());
     }
 }

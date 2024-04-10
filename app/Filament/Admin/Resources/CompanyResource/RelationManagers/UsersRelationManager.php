@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\CompanyResource\RelationManagers;
 
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -28,7 +29,7 @@ class UsersRelationManager extends RelationManager
                     ->required()
                     ->password()
                     ->maxLength(255),
-
+                Select::make('roles')->multiple()->relationship('roles', 'name')
             ]);
     }
 
@@ -38,14 +39,14 @@ class UsersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                ->description(function(User $user){
-                    $ret = '';
-                    foreach ($user->roles as $role)
-                    {
-                        $ret .= $role->name . ' ';
-                    }
-                    return $ret;
-                }),
+                    ->description(function (User $user) {
+                        $ret = '';
+                        foreach ($user->roles as $role) {
+                            $ret .= $role->name.' ';
+                        }
+
+                        return $ret;
+                    }),
                 Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
