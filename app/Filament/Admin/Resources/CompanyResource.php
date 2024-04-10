@@ -39,7 +39,8 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('users_count')->counts('users'),
+                Tables\Columns\TextColumn::make('users_count')
+                    ->counts('users'),
             ])
             ->filters([
                 //
