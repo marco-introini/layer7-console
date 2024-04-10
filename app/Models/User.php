@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use RectorPrefix202404\SebastianBergmann\Diff\Exception;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
@@ -49,11 +50,14 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function canAccessPanel(Panel $panel): bool
     {
-        if ($panel->getId() == 'admin') {
-            return $this->hasRole(UserRoleEnum::ADMIN);
-        }
-        if ($panel->getId() == 'user') {
-            return $this->hasRole(UserRoleEnum::COMPANY_USER);
+        try {
+            if ($panel->getId() == 'admin') {
+                return $this->hasRole(UserRoleEnum::ADMIN);
+            }
+            if ($panel->getId() == 'user') {
+                return $this->hasRole(UserRoleEnum::COMPANY_USER) || $this->hasRole(UserRoleEnum::COMPANY_ADMIN);
+            }
+        } catch (Exception $ignoredException) {
         }
 
         return false;
@@ -73,5 +77,4 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         return $this->belongsTo(Company::class);
     }
-
 }
