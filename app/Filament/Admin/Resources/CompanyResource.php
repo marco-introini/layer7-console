@@ -25,11 +25,9 @@ class CompanyResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->alphaDash()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
                     ->required()
-                    ->alphaDash()
                     ->maxLength(255),
             ]);
     }
