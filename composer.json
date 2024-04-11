@@ -11,7 +11,6 @@
         "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlreader": "*",
-        "althinect/filament-spatie-roles-permissions": "^2.2",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^11",

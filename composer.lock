@@ -4,71 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d4721bbe3c29d33e10ea19d6cd6f01e",
+    "content-hash": "45906d8315572cd246cbd0f72bfa2099",
     "packages": [
-        {
-            "name": "althinect/filament-spatie-roles-permissions",
-            "version": "v2.2.25",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Althinect/filament-spatie-roles-permissions.git",
-                "reference": "78bfefa6ddb58091dea781ec276aaa3b432b21f8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Althinect/filament-spatie-roles-permissions/zipball/78bfefa6ddb58091dea781ec276aaa3b432b21f8",
-                "reference": "78bfefa6ddb58091dea781ec276aaa3b432b21f8",
-                "shasum": ""
-            },
-            "require": {
-                "filament/filament": "^3.0",
-                "illuminate/support": "^9|^10|^11",
-                "php": "^8.1|^8.2",
-                "spatie/laravel-permission": "^5.4|^6.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.10",
-                "orchestra/testbench": "^7.0|^9.0",
-                "phpunit/phpunit": "^9.0|^10.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsServiceProvider"
-                    ],
-                    "aliases": {
-                        "FilamentSpatieRolesPermissions": "Althinect\\FilamentSpatieRolesPermissions\\FilamentSpatieRolesPermissionsFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Althinect\\FilamentSpatieRolesPermissions\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Tharinda Rodrigo",
-                    "email": "tharindarodrigo@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "homepage": "https://github.com/althinect/filament-spatie-roles-permissions",
-            "keywords": [
-                "althinect",
-                "filament-spatie-roles-permissions"
-            ],
-            "support": {
-                "issues": "https://github.com/Althinect/filament-spatie-roles-permissions/issues",
-                "source": "https://github.com/Althinect/filament-spatie-roles-permissions/tree/v2.2.25"
-            },
-            "time": "2024-04-08T00:17:00+00:00"
-        },
         {
             "name": "anourvalar/eloquent-serialize",
             "version": "1.2.22",
