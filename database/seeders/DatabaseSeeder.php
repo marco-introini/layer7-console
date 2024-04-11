@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Enumerations\UserRoleEnum;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -14,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Role::create(['name' => UserRoleEnum::ADMIN]);
+        Role::create(['name' => UserRoleEnum::COMPANY_ADMIN]);
         Role::create(['name' => UserRoleEnum::COMPANY_USER]);
 
         User::create([
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'companyuser',
             'email' => 'user@mycompany.com',
             'password' => Hash::make('layer7'),
-        ])->assignRole(UserRoleEnum::COMPANY_USER);
+        ])->assignRole(UserRoleEnum::COMPANY_ADMIN);
 
     }
 }
