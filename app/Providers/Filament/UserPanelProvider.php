@@ -27,7 +27,6 @@ class UserPanelProvider extends PanelProvider
             ->id('user')
             ->path('user')
             ->login()
-            ->registration()
             ->emailVerification()
             ->passwordReset()
             ->colors([
@@ -56,7 +55,6 @@ class UserPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->tenant(Company::class);
+            ]);
     }
 }

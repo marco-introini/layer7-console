@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enumerations\UserRoleEnum;
+use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use RectorPrefix202404\SebastianBergmann\Diff\Exception;
 use Spatie\Permission\Traits\HasRoles;
 
+#[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -63,18 +66,26 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return false;
     }
 
-    protected static function booted(): void
-    {
-        static::created(function (User $user) {
-            // default created User
-            if (! $user->hasAnyRole()) {
-                $user->assignRole(UserRoleEnum::COMPANY_USER);
-            }
-        });
-    }
-
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function setCompanyUser(Company $company): void
+    {
+        $this->company_id = $company->id;
+        $this->assignRole(UserRoleEnum::COMPANY_USER);
+    }
+
+    public function setCompanyAdmin(Company $company): void
+    {
+        $this->company_id = $company->id;
+        $this->assignRole(UserRoleEnum::COMPANY_USER);
+    }
+
+    public function isActive(): bool
+    {
+        return !is_null($this->email_verified_at);
+    }
+
 }
