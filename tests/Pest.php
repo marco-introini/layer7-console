@@ -11,6 +11,9 @@
 |
 */
 
+use App\Enumerations\UserRoleEnum;
+use Spatie\Permission\Models\Role;
+
 uses(
     Tests\TestCase::class,
     Illuminate\Foundation\Testing\LazilyRefreshDatabase::class,
@@ -37,5 +40,13 @@ uses(
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+function createRoles(): void
+{
+    Role::create(['name' => UserRoleEnum::ADMIN]);
+    Role::create(['name' => UserRoleEnum::COMPANY_ADMIN]);
+    Role::create(['name' => UserRoleEnum::COMPANY_USER]);
+
+}
 
 

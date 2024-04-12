@@ -13,10 +13,10 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->company(),
+            'city' => fake()->city(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'name' => $this->faker->name(),
-            'city' => $this->faker->city(),
         ];
     }
 }
