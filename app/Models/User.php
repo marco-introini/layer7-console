@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use RectorPrefix202404\SebastianBergmann\Diff\Exception;
+use Exception;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy(UserObserver::class)]
