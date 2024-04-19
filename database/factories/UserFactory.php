@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
-
     public function definition(): array
     {
         return [
@@ -31,10 +30,9 @@ class UserFactory extends Factory
 
     public function forCompany(Company $company): UserFactory
     {
-        return $this->state(fn(array $attributes) => [
-                'company_id' => $company->id,
-            ]
+        return $this->state(fn (array $attributes) => [
+            'company_id' => $company->id,
+        ]
         );
     }
-
 }

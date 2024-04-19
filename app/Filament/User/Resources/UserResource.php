@@ -3,7 +3,6 @@
 namespace App\Filament\User\Resources;
 
 use App\Filament\User\Resources\UserResource\Pages;
-use App\Filament\User\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -31,7 +30,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
                 //

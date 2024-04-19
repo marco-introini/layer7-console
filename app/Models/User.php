@@ -5,18 +5,21 @@ namespace App\Models;
 use App\Enumerations\UserRoleEnum;
 use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use RectorPrefix202404\SebastianBergmann\Diff\Exception;
 use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, HasTenants
 {
     use HasFactory, Notifiable;
     use HasRoles;
@@ -71,6 +74,19 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->belongsTo(Company::class);
     }
 
+    // Filament Multi Tenancy
+    /** @param Company $tenant */
+    public function canAccessTenant(Model $tenant): bool
+    {
+        return $this->company->id === $tenant->id;
+    }
+
+    public function getTenants(Panel $panel): array|Collection
+    {
+        // for now this is a really simple case of multi tenancy with a single company associated
+        return [$this->company];
+    }
+
     public function setCompanyUser(Company $company): void
     {
         $this->company_id = $company->id;
@@ -85,7 +101,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function isActive(): bool
     {
-        return !is_null($this->email_verified_at);
+        return ! is_null($this->email_verified_at);
     }
-
 }
