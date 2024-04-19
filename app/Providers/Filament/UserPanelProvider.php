@@ -56,6 +56,7 @@ class UserPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->tenant(Company::class);
+            ->tenant(Company::class)
+            ->tenantMenu(false);
     }
 }
