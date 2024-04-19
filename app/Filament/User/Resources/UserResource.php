@@ -5,12 +5,15 @@ namespace App\Filament\User\Resources;
 use App\Filament\User\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserResource extends Resource
 {
@@ -22,7 +25,25 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->email(),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->label('Password')
+                    ->confirmed()
+                    ->rule(Password::default())
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->dehydrated(false),
+
             ]);
     }
 
@@ -30,7 +51,16 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->description(function (User $user) {
+                        $ret = '';
+                        foreach ($user->roles as $role) {
+                            $ret .= $role->name.' ';
+                        }
+
+                        return $ret;
+                    }),
+                Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
                 //
