@@ -10,9 +10,10 @@ service nginx reload
 
 certbot --nginx
 
-chown -R www-data:www-data /var/www/layer7-console/
+chown -R marco:www-data /var/www/layer7-console/
+chmod 777 -R /var/www/layer7-console/storage
 
-echo "* * * * * www-data cd /var/www/layer7-console && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontab
+echo "* * * * * marco cd /var/www/layer7-console && php artisan schedule:run >> /dev/null 2>&1" >> /etc/crontab
 
 cd /var/www/layer7-console || exit
 php artisan storage:link
