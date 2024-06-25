@@ -49,14 +49,7 @@ class UsersRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->description(function (User $user) {
-                        $ret = '';
-                        foreach ($user->roles as $role) {
-                            $ret .= $role->name.' ';
-                        }
-
-                        return $ret;
-                    }),
+                    ->description(fn (User $user) => $user->admin ? 'Admin' : 'Normal User'),
                 Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([
