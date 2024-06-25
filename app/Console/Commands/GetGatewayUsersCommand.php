@@ -57,7 +57,7 @@ class GetGatewayUsersCommand extends Command
                 try {
                     $detailsResponse = $gateway->getGatewayResponse('/restman/1.0/identityProviders/'.$gateway->identity_provider.'/users/'.$userId.'/certificate');
                 } catch (GatewayConnectionException $e) {
-                    error("Error obtaining user certificare details for $userId: ".$e->getConnectionError());
+                    error("Error obtaining user certificate details for $userId: ".$e->getConnectionError());
 
                     continue;
                 }

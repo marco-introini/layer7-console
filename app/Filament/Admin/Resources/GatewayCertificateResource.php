@@ -3,8 +3,8 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Enumerations\CertificateType;
-use App\Filament\Admin\Resources\CertificateResource\Pages\ListCertificates;
-use App\Filament\Admin\Resources\CertificateResource\Pages\ViewCertificate;
+use App\Filament\Admin\Resources\GatewayCertificateResource\Pages\ListGatewayCertificates;
+use App\Filament\Admin\Resources\GatewayCertificateResource\Pages\ViewGatewayCertificate;
 use App\Models\GatewayCertificate;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
@@ -16,7 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
-class CertificateResource extends Resource
+class GatewayCertificateResource extends Resource
 {
     protected static ?string $model = GatewayCertificate::class;
 
@@ -24,9 +24,11 @@ class CertificateResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'common_name';
 
+    protected static ?string $navigationGroup = 'Gateway Administration';
+
     protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
 
     public static function form(Form $form): Form
     {
@@ -95,13 +97,18 @@ class CertificateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListCertificates::route('/'),
-            'view' => ViewCertificate::route('/{record}'),
+            'index' => ListGatewayCertificates::route('/'),
+            'view' => ViewGatewayCertificate::route('/{record}'),
         ];
     }
 
     public static function getGloballySearchableAttributes(): array
     {
         return [];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

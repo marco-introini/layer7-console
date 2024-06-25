@@ -17,6 +17,8 @@ class GatewayUserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    protected static ?string $navigationGroup = 'Gateway Administration';
+
     protected static ?string $label = 'API Gateway User';
 
     protected static ?string $pluralLabel = 'API Gateway Users';

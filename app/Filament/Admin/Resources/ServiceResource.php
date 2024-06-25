@@ -23,6 +23,8 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
+    protected static ?string $navigationGroup = 'Gateway Administration';
+
     protected static ?int $navigationSort = 4;
 
     protected static ?string $pluralLabel = 'Services';

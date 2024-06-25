@@ -14,7 +14,9 @@ class IgnoredUserResource extends Resource
 {
     protected static ?string $model = IgnoredUser::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $navigationGroup = 'Gateway Administration';
 
     protected static ?int $navigationSort = 3;
 
