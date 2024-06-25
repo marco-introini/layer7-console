@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\GatewayCertificateResource\Pages\ViewGatewayCer
 use App\Models\GatewayCertificate;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -44,24 +45,36 @@ class GatewayCertificateResource extends Resource
                 TextInput::make('common_name')
                     ->required(),
 
-                DatePicker::make('valid_from')
-                    ->format('Yd/m/y H:i'),
+                Section::make('Validity')
+                    ->schema([
+                        DatePicker::make('valid_from')
+                            ->format('Yd/m/y H:i'),
 
-                DatePicker::make('valid_to')
-                    ->format('Yd/m/y H:i'),
+                        DatePicker::make('valid_to')
+                            ->format('Yd/m/y H:i'),
 
-                Placeholder::make('created_at')
-                    ->label('Created Date')
-                    ->visibleOn('edit')
-                    ->disabled()
-                    ->content(fn (?GatewayCertificate $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                    ])
+                    ->columns(),
 
-                Placeholder::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->visibleOn('edit')
-                    ->disabled()
-                    ->content(fn (?GatewayCertificate $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                Section::make('Creation Info')
+                    ->schema([
+                        Placeholder::make('created_at')
+                            ->label('Created Date')
+                            ->visibleOn(['edit', 'view'])
+                            ->disabled()
+                            ->content(fn(?GatewayCertificate $record
+                            ): string => $record?->created_at?->diffForHumans() ?? '-'),
+
+                        Placeholder::make('updated_at')
+                            ->label('Last Modified Date')
+                            ->visibleOn(['edit', 'view'])
+                            ->disabled()
+                            ->content(fn(?GatewayCertificate $record
+                            ): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                    ])
+                    ->columns(2),
             ]);
+
     }
 
     public static function table(Table $table): Table
