@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::table('ignored_users', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
         });
-        Schema::table('certificates', function (Blueprint $table) {
+        Schema::table('gateway_certificates', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
         });
         Schema::table('services', function (Blueprint $table) {
@@ -32,7 +32,7 @@ return new class extends Migration
         Schema::table('ignored_users', function (Blueprint $table) {
             $table->dropColumn('gateway_id');
         });
-        Schema::table('certificates', function (Blueprint $table) {
+        Schema::table('gateway_certificates', function (Blueprint $table) {
             $table->dropColumn('gateway_id');
         });
         Schema::table('services', function (Blueprint $table) {

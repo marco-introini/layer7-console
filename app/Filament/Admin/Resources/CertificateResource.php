@@ -5,7 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Enumerations\CertificateType;
 use App\Filament\Admin\Resources\CertificateResource\Pages\ListCertificates;
 use App\Filament\Admin\Resources\CertificateResource\Pages\ViewCertificate;
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
@@ -18,7 +18,7 @@ use Filament\Tables\Table;
 
 class CertificateResource extends Resource
 {
-    protected static ?string $model = Certificate::class;
+    protected static ?string $model = GatewayCertificate::class;
 
     protected static ?string $slug = 'certificates';
 
@@ -52,13 +52,13 @@ class CertificateResource extends Resource
                     ->label('Created Date')
                     ->visibleOn('edit')
                     ->disabled()
-                    ->content(fn (?Certificate $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                    ->content(fn (?GatewayCertificate $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                 Placeholder::make('updated_at')
                     ->label('Last Modified Date')
                     ->visibleOn('edit')
                     ->disabled()
-                    ->content(fn (?Certificate $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                    ->content(fn (?GatewayCertificate $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
             ]);
     }
 

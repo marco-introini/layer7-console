@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Spatie\SlackAlerts\Facades\SlackAlert;
@@ -20,7 +20,7 @@ class CheckCertificatesCommand extends Command
         $expiredCerts = [];
         $expiringCerts = [];
 
-        foreach (Certificate::all() as $certificate) {
+        foreach (GatewayCertificate::all() as $certificate) {
             if (! $certificate->isValid()) {
                 $expiredCerts[] = $certificate;
 
@@ -41,7 +41,7 @@ class CheckCertificatesCommand extends Command
     }
 
     /**
-     * @param  array<Certificate>  $certificates
+     * @param  array<GatewayCertificate>  $certificates
      */
     private function format(string $title, array $certificates): string
     {

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
 use App\Exceptions\GatewayConnectionException;
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use App\Models\Gateway;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
@@ -73,7 +73,7 @@ class GetGatewayUsersCommand extends Command
 
                 $certVO = CertificateVO::fromLayer7EncodedCertificate($certificate);
 
-                $certificate = Certificate::createOrFirst([
+                $certificate = GatewayCertificate::createOrFirst([
                     'gateway_id' => $gateway->id,
                     'type' => CertificateType::USER_CERTIFICATE,
                     'common_name' => $certVO->commonName,
@@ -89,7 +89,7 @@ class GetGatewayUsersCommand extends Command
                         'gateway_id' => $gateway->id,
                         'username' => $username,
                         'detail_uri' => $detailUri,
-                        'certificate_id' => $certificate->id,
+                        'gateway_certificate_id' => $certificate->id,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);

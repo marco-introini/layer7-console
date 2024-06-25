@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
-class Certificate extends Model
+class GatewayCertificate extends Model
 {
     use HasFactory;
 
@@ -25,7 +25,7 @@ class Certificate extends Model
     /** @return BelongsToMany<GatewayUser> */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(GatewayUser::class, 'gateway_users', 'certificate_id');
+        return $this->belongsToMany(GatewayUser::class, 'gateway_users', 'gateway_certificate_id');
     }
 
     public function isExpiring(): bool

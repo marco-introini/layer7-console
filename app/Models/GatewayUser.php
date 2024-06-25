@@ -17,10 +17,10 @@ class GatewayUser extends Model
 
     protected $casts = [];
 
-    /** @return BelongsTo<Certificate, GatewayUser> */
+    /** @return BelongsTo<GatewayCertificate, GatewayUser> */
     public function certificate(): BelongsTo
     {
-        return $this->belongsTo(Certificate::class);
+        return $this->belongsTo(GatewayCertificate::class,'gateway_certificate_id');
     }
 
     /** @return BelongsTo<Gateway, GatewayUser> */

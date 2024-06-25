@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dropColumn('valid_to');
         });
         Schema::table('gateway_users', function (Blueprint $table) {
-            $table->foreignIdFor(Certificate::class)
+            $table->foreignIdFor(GatewayCertificate::class)
                 ->nullable()
                 ->after('detail_uri');
         });

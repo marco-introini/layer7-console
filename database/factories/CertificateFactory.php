@@ -3,14 +3,14 @@
 namespace Database\Factories;
 
 use App\Enumerations\CertificateType;
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use App\Models\Gateway;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
 class CertificateFactory extends Factory
 {
-    protected $model = Certificate::class;
+    protected $model = GatewayCertificate::class;
 
     public function definition(): array
     {

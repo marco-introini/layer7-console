@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use App\Models\Gateway;
 use App\Models\GatewayUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -18,7 +18,7 @@ class GatewayUserFactory extends Factory
             'gateway_user_id' => fake()->unique()->uuid(),
             'username' => fake()->unique()->userName(),
             'detail_uri' => fake()->url(),
-            'certificate_id' => Certificate::factory()->create()->id,
+            'certificate_id' => GatewayCertificate::factory()->create()->id,
         ];
     }
 }

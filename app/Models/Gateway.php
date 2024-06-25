@@ -36,7 +36,7 @@ class Gateway extends Model
 
     public function certificates(): HasMany
     {
-        return $this->hasMany(Certificate::class, 'gateway_id');
+        return $this->hasMany(GatewayCertificate::class, 'gateway_id');
     }
 
     public function gatewayUsers(): HasMany

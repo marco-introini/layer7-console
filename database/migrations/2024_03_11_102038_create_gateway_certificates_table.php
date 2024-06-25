@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('gateway_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('gateway_cert_id')
                 ->nullable();

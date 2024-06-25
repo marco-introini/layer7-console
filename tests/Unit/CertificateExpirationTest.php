@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use Carbon\Carbon;
 
 test('expired certificate is not valid', function (Carbon $when) {
-    $certificate = Certificate::factory()->create([
+    $certificate = GatewayCertificate::factory()->create([
         'valid_to' => $when,
     ]);
 
@@ -18,7 +18,7 @@ test('expired certificate is not valid', function (Carbon $when) {
 ]);
 
 test('not expired certificate is valid', function () {
-    $certificate = Certificate::factory()->create([
+    $certificate = GatewayCertificate::factory()->create([
         'valid_to' => Carbon::tomorrow(),
     ]);
 
@@ -26,7 +26,7 @@ test('not expired certificate is valid', function () {
 });
 
 test('expiring certificate is expiring', function (Carbon $validTo) {
-    $certificate = Certificate::factory()->create([
+    $certificate = GatewayCertificate::factory()->create([
         'valid_to' => $validTo,
     ]);
 
@@ -37,7 +37,7 @@ test('expiring certificate is expiring', function (Carbon $validTo) {
 ]);
 
 test('not expiring certificate return not expiring', function () {
-    $certificate = Certificate::factory()->create([
+    $certificate = GatewayCertificate::factory()->create([
         'valid_to' => Carbon::tomorrow()->addDays(config('apigw.days_before_expiration')),
     ]);
     expect($certificate->isExpiring())->toBeFalse();

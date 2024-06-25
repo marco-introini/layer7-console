@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Enumerations\CertificateType;
 use App\Exceptions\GatewayConnectionException;
 use App\Helpers\XmlHelper;
-use App\Models\Certificate;
+use App\Models\GatewayCertificate;
 use App\Models\Gateway;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
@@ -39,7 +39,7 @@ class GetPrivateKeysCommand extends Command
                 foreach ($multiCert as $singleCert) {
                     $certVO = CertificateVO::fromLayer7EncodedCertificate($singleCert);
 
-                    Certificate::updateOrCreate(
+                    GatewayCertificate::updateOrCreate(
                         [
                             'gateway_id' => $gateway->id,
                             'common_name' => $certVO->commonName,
