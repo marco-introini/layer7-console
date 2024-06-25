@@ -11,13 +11,10 @@
 |
 */
 
-use App\Enumerations\UserRoleEnum;
-use Spatie\Permission\Models\Role;
-
 uses(
     Tests\TestCase::class,
     Illuminate\Foundation\Testing\LazilyRefreshDatabase::class,
-)->in('Feature','Unit');
+)->in('Feature', 'Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +38,5 @@ uses(
 |
 */
 
-function createRoles(): void
-{
-    Role::create(['name' => UserRoleEnum::ADMIN]);
-    Role::create(['name' => UserRoleEnum::COMPANY_ADMIN]);
-    Role::create(['name' => UserRoleEnum::COMPANY_USER]);
-
-}
 
 

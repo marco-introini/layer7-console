@@ -2,7 +2,6 @@
 
 namespace App\Filament\Admin\Resources\CompanyResource\RelationManagers;
 
-use App\Enumerations\UserRoleEnum;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -40,12 +39,7 @@ class UsersRelationManager extends RelationManager
                 Forms\Components\TextInput::make('password_confirmation')
                     ->password()
                     ->dehydrated(false),
-                Select::make('roles')
-                    ->multiple()
-                    ->preload()
-                    ->options(fn () => UserRoleEnum::companyRoles())
-                    ->relationship('roles', 'name'),
-                // TODO: remove administrator values
+                Forms\Components\Toggle::make('admin'),
             ]);
     }
 

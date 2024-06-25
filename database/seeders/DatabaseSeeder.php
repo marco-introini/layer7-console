@@ -16,17 +16,27 @@ class DatabaseSeeder extends Seeder
             ->superAdmin()
             ->create([
                 'name' => 'superadmin',
-                'email' => 'layer7@admin.com',
+                'email' => 'superadmin@admin.com',
                 'password' => Hash::make('layer7'),
             ]);
+
+        $company = Company::inRandomOrder()->first() ?? Company::factory()->create();
 
         User::factory()
             ->admin()
             ->create([
                 'name' => 'companyadmin',
+                'email' => 'admin@mycompany.com',
+                'password' => Hash::make('layer7'),
+                'company_id' => $company,
+            ]);
+
+        User::factory()
+            ->create([
+                'name' => 'companyuser',
                 'email' => 'user@mycompany.com',
                 'password' => Hash::make('layer7'),
-                'company_id' => Company::inRandomOrder()->first() ?? Company::factory()->create(),
+                'company_id' => $company,
             ]);
 
     }

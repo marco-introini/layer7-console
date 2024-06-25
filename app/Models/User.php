@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enumerations\UserRoleEnum;
 use App\Observers\UserObserver;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
@@ -17,7 +16,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
-#[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, HasTenants, MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -27,11 +25,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -50,16 +44,18 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'admin' => 'boolean',
+        'super_admin' => 'boolean',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
         try {
             if ($panel->getId() == 'admin') {
-                return $this->hasRole(UserRoleEnum::ADMIN);
+                return $this->super_admin;
             }
             if ($panel->getId() == 'user') {
-                return $this->hasRole(UserRoleEnum::COMPANY_USER) || $this->hasRole(UserRoleEnum::COMPANY_ADMIN);
+                return ! is_null($this->company);
             }
         } catch (Exception $ignoredException) {
         }
@@ -73,7 +69,8 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
     }
 
     // Filament Multi Tenancy
-    /** @param Company $tenant */
+
+    /** @param  Company  $tenant */
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->company->id === $tenant->id;
@@ -83,18 +80,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
     {
         // for now this is a really simple case of multi tenancy with a single company associated
         return [$this->company];
-    }
-
-    public function setCompanyUser(Company $company): void
-    {
-        $this->company_id = $company->id;
-        $this->assignRole(UserRoleEnum::COMPANY_USER);
-    }
-
-    public function setCompanyAdmin(Company $company): void
-    {
-        $this->company_id = $company->id;
-        $this->assignRole(UserRoleEnum::COMPANY_USER);
     }
 
     public function isActive(): bool

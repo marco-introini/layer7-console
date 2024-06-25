@@ -2,8 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
-use App\Filament\Admin\Pages\Auth\Login;
 use BetterFuturesStudio\FilamentLocalLogins\LocalLogins;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,7 +27,7 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('/admin')
-            ->login(Login::class)
+            ->login()
             ->colors([
                 'primary' => Color::Zinc,
             ])
@@ -56,6 +54,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(new LocalLogins());
     }
 }
