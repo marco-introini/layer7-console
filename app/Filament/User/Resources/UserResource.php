@@ -59,15 +59,17 @@ class UserResource extends Resource
                     ->email(),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->required(fn (string $operation): bool => $operation === 'create')
                     ->label('Password')
                     ->confirmed()
                     ->rule(Password::default())
-                    ->dehydrated(fn($state) => filled($state))
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state)),
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->password()
                     ->dehydrated(false),
+                Forms\Components\Toggle::make('admin')
+                    ->disabled(fn () => ! auth()->user()->admin),
 
             ]);
     }
@@ -77,14 +79,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->description(function (User $user) {
-                        $ret = '';
-                        foreach ($user->roles as $role) {
-                            $ret .= $role->name.' ';
-                        }
-
-                        return $ret;
-                    }),
+                    ->description(fn (User $record) => $record->admin ? 'Admin' : 'Normal User'),
                 Tables\Columns\TextColumn::make('email'),
             ])
             ->filters([

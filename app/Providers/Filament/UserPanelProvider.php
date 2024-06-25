@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Models\Company;
+use BetterFuturesStudio\FilamentLocalLogins\LocalLogins;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -57,6 +58,7 @@ class UserPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->tenant(Company::class)
-            ->tenantMenu(false);
+            ->tenantMenu(false)
+            ->plugin(new LocalLogins());
     }
 }

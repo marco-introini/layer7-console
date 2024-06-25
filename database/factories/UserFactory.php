@@ -42,6 +42,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes): array {
             return [
+                'email_verified_at' => now(),
                 'super_admin' => true,
                 'admin' => false,
             ];
@@ -52,6 +53,7 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes): array {
             return [
+                'email_verified_at' => now(),
                 'super_admin' => false,
                 'admin' => true,
             ];
