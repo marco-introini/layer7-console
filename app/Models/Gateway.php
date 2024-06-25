@@ -51,7 +51,7 @@ class Gateway extends Model
 
     public function services(): HasMany
     {
-        return $this->hasMany(Service::class, 'gateway_id');
+        return $this->hasMany(GatewayService::class, 'gateway_id');
     }
 
 }

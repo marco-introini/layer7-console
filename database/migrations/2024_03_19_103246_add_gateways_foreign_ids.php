@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::table('gateway_certificates', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
         });
-        Schema::table('services', function (Blueprint $table) {
+        Schema::table('gateway_services', function (Blueprint $table) {
             $table->foreignIdFor(Gateway::class)->after('id');
             $table->unique(['gateway_service_id', 'gateway_id']);
         });
@@ -35,7 +35,7 @@ return new class extends Migration
         Schema::table('gateway_certificates', function (Blueprint $table) {
             $table->dropColumn('gateway_id');
         });
-        Schema::table('services', function (Blueprint $table) {
+        Schema::table('gateway_services', function (Blueprint $table) {
             $table->dropColumn('gateway_id');
         });
     }

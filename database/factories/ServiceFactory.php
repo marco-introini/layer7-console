@@ -3,13 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Gateway;
-use App\Models\Service;
+use App\Models\GatewayService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
 class ServiceFactory extends Factory
 {
-    protected $model = Service::class;
+    protected $model = GatewayService::class;
 
     public function definition(): array
     {

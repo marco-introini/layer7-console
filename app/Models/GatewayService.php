@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Service extends Model
+class GatewayService extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class Service extends Model
         'backends' => 'array',
     ];
 
-    /** @return BelongsTo<Service, Gateway> */
+    /** @return BelongsTo<GatewayService, Gateway> */
     public function gateway(): BelongsTo
     {
         return $this->belongsTo(Gateway::class);

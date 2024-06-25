@@ -4,7 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ServiceResource\Pages\ListServices;
 use App\Filament\Admin\Resources\ServiceResource\Pages\ViewService;
-use App\Models\Service;
+use App\Models\GatewayService;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,7 +19,7 @@ use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class ServiceResource extends Resource
 {
-    protected static ?string $model = Service::class;
+    protected static ?string $model = GatewayService::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 

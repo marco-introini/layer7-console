@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Exceptions\GatewayConnectionException;
 use App\Helpers\XmlHelper;
 use App\Models\Gateway;
-use App\Models\Service;
+use App\Models\GatewayService;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
@@ -32,7 +32,7 @@ class GetServicesCommand extends Command
                 continue;
             }
 
-            Service::where('gateway_id', '=', $gateway->id)->delete();
+            GatewayService::where('gateway_id', '=', $gateway->id)->delete();
 
             $numberOfServices = 0;
             $numberOfBackends = 0;
@@ -44,7 +44,7 @@ class GetServicesCommand extends Command
                 $serviceDetail = $gwService['l7:Resource']['l7:Service']['l7:ServiceDetail'];
                 $urlPattern = $serviceDetail['l7:ServiceMappings']['l7:HttpMapping']['l7:UrlPattern'];
 
-                $serviceModel = Service::create([
+                $serviceModel = GatewayService::create([
                     'gateway_id' => $gateway->id,
                     'name' => $serviceName,
                     'gateway_service_id' => $serviceId,
