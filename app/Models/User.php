@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enumerations\UserRoleEnum;
 use App\Observers\UserObserver;
+use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
@@ -15,14 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Exception;
-use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail, HasTenants
+class User extends Authenticatable implements FilamentUser, HasTenants, MustVerifyEmail
 {
     use HasFactory, Notifiable;
-    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
