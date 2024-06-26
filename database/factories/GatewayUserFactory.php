@@ -18,7 +18,7 @@ class GatewayUserFactory extends Factory
             'gateway_user_id' => fake()->unique()->uuid(),
             'username' => fake()->unique()->userName(),
             'detail_uri' => fake()->url(),
-            'certificate_id' => GatewayCertificate::factory()->create()->id,
+            'gateway_certificate_id' => GatewayCertificate::factory()->create()->id,
         ];
     }
 }

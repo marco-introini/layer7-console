@@ -2,26 +2,31 @@
 
 namespace Database\Factories;
 
-use App\Enumerations\CertificateType;
-use App\Models\GatewayCertificate;
-use App\Models\Gateway;
+use App\Enumerations\CertificateRequestStatus;
+use App\Models\Certificate;
+use App\Models\Company;
+use App\Models\GatewayService;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
 class CertificateFactory extends Factory
 {
-    protected $model = GatewayCertificate::class;
+    protected $model = Certificate::class;
 
     public function definition(): array
     {
         return [
-            'gateway_id' => Gateway::inRandomOrder()->first()->id ?? Gateway::factory()->create()->id,
-            'type' => CertificateType::TRUSTED_CERT,
-            'common_name' => $this->faker->word(),
-            'valid_from' => Carbon::now(),
-            'valid_to' => Carbon::now(),
-            'created_at' => fake()->dateTime(),
-            'updated_at' => fake()->dateTime(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
+            'status' => fake()->randomElement(CertificateRequestStatus::cases()),
+            'gateway_service_id' => GatewayService::inRandomOrder()->first()->id ?? GatewayService::factory()->create()->id,
+            'company_id' => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
+            'common_name' => $this->faker->name(),
+            'requested_at' => Carbon::now(),
+            'private_key' => $this->faker->sentence(),
+            'public_cert' => $this->faker->sentence(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }

@@ -7,7 +7,7 @@ use App\Models\GatewayService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class ServiceFactory extends Factory
+class GatewayServiceFactory extends Factory
 {
     protected $model = GatewayService::class;
 
