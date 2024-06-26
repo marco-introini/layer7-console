@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Enumerations\CertificateRequestStatus;
 use App\Models\Certificate;
 use App\Models\Company;
-use App\Models\GatewayService;
+use App\Models\PublicService;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -19,7 +19,7 @@ class CertificateFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
             'status' => fake()->randomElement(CertificateRequestStatus::cases()),
-            'gateway_service_id' => GatewayService::inRandomOrder()->first()->id ?? GatewayService::factory()->create()->id,
+            'public_service_id' => PublicService::inRandomOrder()->first()->id ?? PublicService::factory()->create()->id,
             'company_id' => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
             'common_name' => $this->faker->name(),
             'requested_at' => Carbon::now(),

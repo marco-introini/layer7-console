@@ -1,7 +1,8 @@
 <?php
 
+use App\Enumerations\CertificateRequestStatus;
 use App\Models\Company;
-use App\Models\GatewayService;
+use App\Models\PublicService;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,18 +14,21 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->string('status')
+                ->default(CertificateRequestStatus::REQUESTED->value);
             $table->foreignIdFor(User::class)
                 ->constrained()
-                ->onDelete('null');
-            $table->foreignIdFor(GatewayService::class)
+                ->nullOnDelete();
+            $table->foreignIdFor(PublicService::class)
                 ->constrained()
-                ->onDelete('null');
+                ->nullOnDelete();
             $table->foreignIdFor(Company::class)
                 ->constrained()
-                ->onDelete('null');
+                ->nullOnDelete();
             $table->string('common_name');
             $table->dateTime('requested_at');
+            $table->dateTime('valid_from');
+            $table->dateTime('valid_to');
             $table->text('private_key');
             $table->text('public_cert');
             $table->timestamps();
