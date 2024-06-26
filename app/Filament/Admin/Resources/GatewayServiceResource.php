@@ -2,8 +2,8 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\ServiceResource\Pages\ListGatewayServices;
-use App\Filament\Admin\Resources\ServiceResource\Pages\ViewGatewayService;
+use App\Filament\Admin\Resources\GatewayServiceResource\Pages\ListGatewayServices;
+use App\Filament\Admin\Resources\GatewayServiceResource\Pages\ViewGatewayService;
 use App\Models\GatewayService;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
