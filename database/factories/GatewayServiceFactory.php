@@ -15,7 +15,7 @@ class GatewayServiceFactory extends Factory
     {
         return [
             'gateway_id' => Gateway::inRandomOrder()->first()->id ?? Gateway::factory()->create()->id,
-            'name' => fake()->unique()->name(),
+            'name' => fake()->unique()->words(5, true),
             'gateway_service_id' => fake()->unique()->uuid(),
             'url' => fake()->url(),
             'created_at' => Carbon::now(),

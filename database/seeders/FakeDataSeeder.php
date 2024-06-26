@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\GatewayUser;
 use App\Models\GatewayService;
+use App\Models\PublicService;
 use Illuminate\Database\Seeder;
 
 class FakeDataSeeder extends Seeder
@@ -12,5 +13,6 @@ class FakeDataSeeder extends Seeder
     {
         GatewayUser::factory(20)->create();
         GatewayService::factory(5)->create();
+        PublicService::factory(3)->create();
     }
 }

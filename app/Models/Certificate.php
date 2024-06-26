@@ -9,10 +9,9 @@ class Certificate extends Model
 {
     use HasFactory;
 
-    protected function casts(): array
-    {
-        return [
-            'requested_at' => 'datetime',
-        ];
-    }
+    protected $guarded = [];
+    protected $casts = [
+        'requested_at' => 'datetime',
+        ''
+    ];
 }
