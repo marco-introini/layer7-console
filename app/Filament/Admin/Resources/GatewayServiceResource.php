@@ -2,8 +2,8 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\ServiceResource\Pages\ListServices;
-use App\Filament\Admin\Resources\ServiceResource\Pages\ViewService;
+use App\Filament\Admin\Resources\ServiceResource\Pages\ListGatewayServices;
+use App\Filament\Admin\Resources\ServiceResource\Pages\ViewGatewayService;
 use App\Models\GatewayService;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
@@ -17,7 +17,7 @@ use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
-class ServiceResource extends Resource
+class GatewayServiceResource extends Resource
 {
     protected static ?string $model = GatewayService::class;
 
@@ -98,8 +98,8 @@ class ServiceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListServices::route('/'),
-            'view' => ViewService::route('/{record}'),
+            'index' => ListGatewayServices::route('/'),
+            'view' => ViewGatewayService::route('/{record}'),
         ];
     }
 

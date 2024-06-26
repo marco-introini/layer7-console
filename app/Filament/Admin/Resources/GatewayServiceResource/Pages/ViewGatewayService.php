@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Admin\Resources\ServiceResource\Pages;
+namespace App\Filament\Admin\Resources\GatewayServiceResource\Pages;
 
-use App\Filament\Admin\Resources\ServiceResource;
+use App\Filament\Admin\Resources\GatewayServiceResource;
 use App\Filament\Helpers\FilamentTabsHelper;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewService extends ViewRecord
+class ViewGatewayService extends ViewRecord
 {
-    protected static string $resource = ServiceResource::class;
+    protected static string $resource = GatewayServiceResource::class;
 
     protected function getActions(): array
     {
