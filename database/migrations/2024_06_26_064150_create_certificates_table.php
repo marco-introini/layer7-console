@@ -18,13 +18,13 @@ return new class extends Migration
                 ->default(CertificateRequestStatus::REQUESTED->value);
             $table->foreignIdFor(User::class)
                 ->constrained()
-                ->nullOnDelete();
+                ->restrictOnDelete();
             $table->foreignIdFor(PublicService::class)
                 ->constrained()
-                ->nullOnDelete();
+                ->restrictOnDelete();
             $table->foreignIdFor(Company::class)
                 ->constrained()
-                ->nullOnDelete();
+                ->restrictOnDelete();
             $table->string('common_name');
             $table->dateTime('requested_at');
             $table->dateTime('valid_from');
