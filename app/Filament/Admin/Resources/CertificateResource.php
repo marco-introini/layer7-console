@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource\Pages;
 use App\Models\Certificate;
 use Filament\Forms;
@@ -31,7 +32,12 @@ class CertificateResource extends Resource
     {
         return $infolist
             ->schema([
-               TextEntry::make('user.name')
+                TextEntry::make('status')
+                    ->inlineLabel()
+                    ->columnSpanFull()
+                    ->color('primary')
+                    ->size(TextEntry\TextEntrySize::Large),
+                TextEntry::make('user.name'),
             ]);
     }
 
@@ -40,12 +46,19 @@ class CertificateResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('status')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn (Certificate $certificate): string => match ($certificate->status) {
+                        CertificateRequestStatus::APPROVED, CertificateRequestStatus::ISSUED => 'success',
+                        CertificateRequestStatus::REQUESTED => 'warning',
+                        CertificateRequestStatus::REJECTED => 'danger',
+                        default => 'gray',
+                    }),
                 TextColumn::make('user.name')
                     ->label('Requested By')
                     ->description(fn(Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
-                    ->description(fn(Certificate $certificate) => "Mapped to ".$certificate->publicService->gatewayService?->name),
+                    ->description(fn(Certificate $certificate
+                    ) => "Mapped to ".$certificate->publicService->gatewayService?->name),
                 TextColumn::make('requested_at')
                     ->label('Request Date'),
             ])
