@@ -3,15 +3,16 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\CertificateResource\Pages;
-use App\Filament\Admin\Resources\CertificateResource\RelationManagers;
 use App\Models\Certificate;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 
 class CertificateResource extends Resource
 {
@@ -23,7 +24,14 @@ class CertificateResource extends Resource
     {
         return $form
             ->schema([
-                //
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+               TextEntry::make('user.name')
             ]);
     }
 
@@ -31,18 +39,24 @@ class CertificateResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('status')
+                    ->badge(),
+                TextColumn::make('user.name')
+                    ->label('Requested By')
+                    ->description(fn(Certificate $certificate) => $certificate->company->name),
+                TextColumn::make('publicService.name')
+                    ->description(fn(Certificate $certificate) => "Mapped to ".$certificate->publicService->gatewayService?->name),
+                TextColumn::make('requested_at')
+                    ->label('Request Date'),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -59,6 +73,12 @@ class CertificateResource extends Resource
             'index' => Pages\ListCertificates::route('/'),
             'create' => Pages\CreateCertificate::route('/create'),
             'edit' => Pages\EditCertificate::route('/{record}/edit'),
+            'view' => Pages\ViewCertificate::route('/{record}/view'),
         ];
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
     }
 }
