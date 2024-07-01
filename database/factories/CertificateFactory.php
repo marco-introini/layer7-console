@@ -16,11 +16,15 @@ class CertificateFactory extends Factory
 
     public function definition(): array
     {
+        $user = User::query()
+            ->where('admin',false)
+            ->where('super_admin', false)
+            ->inRandomOrder()->first();
         return [
-            'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
+            'user_id' => $user->id,
             'status' => fake()->randomElement(CertificateRequestStatus::cases()),
             'public_service_id' => PublicService::inRandomOrder()->first()->id ?? PublicService::factory()->create()->id,
-            'company_id' => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
+            'company_id' => $user->company_id,
             'common_name' => 'COMMON_NAME_'.fake()->randomNumber(),
             'requested_at' => Carbon::now(),
             'created_at' => Carbon::now(),

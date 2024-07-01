@@ -14,8 +14,8 @@ class PublicServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'description' => $this->faker->text(),
+            'name' => 'SERVICE_'.fake()->unique()->randomNumber(),
+            'description' => fake()->text(),
             'gateway_service_id' => GatewayService::inRandomOrder()->first() ?? GatewayService::factory()->create(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
