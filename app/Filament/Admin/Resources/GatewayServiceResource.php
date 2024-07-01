@@ -31,6 +31,8 @@ class GatewayServiceResource extends Resource
 
     protected static ?string $label = 'Service';
 
+    protected static ?string $slug = 'gateway-services';
+
     public static function form(Form $form): Form
     {
         return $form

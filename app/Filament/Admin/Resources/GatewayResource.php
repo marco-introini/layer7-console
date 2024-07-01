@@ -19,6 +19,8 @@ class GatewayResource extends Resource
 
     protected static ?string $navigationGroup = 'Gateway Administration';
 
+    protected static ?string $slug = 'gateways';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form

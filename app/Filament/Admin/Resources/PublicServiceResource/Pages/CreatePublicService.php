@@ -9,4 +9,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePublicService extends CreateRecord
 {
     protected static string $resource = PublicServiceResource::class;
+
+    // Aggiunto per tornare alla pagina indice
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

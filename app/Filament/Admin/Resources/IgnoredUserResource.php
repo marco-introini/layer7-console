@@ -18,6 +18,8 @@ class IgnoredUserResource extends Resource
 
     protected static ?string $navigationGroup = 'Gateway Administration';
 
+    protected static ?string $slug = 'gateway-ignored-users';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

@@ -21,7 +21,7 @@ class GatewayCertificateResource extends Resource
 {
     protected static ?string $model = GatewayCertificate::class;
 
-    protected static ?string $slug = 'certificates';
+    protected static ?string $slug = 'gateway-certificates';
 
     protected static ?string $recordTitleAttribute = 'common_name';
 

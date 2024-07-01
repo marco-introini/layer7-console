@@ -23,6 +23,8 @@ class PublicServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $slug = 'public-services';
+
 
     public static function form(Form $form): Form
     {

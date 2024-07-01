@@ -23,6 +23,8 @@ class GatewayUserResource extends Resource
 
     protected static ?string $pluralLabel = 'API Gateway Users';
 
+    protected static ?string $slug = 'gateway-users';
+
     protected static ?int $navigationSort = 2;
 
     public static function infolist(Infolist $infolist): Infolist
