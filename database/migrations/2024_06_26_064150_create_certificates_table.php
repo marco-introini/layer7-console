@@ -25,12 +25,17 @@ return new class extends Migration
             $table->foreignIdFor(Company::class)
                 ->constrained()
                 ->restrictOnDelete();
-            $table->string('common_name');
             $table->dateTime('requested_at');
-            $table->dateTime('valid_from');
-            $table->dateTime('valid_to');
-            $table->text('private_key');
-            $table->text('public_cert');
+            $table->string('common_name')
+                ->nullable();
+            $table->dateTime('valid_from')
+                ->nullable();
+            $table->dateTime('valid_to')
+                ->nullable();
+            $table->text('private_key')
+                ->nullable();
+            $table->text('public_cert')
+                ->nullable();
             $table->timestamps();
         });
     }

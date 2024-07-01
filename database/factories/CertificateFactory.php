@@ -21,10 +21,8 @@ class CertificateFactory extends Factory
             'status' => fake()->randomElement(CertificateRequestStatus::cases()),
             'public_service_id' => PublicService::inRandomOrder()->first()->id ?? PublicService::factory()->create()->id,
             'company_id' => Company::inRandomOrder()->first()->id ?? Company::factory()->create()->id,
-            'common_name' => $this->faker->name(),
+            'common_name' => 'COMMON_NAME_'.fake()->randomNumber(),
             'requested_at' => Carbon::now(),
-            'private_key' => $this->faker->sentence(),
-            'public_cert' => $this->faker->sentence(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

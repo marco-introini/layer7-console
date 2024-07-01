@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Certificate;
 use App\Models\GatewayUser;
 use App\Models\GatewayService;
 use App\Models\PublicService;
@@ -14,5 +15,6 @@ class FakeDataSeeder extends Seeder
         GatewayUser::factory(20)->create();
         GatewayService::factory(5)->create();
         PublicService::factory(3)->create();
+        Certificate::factory(10)->create();
     }
 }
