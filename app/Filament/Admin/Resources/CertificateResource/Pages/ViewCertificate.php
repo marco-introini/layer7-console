@@ -4,7 +4,6 @@ namespace App\Filament\Admin\Resources\CertificateResource\Pages;
 
 use App\Filament\Admin\Resources\CertificateResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewCertificate extends ViewRecord
@@ -14,7 +13,7 @@ class ViewCertificate extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Approve')
+            Actions\Action::make('Approve'),
         ];
     }
 

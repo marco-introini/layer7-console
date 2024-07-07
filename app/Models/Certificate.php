@@ -33,4 +33,14 @@ class Certificate extends Model
     {
         return $this->belongsTo(PublicService::class);
     }
+
+    public function getFilamentColor(): string
+    {
+        return match ($this->status) {
+            CertificateRequestStatus::APPROVED, CertificateRequestStatus::ISSUED => 'success',
+            CertificateRequestStatus::REQUESTED => 'warning',
+            CertificateRequestStatus::REJECTED => 'danger',
+            default => 'gray',
+        };
+    }
 }

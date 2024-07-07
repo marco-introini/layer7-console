@@ -5,7 +5,6 @@ namespace App\Filament\Admin\Resources;
 use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource\Pages;
 use App\Models\Certificate;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -35,7 +34,7 @@ class CertificateResource extends Resource
                 TextEntry::make('status')
                     ->inlineLabel()
                     ->columnSpanFull()
-                    ->color('primary')
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                     ->size(TextEntry\TextEntrySize::Large),
                 TextEntry::make('user.name'),
             ]);
@@ -47,18 +46,13 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (Certificate $certificate): string => match ($certificate->status) {
-                        CertificateRequestStatus::APPROVED, CertificateRequestStatus::ISSUED => 'success',
-                        CertificateRequestStatus::REQUESTED => 'warning',
-                        CertificateRequestStatus::REJECTED => 'danger',
-                        default => 'gray',
-                    }),
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor()),
                 TextColumn::make('user.name')
                     ->label('Requested By')
-                    ->description(fn(Certificate $certificate) => $certificate->company->name),
+                    ->description(fn (Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
-                    ->description(fn(Certificate $certificate
-                    ) => "Mapped to ".$certificate->publicService->gatewayService?->name),
+                    ->description(fn (Certificate $certificate
+                    ) => 'Mapped to '.$certificate->publicService->gatewayService?->name),
                 TextColumn::make('requested_at')
                     ->label('Request Date'),
             ])
