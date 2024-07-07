@@ -43,4 +43,12 @@ class Certificate extends Model
             default => 'gray',
         };
     }
+
+    public function isApprovable(): bool
+    {
+        if($this->status === CertificateRequestStatus::REQUESTED) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -6,6 +6,7 @@ use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource\Pages;
 use App\Models\Certificate;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -31,12 +32,33 @@ class CertificateResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('status')
-                    ->inlineLabel()
-                    ->columnSpanFull()
-                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
-                    ->size(TextEntry\TextEntrySize::Large),
-                TextEntry::make('user.name'),
+                Section::make('Requester')
+                    ->schema([
+                        TextEntry::make('status')
+                            ->inlineLabel()
+                            ->columnSpanFull()
+                            ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor())
+                            ->size(TextEntry\TextEntrySize::Large)
+                            ->columnSpanFull(),
+                        TextEntry::make('user.name'),
+                        TextEntry::make('company.name'),
+                    ])->columns(),
+                Section::make('Service Requested')
+                    ->schema([
+
+                    ])->columns(),
+                Section::make('Timestamps')
+                    ->schema([
+
+                    ])->columns()
+                    ->visible(fn (Certificate $certificate) => $certificate->status === CertificateRequestStatus::ISSUED),
+                Section::make('Timestamps')
+                    ->schema([
+                        TextEntry::make('created_at')
+                            ->date('Y-m-d H:m:s'),
+                        TextEntry::make('updated_at')
+                            ->date('Y-m-d H:m:s'),
+                    ])->columns(),
             ]);
     }
 
@@ -46,12 +68,12 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor()),
+                    ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor()),
                 TextColumn::make('user.name')
                     ->label('Requested By')
-                    ->description(fn (Certificate $certificate) => $certificate->company->name),
+                    ->description(fn(Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
-                    ->description(fn (Certificate $certificate
+                    ->description(fn(Certificate $certificate
                     ) => 'Mapped to '.$certificate->publicService->gatewayService?->name),
                 TextColumn::make('requested_at')
                     ->label('Request Date'),
