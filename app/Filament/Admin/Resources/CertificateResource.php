@@ -45,16 +45,30 @@ class CertificateResource extends Resource
                     ])->columns(),
                 Section::make('Service Requested')
                     ->schema([
-
+                        TextEntry::make('publicService.name'),
+                        TextEntry::make('publicService.gatewayService.name')
+                            ->label('Mapped to Gateway Service'),
+                        TextEntry::make('publicService.gatewayService.gateway.name')
+                            ->label('API Gateway'),
                     ])->columns(),
-                Section::make('Timestamps')
+                Section::make('Issued Certificate')
                     ->schema([
-
+                        TextEntry::make('common_name')
+                            ->columnSpanFull(),
+                        TextEntry::make('private_key')
+                            ->columnSpanFull(),
+                        TextEntry::make('public_cert')
+                            ->columnSpanFull(),
+                        TextEntry::make('valid_from')
+                            ->date('Y-m-d H:m:s'),
+                        TextEntry::make('valid_to')
+                            ->date('Y-m-d H:m:s'),
                     ])->columns()
-                    ->visible(fn (Certificate $certificate) => $certificate->status === CertificateRequestStatus::ISSUED),
+                    ->visible(fn(Certificate $certificate
+                    ) => $certificate->status === CertificateRequestStatus::ISSUED),
                 Section::make('Timestamps')
                     ->schema([
-                        TextEntry::make('created_at')
+                        TextEntry::make('requested_at')
                             ->date('Y-m-d H:m:s'),
                         TextEntry::make('updated_at')
                             ->date('Y-m-d H:m:s'),
