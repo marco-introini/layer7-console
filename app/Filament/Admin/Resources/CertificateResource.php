@@ -5,14 +5,18 @@ namespace App\Filament\Admin\Resources;
 use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource\Pages;
 use App\Models\Certificate;
+use Filament\Forms\Components\Section as FormSection;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\Section;
+use Filament\Forms\Get;
+use Filament\Infolists\Components\Section as InfoListSection;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class CertificateResource extends Resource
@@ -25,6 +29,27 @@ class CertificateResource extends Resource
     {
         return $form
             ->schema([
+                FormSection::make('requester')
+                    ->schema([
+                        Select::make('status')
+                            ->enum(CertificateRequestStatus::class)
+                            ->options(CertificateRequestStatus::class)
+                            ->required(),
+                        Select::make('company_id')
+                            ->relationship('company', 'name')
+                            ->live()
+                            ->required(),
+                        Select::make('user_id')
+                            ->relationship(
+                                name: 'user',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: function (Builder $query, Get $get) {
+                                    if ($get('company_id') != "") {
+                                        return $query->where('company_id', $get('company_id'));
+                                    }
+                                    return $query->where('id', 0);
+                                }),
+                    ]),
             ]);
     }
 
@@ -32,7 +57,7 @@ class CertificateResource extends Resource
     {
         return $infolist
             ->schema([
-                Section::make('Requester')
+                InfoListSection::make('Requester')
                     ->schema([
                         TextEntry::make('status')
                             ->inlineLabel()
@@ -43,7 +68,7 @@ class CertificateResource extends Resource
                         TextEntry::make('user.name'),
                         TextEntry::make('company.name'),
                     ])->columns(),
-                Section::make('Service Requested')
+                InfoListSection::make('Service Requested')
                     ->schema([
                         TextEntry::make('publicService.name'),
                         TextEntry::make('publicService.gatewayService.name')
@@ -51,7 +76,7 @@ class CertificateResource extends Resource
                         TextEntry::make('publicService.gatewayService.gateway.name')
                             ->label('API Gateway'),
                     ])->columns(),
-                Section::make('Issued Certificate')
+                InfoListSection::make('Issued Certificate')
                     ->schema([
                         TextEntry::make('common_name')
                             ->columnSpanFull(),
@@ -66,7 +91,7 @@ class CertificateResource extends Resource
                     ])->columns()
                     ->visible(fn(Certificate $certificate
                     ) => $certificate->status === CertificateRequestStatus::ISSUED),
-                Section::make('Timestamps')
+                InfoListSection::make('Timestamps')
                     ->schema([
                         TextEntry::make('requested_at')
                             ->date('Y-m-d H:m:s'),
@@ -88,7 +113,8 @@ class CertificateResource extends Resource
                     ->description(fn(Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
                     ->description(fn(Certificate $certificate
-                    ) => 'Mapped to '.$certificate->publicService->gatewayService?->name),
+                    ) => 'Mapped to '.$certificate->publicService->gatewayService?->name.
+                        ' Gateway '.$certificate->publicService->gatewayService?->gateway?->name),
                 TextColumn::make('requested_at')
                     ->label('Request Date'),
             ])

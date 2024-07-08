@@ -20,4 +20,10 @@ class CertificateHelper
 
         return base64_decode($pem_data);
     }
+
+    public static function generateCertificate(string $commonName, )
+    {
+
+    }
+
 }
