@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
+use App\ValueObjects\CertificateVO;
+use App\ValueObjects\KeyPairVO;
 use Carbon\Carbon;
 
 class X509Service
 {
-    /**
-     * @return array<string,string>
-     */
-    public static function generateCertificate(string $commonName, ?Carbon $expirationDate): array
+    public static function generateCertificate(string $commonName, ?Carbon $expirationDate): KeyPairVO
     {
         $config = [
             'digest_alg' => 'sha512',
@@ -27,6 +26,7 @@ class X509Service
             ],
         ];
 
+
         $privateKeyResource = openssl_pkey_new($config);
         openssl_pkey_export($privateKeyResource, $privateKey);
 
@@ -40,6 +40,12 @@ class X509Service
 
         openssl_x509_export($certificateResource, $certificate);
 
-        return [$privateKey, $certificate];
+        return new KeyPairVO(
+            $privateKey,
+            new CertificateVO(commonName: $commonName,
+                validFrom: $validFrom,
+                validTo: $validTo,
+                pemCertificate: $certificate),
+        );
     }
 }
