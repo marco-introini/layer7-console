@@ -44,9 +44,10 @@ class CertificateResource extends Resource
                                 name: 'user',
                                 titleAttribute: 'name',
                                 modifyQueryUsing: function (Builder $query, Get $get) {
-                                    if ($get('company_id') != "") {
+                                    if ($get('company_id') != '') {
                                         return $query->where('company_id', $get('company_id'));
                                     }
+
                                     return $query->where('id', 0);
                                 }),
                     ]),
@@ -62,7 +63,7 @@ class CertificateResource extends Resource
                         TextEntry::make('status')
                             ->inlineLabel()
                             ->columnSpanFull()
-                            ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor())
+                            ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                             ->size(TextEntry\TextEntrySize::Large)
                             ->columnSpanFull(),
                         TextEntry::make('user.name'),
@@ -89,7 +90,7 @@ class CertificateResource extends Resource
                         TextEntry::make('valid_to')
                             ->date('Y-m-d H:m:s'),
                     ])->columns()
-                    ->visible(fn(Certificate $certificate
+                    ->visible(fn (Certificate $certificate
                     ) => $certificate->status === CertificateRequestStatus::ISSUED),
                 InfoListSection::make('Timestamps')
                     ->schema([
@@ -107,12 +108,12 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor()),
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor()),
                 TextColumn::make('user.name')
                     ->label('Requested By')
-                    ->description(fn(Certificate $certificate) => $certificate->company->name),
+                    ->description(fn (Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
-                    ->description(fn(Certificate $certificate
+                    ->description(fn (Certificate $certificate
                     ) => 'Mapped to '.$certificate->publicService->gatewayService?->name.
                         ' Gateway '.$certificate->publicService->gatewayService?->gateway?->name),
                 TextColumn::make('requested_at')
