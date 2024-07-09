@@ -4,12 +4,11 @@ namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
 use App\Exceptions\GatewayConnectionException;
-use App\Helpers\XmlHelper;
-use App\Models\GatewayCertificate;
 use App\Models\Gateway;
+use App\Models\GatewayCertificate;
+use App\Services\XmlService;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
@@ -31,7 +30,7 @@ class GetTrustedCertsCommand extends Command
                 continue;
             }
 
-            $certs = XmlHelper::findValuesOfKey($response, 'l7:TrustedCertificate');
+            $certs = XmlService::findValuesOfKey($response, 'l7:TrustedCertificate');
 
             foreach ($certs as $single) {
                 $name = $single['l7:Name'];

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services;
 
 use Carbon\Carbon;
 
-class CertificateHelper
+class GatewayCertificateService
 {
     public static function der2pem(string $der_data): string
     {

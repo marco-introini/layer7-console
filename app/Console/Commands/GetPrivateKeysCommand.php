@@ -4,12 +4,11 @@ namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
 use App\Exceptions\GatewayConnectionException;
-use App\Helpers\XmlHelper;
-use App\Models\GatewayCertificate;
 use App\Models\Gateway;
+use App\Models\GatewayCertificate;
+use App\Services\XmlService;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
@@ -34,7 +33,7 @@ class GetPrivateKeysCommand extends Command
             foreach ($response['l7:List']['l7:Item'] as $single) {
                 $name = $single['l7:Name'];
 
-                $multiCert = XmlHelper::findValuesOfKey($single['l7:Resource']['l7:PrivateKey'], 'l7:Encoded');
+                $multiCert = XmlService::findValuesOfKey($single['l7:Resource']['l7:PrivateKey'], 'l7:Encoded');
 
                 foreach ($multiCert as $singleCert) {
                     $certVO = CertificateVO::fromLayer7EncodedCertificate($singleCert);

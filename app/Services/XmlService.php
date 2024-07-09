@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
-class XmlHelper
+class XmlService
 {
     public static function xml2array(string $contents, int $get_attributes = 1, string $priority = 'tag'): ?array
     {

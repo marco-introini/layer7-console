@@ -3,15 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Exceptions\GatewayConnectionException;
-use App\Helpers\XmlHelper;
 use App\Models\Gateway;
 use App\Models\GatewayService;
+use App\Services\XmlService;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Spatie\SlackAlerts\Facades\SlackAlert;
-
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\outro;
 
@@ -54,12 +53,12 @@ class GetServicesCommand extends Command
                 try {
                     $serviceResponseDetail = $gateway->getGatewayResponse('/restman/1.0/services/'.$serviceId);
                     try {
-                        $details = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
+                        $details = XmlService::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet'][0]['l7:Resource']);
                         $backend = $details['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
                         $numberOfBackends++;
                     } catch (Exception) {
                         try {
-                            $details = XmlHelper::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
+                            $details = XmlService::xml2array($serviceResponseDetail['l7:Item']['l7:Resource']['l7:Service']['l7:Resources']['l7:ResourceSet']['l7:Resource']);
                             $backend = $details['wsp:Policy']['wsp:All']['L7p:HttpRoutingAssertion']['L7p:ProtectedServiceUrl_attr']['stringValue'];
                             $numberOfBackends++;
                         } catch (Exception) {

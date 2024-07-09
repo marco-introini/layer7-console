@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\GatewayConnectionException;
-use App\Helpers\XmlHelper;
+use App\Services\XmlService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,7 +31,7 @@ class Gateway extends Model
             throw new GatewayConnectionException($response->status());
         }
 
-        return XmlHelper::xml2array($response->body());
+        return XmlService::xml2array($response->body());
     }
 
     public function certificates(): HasMany

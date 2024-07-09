@@ -2,9 +2,8 @@
 
 namespace App\ValueObjects;
 
-use App\Helpers\CertificateHelper;
+use App\Services\GatewayCertificateService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 readonly class CertificateVO
 {
@@ -17,7 +16,7 @@ readonly class CertificateVO
     {
         $certificateDer = base64_decode($encodedCert);
 
-        $info = openssl_x509_parse(CertificateHelper::der2pem($certificateDer));
+        $info = openssl_x509_parse(GatewayCertificateService::der2pem($certificateDer));
 
         $cn = $info['subject']['CN'] ?? 'CN NOT FOUND';
 
