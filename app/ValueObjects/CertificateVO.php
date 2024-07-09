@@ -2,7 +2,7 @@
 
 namespace App\ValueObjects;
 
-use App\Services\GatewayCertificateService;
+use App\Services\CertificateService;
 use Carbon\Carbon;
 
 readonly class CertificateVO
@@ -16,7 +16,7 @@ readonly class CertificateVO
     {
         $certificateDer = base64_decode($encodedCert);
 
-        $info = openssl_x509_parse(GatewayCertificateService::der2pem($certificateDer));
+        $info = openssl_x509_parse(CertificateService::der2pem($certificateDer));
 
         $cn = $info['subject']['CN'] ?? 'CN NOT FOUND';
 
