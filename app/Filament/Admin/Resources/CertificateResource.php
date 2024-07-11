@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 
 class CertificateResource extends Resource
 {
@@ -114,8 +115,8 @@ class CertificateResource extends Resource
                     ->description(fn (Certificate $certificate) => $certificate->company->name),
                 TextColumn::make('publicService.name')
                     ->description(fn (Certificate $certificate
-                    ) => 'Mapped to '.$certificate->publicService->gatewayService?->name.
-                        ' Gateway '.$certificate->publicService->gatewayService?->gateway?->name),
+                    ) => new HtmlString('Mapped to '.$certificate->publicService->gatewayService?->name.
+                        '<br>Gateway '.$certificate->publicService->gatewayService?->gateway?->name)),
                 TextColumn::make('requested_at')
                     ->label('Request Date'),
             ])

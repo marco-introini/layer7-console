@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\ValueObjects\KeyPairVO;
 use Carbon\Carbon;
 
 class CertificateService
@@ -23,12 +24,8 @@ class CertificateService
         return base64_decode($pem_data);
     }
 
-    /**
-     * @return array<string,string>
-     */
-    public static function generateCertificate(string $commonName, Carbon|null $expirationDate): array
+    public static function generateCertificate(string $commonName, ?Carbon $expirationDate): KeyPairVO
     {
         return X509Service::generateCertificate($commonName, $expirationDate);
     }
-
 }
