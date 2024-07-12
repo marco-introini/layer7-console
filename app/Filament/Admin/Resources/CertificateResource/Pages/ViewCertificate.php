@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\CertificateResource\Pages;
 
 use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource;
+use App\Jobs\GenerateX509Job;
 use App\Models\Certificate;
 use Filament\Actions;
 use Filament\Forms\Components\TextInput;
@@ -19,14 +20,15 @@ class ViewCertificate extends ViewRecord
         return [
             Actions\Action::make('Approve')
                 ->visible(fn (Certificate $record) => $record->isApprovable())
+                ->modal()
                 ->action(function (array $data, Certificate $record) {
                     $certificateCN = $data['cn'];
-                    $record->generateX509Data($certificateCN, null); // default expiration for now
-                    $record->status = CertificateRequestStatus::ISSUED;
+                    $record->status = CertificateRequestStatus::APPROVED;
+                    GenerateX509Job::dispatch($record, $certificateCN, null);
                     $record->save();
 
                     Notification::make()
-                        ->title('Request Accepted and Certificate Generated')
+                        ->title('Request Accepted and Certificate Generation Queued')
                         ->success()
                         ->send();
                 })
@@ -35,6 +37,7 @@ class ViewCertificate extends ViewRecord
                         ->label('Please Insert the Common Name for the Certificate')
                         ->minLength(3)
                         ->maxLength(15)
+                        ->unique('certificates', 'common_name', ignoreRecord: true)
                         ->required(),
                 ]),
             Actions\Action::make('Reject')
@@ -47,7 +50,8 @@ class ViewCertificate extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->requiresConfirmation(),
+                ->requiresConfirmation()
+                ->modalIcon('heroicon-o-trash'),
         ];
     }
 

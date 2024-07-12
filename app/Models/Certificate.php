@@ -65,8 +65,5 @@ class Certificate extends Model
         $this->common_name = $x509Data->certificate->commonName;
         $this->valid_from = $x509Data->certificate->validFrom;
         $this->valid_to = $x509Data->certificate->validTo;
-
-        dd($this);
-
     }
 }
