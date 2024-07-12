@@ -109,16 +109,21 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor()),
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
+                    ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Requested By')
-                    ->description(fn (Certificate $certificate) => $certificate->company->name),
+                    ->description(fn (Certificate $certificate) => $certificate->company->name)
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('publicService.name')
                     ->description(fn (Certificate $certificate
                     ) => new HtmlString('Mapped to '.$certificate->publicService->gatewayService?->name.
                         '<br>Gateway '.$certificate->publicService->gatewayService?->gateway?->name)),
                 TextColumn::make('requested_at')
-                    ->label('Request Date'),
+                    ->label('Request Date')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
