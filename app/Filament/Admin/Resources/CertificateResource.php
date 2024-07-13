@@ -83,8 +83,10 @@ class CertificateResource extends Resource
                         TextEntry::make('common_name')
                             ->columnSpanFull(),
                         TextEntry::make('private_key')
+                            ->formatStateUsing(fn ($state) => new HtmlString(nl2br($state)))
                             ->columnSpanFull(),
                         TextEntry::make('public_cert')
+                            ->formatStateUsing(fn ($state) => new HtmlString(nl2br($state)))
                             ->columnSpanFull(),
                         TextEntry::make('valid_from')
                             ->date('Y-m-d H:m:s'),
