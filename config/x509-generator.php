@@ -2,7 +2,7 @@
 
 return [
     'cert_alg' => env('X509_CERT_ALG', 'sha512'),
-    'cert_keybit' => intval(env('X509_CERT_ALG', 4096)),
+    'cert_keybit' => intval(env('X509_KEYBIT', 4096)),
     'cert_country' => env('X509_CERT_COUNTRY', ''),
     'cert_state' => env('X509_CERT_STATE', ''),
     'cert_city' => env('X509_CERT_CITY', ''),
