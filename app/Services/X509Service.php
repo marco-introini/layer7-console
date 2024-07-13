@@ -11,21 +11,20 @@ class X509Service
     public static function generateCertificate(string $commonName, ?Carbon $expirationDate): KeyPairVO
     {
         $config = [
-            'digest_alg' => 'sha512',
-            'private_key_bits' => 4096,
+            'digest_alg' => config('x509-generator.cert_alg'),
+            'private_key_bits' => config('x509-generator.cert_keybit'),
             'private_key_type' => OPENSSL_KEYTYPE_RSA,
             'dn' => [
-                'countryName' => 'IT',
-                'stateOrProvinceName' => 'State',
-                'localityName' => 'City',
-                'organizationName' => 'Organization',
-                'organizationalUnitName' => 'Organizational Unit',
-                'commonName' => 'Your Common Name',
-                'emailAddress' => 'email@example.com',
-                'serialNumber' => 1234, // The serial number
+                'countryName' => config('x509-generator.cert_country'),
+                'stateOrProvinceName' => config('x509-generator.cert_state'),
+                'localityName' => config('x509-generator.cert_city'),
+                'organizationName' => config('x509-generator.cert_organization_name'),
+                'organizationalUnitName' => config('x509-generator.cert_organization_unit'),
+                'commonName' => $commonName,
+                'emailAddress' => config('x509-generator.cert_email'),
+                'serialNumber' => self::generateSerialNumber(),
             ],
         ];
-
 
         $privateKeyResource = openssl_pkey_new($config);
         openssl_pkey_export($privateKeyResource, $privateKey);
@@ -47,5 +46,17 @@ class X509Service
                 validTo: $validTo,
                 pemCertificate: $certificate),
         );
+    }
+
+    public static function generateSerialNumber($length = 16): string
+    {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $serial = '';
+        for ($i = 0; $i < $length; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $serial .= $characters[$index];
+        }
+
+        return $serial;
     }
 }
