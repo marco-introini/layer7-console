@@ -58,7 +58,7 @@ class GatewayUserResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('certificate')
                     ->boolean()
-                    ->state(fn (GatewayUser $gatewayUser) => $gatewayUser->certificate->isExpiring() ?? false)
+                    ->state(fn (GatewayUser $gatewayUser) => $gatewayUser->isExpiring())
                     ->trueIcon('heroicon-o-x-circle')
                     ->falseIcon('heroicon-o-check-circle')
                     ->trueColor('danger')

@@ -13,6 +13,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -84,6 +85,14 @@ class GatewayCertificateResource extends Resource
                 TextColumn::make('type')
                     ->searchable()
                     ->sortable(),
+                IconColumn::make('certificate')
+                    ->boolean()
+                    ->state(fn (GatewayCertificate $record) => $record->isExpiring())
+                    ->trueIcon('heroicon-o-x-circle')
+                    ->falseIcon('heroicon-o-check-circle')
+                    ->trueColor('danger')
+                    ->falseColor('success')
+                    ->label('Expiring'),
 
                 TextColumn::make('common_name')
                     ->searchable()

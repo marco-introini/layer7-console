@@ -12,12 +12,11 @@ class GatewayUser extends Model
 
     protected $guarded = [];
 
-    /** @var string[] */
     protected $with = ['certificate'];
 
     protected $casts = [];
 
-    /** @return BelongsTo<GatewayUser, GatewayCertificate> */
+    /** @return BelongsTo<GatewayCertificate, GatewayUser> */
     public function certificate(): BelongsTo
     {
         return $this->belongsTo(GatewayCertificate::class, 'gateway_certificate_id');
@@ -27,5 +26,14 @@ class GatewayUser extends Model
     public function gateway(): BelongsTo
     {
         return $this->belongsTo(Gateway::class);
+    }
+
+    public function isExpiring(): bool
+    {
+        if (is_null($this->certificate) || $this->certificate == "") {
+            return false;
+        }
+
+        return $this->certificate->isExpiring();
     }
 }
