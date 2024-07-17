@@ -9,13 +9,13 @@ class IgnoredUser extends Model
 {
     protected $guarded = [];
 
-    /** @return BelongsTo<GatewayUser, Gateway> */
+    /** @return BelongsTo<GatewayUser, IgnoredUser> */
     public function gatewayUser(): BelongsTo
     {
         return $this->belongsTo(GatewayUser::class);
     }
 
-    /** @return BelongsTo<IgnoredUser, Gateway> */
+    /** @return BelongsTo<Gateway, IgnoredUser> */
     public function gateway(): BelongsTo
     {
         return $this->belongsTo(Gateway::class);

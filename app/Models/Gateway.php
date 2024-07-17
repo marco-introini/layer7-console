@@ -28,7 +28,7 @@ class Gateway extends Model
             ->get('https://'.$this->host.$endpoint);
 
         if ($response->status() != 200) {
-            throw new GatewayConnectionException($response->status());
+            throw new GatewayConnectionException('Connection Error: '.$response->status());
         }
 
         return XmlService::xml2array($response->body());
@@ -53,5 +53,4 @@ class Gateway extends Model
     {
         return $this->hasMany(GatewayService::class, 'gateway_id');
     }
-
 }

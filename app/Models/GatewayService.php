@@ -17,7 +17,7 @@ class GatewayService extends Model
         'backends' => 'array',
     ];
 
-    /** @return BelongsTo<GatewayService, Gateway> */
+    /** @return BelongsTo<Gateway, GatewayService> */
     public function gateway(): BelongsTo
     {
         return $this->belongsTo(Gateway::class);

@@ -30,22 +30,22 @@ class GatewayUserResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-           TextEntry::make('gateway.name'),
+            TextEntry::make('gateway.name'),
             TextEntry::make('username'),
             Section::make('Certificate Info')->schema([
-               TextEntry::make('certificate.common_name')
-                   ->label('Common Name'),
-               TextEntry::make('certificate.type')
-                   ->label('Type'),
-               TextEntry::make('certificate.valid_from')
+                TextEntry::make('certificate.common_name')
+                    ->label('Common Name'),
+                TextEntry::make('certificate.type')
+                    ->label('Type'),
+                TextEntry::make('certificate.valid_from')
                     ->label('Valid From'),
-               TextEntry::make('certificate.valid_to')
+                TextEntry::make('certificate.valid_to')
                     ->label('Valid To'),
             ])->columns(2),
             Section::make('User Creation Info')->schema([
                 TextEntry::make('created_at'),
                 TextEntry::make('updated_at_at'),
-            ])->columns(2)
+            ])->columns(2),
         ]);
     }
 
@@ -58,7 +58,7 @@ class GatewayUserResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('certificate')
                     ->boolean()
-                    ->state(fn(GatewayUser $gatewayUser) => $gatewayUser->certificate->isExpiring() ?? false)
+                    ->state(fn (GatewayUser $gatewayUser) => $gatewayUser->certificate->isExpiring() ?? false)
                     ->trueIcon('heroicon-o-x-circle')
                     ->falseIcon('heroicon-o-check-circle')
                     ->trueColor('danger')
