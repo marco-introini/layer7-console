@@ -23,20 +23,13 @@ class CertificateFactory extends Factory
 
         return [
             'user_id' => $user->id,
-            'status' => fake()->randomElement(CertificateRequestStatus::cases()),
+            'status' => CertificateRequestStatus::REQUESTED,
             'public_service_id' => PublicService::inRandomOrder()->first()->id ?? PublicService::factory()->create()->id,
             'company_id' => $user->company_id,
             'requested_at' => Carbon::now(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
-    }
-
-    public function requested(): CertificateFactory
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => CertificateRequestStatus::REQUESTED,
-        ]);
     }
 
     public function issued(): CertificateFactory

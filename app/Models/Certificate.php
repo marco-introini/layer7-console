@@ -56,6 +56,15 @@ class Certificate extends Model
         return false;
     }
 
+    public function canBeRegenerated(): bool
+    {
+        if ($this->status === CertificateRequestStatus::ISSUED) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function generateX509Data(string $commonName, ?Carbon $expirationDate = null): void
     {
         $x509Data = X509Service::generateCertificate($commonName, $expirationDate);

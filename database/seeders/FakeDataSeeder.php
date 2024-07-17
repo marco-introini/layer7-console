@@ -21,6 +21,7 @@ class FakeDataSeeder extends Seeder
             ->forCompany(Company::inRandomOrder()->first() ?? Company::factory()->create())
             ->create();
         PublicService::factory(3)->create();
-        Certificate::factory(10)->create();
+        Certificate::factory(5)->create();
+        Certificate::factory(2)->issued()->create();
     }
 }

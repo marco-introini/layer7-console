@@ -31,11 +31,15 @@ class X509Service
 
         $csr = openssl_csr_new($config['dn'], $privateKeyResource);
 
-        $certificateResource = openssl_csr_sign($csr, null, $privateKeyResource, 365, $config);
+        if (is_null($expirationDate)) {
+            $validityDays = 365;
+        } else {
+            $validityDays = round($expirationDate->diffInDays(Carbon::now(), true));
+        }
+        $certificateResource = openssl_csr_sign($csr, null, $privateKeyResource, $validityDays, $config);
         $certificateDetails = openssl_x509_parse($certificateResource);
         $validFrom = Carbon::createFromTimestamp($certificateDetails['validFrom_time_t']);
         $validTo = Carbon::createFromTimestamp($certificateDetails['validTo_time_t']);
-        echo $validFrom.' - '.$validTo;
 
         openssl_x509_export($certificateResource, $certificate);
 

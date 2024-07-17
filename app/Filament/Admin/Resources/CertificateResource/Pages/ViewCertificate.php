@@ -3,10 +3,13 @@
 namespace App\Filament\Admin\Resources\CertificateResource\Pages;
 
 use App\Enumerations\CertificateRequestStatus;
+use App\Enumerations\CertificateValidity;
 use App\Filament\Admin\Resources\CertificateResource;
 use App\Jobs\GenerateX509Job;
 use App\Models\Certificate;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
@@ -23,8 +26,9 @@ class ViewCertificate extends ViewRecord
                 ->modal()
                 ->action(function (array $data, Certificate $record) {
                     $certificateCN = $data['cn'];
+                    $validity = CertificateValidity::from($data['validity']);
                     $record->status = CertificateRequestStatus::APPROVED;
-                    GenerateX509Job::dispatch($record, $certificateCN, null);
+                    GenerateX509Job::dispatch($record, $certificateCN, $validity->getExpirationDate());
                     $record->save();
 
                     Notification::make()
@@ -33,12 +37,17 @@ class ViewCertificate extends ViewRecord
                         ->send();
                 })
                 ->form([
-                    TextInput::make('cn')
-                        ->label('Please Insert the Common Name for the Certificate')
-                        ->minLength(3)
-                        ->maxLength(15)
-                        ->unique('certificates', 'common_name', ignoreRecord: true)
-                        ->required(),
+                    Split::make([
+                        TextInput::make('cn')
+                            ->label('Please Insert the Common Name for the Certificate')
+                            ->minLength(3)
+                            ->maxLength(15)
+                            ->unique('certificates', 'common_name', ignoreRecord: true)
+                            ->required(),
+                        Select::make('validity')
+                            ->required()
+                            ->options(CertificateValidity::getValues()),
+                    ]),
                 ]),
             Actions\Action::make('Reject')
                 ->visible(fn (Certificate $record) => $record->isApprovable())
@@ -52,6 +61,25 @@ class ViewCertificate extends ViewRecord
                 })
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-trash'),
+            Actions\Action::make('Regenerate Certificate')
+                ->visible(fn (Certificate $record) => $record->canBeRegenerated())
+                ->modal()
+                ->action(function (array $data, Certificate $record) {
+                    $certificateCN = $record->common_name;
+                    $validity = CertificateValidity::from($data['validity']);
+                    GenerateX509Job::dispatch($record, $certificateCN, $validity->getExpirationDate());
+                    $record->save();
+
+                    Notification::make()
+                        ->title('Request Accepted and Certificate Regeneration Queued')
+                        ->success()
+                        ->send();
+                })
+                ->form([
+                    Select::make('validity')
+                        ->required()
+                        ->options(CertificateValidity::getValues()),
+                ]),
         ];
     }
 
