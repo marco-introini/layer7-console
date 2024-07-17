@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\CertificateResource;
 use App\Jobs\GenerateX509Job;
 use App\Models\Certificate;
 use Filament\Actions;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
@@ -62,7 +63,7 @@ class ViewCertificate extends ViewRecord
                 ->requiresConfirmation()
                 ->modalIcon('heroicon-o-trash'),
             Actions\Action::make('Regenerate Certificate')
-                ->visible(fn (Certificate $record) => $record->canBeRegenerated())
+                ->visible(fn (Certificate $record) => $record->certificateCanBeGenerated())
                 ->modal()
                 ->action(function (array $data, Certificate $record) {
                     $certificateCN = $record->common_name;
@@ -76,6 +77,8 @@ class ViewCertificate extends ViewRecord
                         ->send();
                 })
                 ->form([
+                    Placeholder::make('warning')
+                        ->label('New certificate will replace the existing one!'),
                     Select::make('validity')
                         ->required()
                         ->options(CertificateValidity::getValues()),

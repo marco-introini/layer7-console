@@ -56,9 +56,9 @@ class Certificate extends Model
         return false;
     }
 
-    public function canBeRegenerated(): bool
+    public function certificateCanBeGenerated(): bool
     {
-        if ($this->status === CertificateRequestStatus::ISSUED) {
+        if ($this->status === CertificateRequestStatus::ISSUED || $this->status === CertificateRequestStatus::APPROVED) {
             return true;
         }
 

@@ -23,7 +23,7 @@ class GenerateX509Job implements ShouldQueue
 
     public function handle(): void
     {
-        if ($this->certificate->status != CertificateRequestStatus::APPROVED) {
+        if (! $this->certificate->certificateCanBeGenerated()) {
             return;
         }
         $this->certificate->generateX509Data($this->commonName, $this->expirationDate);
