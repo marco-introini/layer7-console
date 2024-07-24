@@ -38,7 +38,6 @@ class GetGatewayUsersCommand extends Command
                 continue;
             }
             $number = 0;
-
             // remove all users of the current gateway
             GatewayUser::where('gateway_id', '=', $gateway->id)->delete();
 
