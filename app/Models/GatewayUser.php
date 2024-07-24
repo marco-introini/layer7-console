@@ -30,7 +30,7 @@ class GatewayUser extends Model
 
     public function isExpiring(): bool
     {
-        if (is_null($this->certificate) || $this->certificate == "") {
+        if (is_null($this->certificate) || $this->certificate == '') {
             return false;
         }
 

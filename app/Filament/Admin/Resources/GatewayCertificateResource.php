@@ -63,14 +63,14 @@ class GatewayCertificateResource extends Resource
                             ->label('Created Date')
                             ->visibleOn(['edit', 'view'])
                             ->disabled()
-                            ->content(fn(?GatewayCertificate $record
+                            ->content(fn (?GatewayCertificate $record
                             ): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                         Placeholder::make('updated_at')
                             ->label('Last Modified Date')
                             ->visibleOn(['edit', 'view'])
                             ->disabled()
-                            ->content(fn(?GatewayCertificate $record
+                            ->content(fn (?GatewayCertificate $record
                             ): string => $record?->updated_at?->diffForHumans() ?? '-'),
                     ])
                     ->columns(2),
