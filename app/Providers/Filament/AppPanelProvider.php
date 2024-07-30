@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -45,7 +46,7 @@ class AppPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Gateway Administration',
                 'Companies Administration',
-                ])
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -60,6 +61,14 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugin(new LocalLogins());
+            ->plugins([
+                new LocalLogins,
+                BreezyCore::make()
+                    ->myProfile(
+                        shouldRegisterNavigation: true,
+                        slug: 'profile',
+                        navigationGroup: 'Settings',
+                    ),
+            ]);
     }
 }
