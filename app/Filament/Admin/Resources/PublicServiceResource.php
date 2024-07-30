@@ -47,6 +47,8 @@ class PublicServiceResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
+                TextColumn::make('gatewayService.gateway.name'),
+                TextColumn::make('gatewayService.name'),
             ])
             ->filters([
                 //
@@ -55,9 +57,6 @@ class PublicServiceResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

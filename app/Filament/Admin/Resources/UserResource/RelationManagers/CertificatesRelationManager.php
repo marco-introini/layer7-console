@@ -3,14 +3,11 @@
 namespace App\Filament\Admin\Resources\UserResource\RelationManagers;
 
 use App\Models\Certificate;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CertificatesRelationManager extends RelationManager
 {
@@ -30,7 +27,7 @@ class CertificatesRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor())
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('publicService.name')
                     ->sortable(),
