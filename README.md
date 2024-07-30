@@ -1,6 +1,16 @@
-# Layer 7 API Gateway mTLS Certificates Console
+# Layer 7 API Gateway mTLS Certificates Console and DevPortal
 
-## Console commands
+This module provides an easy way to access and manage to the Broadcom Layer7 API Gateway mTLS certificates, private keys
+and public certificates
+
+With this application you can:
+- have a nice developer portal for api gateway users
+- have an administrative console for store, generate and check certificates and their expirations
+
+## Interacting with API Gateway
+
+The first step is to add your Layer7 API gateway credentials in the admin panel (/admin).
+After that, the crontab can extract all the required information automatically.
 
 ### Import from API Gateway
 
@@ -27,6 +37,7 @@ To import services from API Gateway
 ```bash
 php artisan gateway:get-services
 ```
+
 To check the validity of mTLS certificates
 
 ```bash
@@ -61,3 +72,7 @@ GET /restman/1.0/identityProviders/0000000000000000fffffffffffffffe/users/{{USER
 ```
 base64 -d <<< $cert | openssl x509 -inform DER -noout -dates
 ```
+
+# License
+
+This open source project is licensed under the MIT License
