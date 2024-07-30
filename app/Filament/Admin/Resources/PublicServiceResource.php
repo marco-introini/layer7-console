@@ -21,7 +21,7 @@ class PublicServiceResource extends Resource
 {
     protected static ?string $model = PublicService::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-server-stack';
 
     protected static ?string $slug = 'public-services';
 
