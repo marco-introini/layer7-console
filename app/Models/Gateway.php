@@ -25,7 +25,7 @@ class Gateway extends Model
             ->withOptions([
                 'verify' => false,
             ])
-            ->get('https://'.$this->host.$endpoint);
+            ->get($this->host.$endpoint);
 
         if ($response->status() != 200) {
             throw new GatewayConnectionException('Connection Error: '.$response->status());
