@@ -3,15 +3,12 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
-use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -33,16 +30,16 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\Toggle::make('super_admin'),
                         Forms\Components\Toggle::make('admin'),
-                    ])->visible(fn() => auth()->user()->super_admin),
+                    ])->visible(fn () => auth()->user()->super_admin),
                 Forms\Components\Section::make('Statistics')
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
-                            ->content(fn(User $record) => $record->created_at->diffForHumans()),
+                            ->content(fn (User $record) => $record->created_at->diffForHumans()),
                         Forms\Components\Placeholder::make('updated_at')
-                            ->content(fn(User $record) => $record->created_at->diffForHumans()),
+                            ->content(fn (User $record) => $record->created_at->diffForHumans()),
                         Forms\Components\Placeholder::make('email_verified_at')
-                            ->content(fn(User $record) => $record->created_at->diffForHumans()),
-                    ])->columns(3)
+                            ->content(fn (User $record) => $record->created_at->diffForHumans()),
+                    ])->columns(3),
             ]);
     }
 
