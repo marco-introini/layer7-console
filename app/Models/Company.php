@@ -17,4 +17,10 @@ class Company extends Model
     {
         return $this->hasMany(User::class, 'company_id');
     }
+
+    /** @return HasMany<Certificate> */
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class, 'company_id');
+    }
 }

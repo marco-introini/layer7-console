@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
+use App\Filament\Admin\Resources\UserResource\RelationManagers\CertificatesRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -66,7 +67,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CertificatesRelationManager::class,
         ];
     }
 

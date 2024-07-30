@@ -63,7 +63,7 @@ class CertificateResource extends Resource
                         TextEntry::make('status')
                             ->inlineLabel()
                             ->columnSpanFull()
-                            ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor())
+                            ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                             ->size(TextEntry\TextEntrySize::Large)
                             ->columnSpanFull(),
                         TextEntry::make('user.name'),
@@ -82,17 +82,17 @@ class CertificateResource extends Resource
                         TextEntry::make('common_name')
                             ->columnSpanFull(),
                         TextEntry::make('private_key')
-                            ->formatStateUsing(fn($state) => new HtmlString(nl2br($state)))
+                            ->formatStateUsing(fn ($state) => new HtmlString(nl2br($state)))
                             ->columnSpanFull(),
                         TextEntry::make('public_cert')
-                            ->formatStateUsing(fn($state) => new HtmlString(nl2br($state)))
+                            ->formatStateUsing(fn ($state) => new HtmlString(nl2br($state)))
                             ->columnSpanFull(),
                         TextEntry::make('valid_from')
                             ->date('Y-m-d H:m:s'),
                         TextEntry::make('valid_to')
                             ->date('Y-m-d H:m:s'),
                     ])->columns()
-                    ->visible(fn(Certificate $certificate
+                    ->visible(fn (Certificate $certificate
                     ) => $certificate->status === CertificateRequestStatus::ISSUED),
                 InfoListSection::make('Timestamps')
                     ->schema([
@@ -110,15 +110,15 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn(Certificate $certificate): string => $certificate->getFilamentColor())
+                    ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                     ->sortable(),
                 TextColumn::make('user.name')
                     ->label('Requested By')
-                    ->description(fn(Certificate $certificate) => $certificate->company->name)
+                    ->description(fn (Certificate $certificate) => $certificate->company->name)
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('publicService.name')
-                    ->description(fn(Certificate $certificate
+                    ->description(fn (Certificate $certificate
                     ) => new HtmlString('Mapped to '.$certificate->publicService->gatewayService?->name.
                         '<br>Gateway '.$certificate->publicService->gatewayService?->gateway?->name)),
                 TextColumn::make('requested_at')
