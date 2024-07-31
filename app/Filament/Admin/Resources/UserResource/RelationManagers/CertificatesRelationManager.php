@@ -2,10 +2,12 @@
 
 namespace App\Filament\Admin\Resources\UserResource\RelationManagers;
 
+use App\Filament\Admin\Resources\CertificateResource;
 use App\Models\Certificate;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -40,6 +42,8 @@ class CertificatesRelationManager extends RelationManager
             ->headerActions([
             ])
             ->actions([
+                Action::make('View')
+                    ->url(fn (Certificate $record) => CertificateResource::getUrl('view', [$record])),
             ])
             ->bulkActions([
             ]);
