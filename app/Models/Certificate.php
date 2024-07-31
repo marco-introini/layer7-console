@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Certificate extends Model
 {
@@ -35,6 +36,11 @@ class Certificate extends Model
     public function publicService(): BelongsTo
     {
         return $this->belongsTo(PublicService::class);
+    }
+
+    public function gatewayCertificates(): hasMany
+    {
+        return $this->hasMany(GatewayCertificate::class, 'common_name', 'common_name');
     }
 
     public function getFilamentColor(): string

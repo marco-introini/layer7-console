@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource\Pages;
+use App\Filament\Admin\Resources\CertificateResource\RelationManagers\GatewayCertificatesRelationManager;
 use App\Models\Certificate;
 use Filament\Forms\Components\Section as FormSection;
 use Filament\Forms\Components\Select;
@@ -140,7 +141,7 @@ class CertificateResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            GatewayCertificatesRelationManager::class,
         ];
     }
 
