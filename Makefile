@@ -10,6 +10,7 @@ test:
 clear_all: clear
 	rm -f .idea/httpRequests/*
 	rm -f storage/app/livewire-tmp/*
+	rm -fr public/media
 
 clear:
 	php artisan route:clear
