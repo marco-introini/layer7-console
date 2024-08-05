@@ -20,6 +20,7 @@
         "laravel/pail": "^1.1",
         "laravel/prompts": "^0.1",
         "laravel/tinker": "^2.7",
+        "predis/predis": "^2.0",
         "pxlrbt/filament-excel": "^2.3",
         "spatie/laravel-backup": "^8.3",
         "spatie/laravel-medialibrary": "^11.8",

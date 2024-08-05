@@ -43,9 +43,10 @@ class PublicServiceResource extends Resource
                         SpatieMediaLibraryFileUpload::make('attachments')
                             ->disk(config('media-library.disk_name'))
                             ->multiple()
+                            ->acceptedFileTypes(['application/pdf'])
                             ->reorderable(),
                     ])
-                    ->columns(1)
+                    ->columns(1),
             ]);
     }
 

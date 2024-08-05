@@ -25,7 +25,8 @@ return new class extends Migration
             $table->foreignIdFor(Company::class)
                 ->constrained()
                 ->restrictOnDelete();
-            $table->dateTime('requested_at');
+            $table->dateTime('requested_at')
+                ->default(now());
             $table->string('common_name')
                 ->nullable();
             $table->dateTime('valid_from')
