@@ -3,9 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PublicServiceResource\Pages;
-use App\Filament\Admin\Resources\PublicServiceResource\RelationManagers;
 use App\Models\PublicService;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -14,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PublicServiceResource extends Resource
 {
@@ -24,7 +20,6 @@ class PublicServiceResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-server-stack';
 
     protected static ?string $slug = 'public-services';
-
 
     public static function form(Form $form): Form
     {
@@ -40,7 +35,7 @@ class PublicServiceResource extends Resource
                     ->required()
                     ->relationship('gateway', 'name'),
                 Select::make('gateway_service_name')
-                    ->relationship('gatewayService','name')
+                    ->relationship('gatewayService', 'name'),
             ]);
     }
 
