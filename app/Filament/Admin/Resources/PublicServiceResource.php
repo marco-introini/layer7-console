@@ -39,6 +39,8 @@ class PublicServiceResource extends Resource
                 Select::make('gateway_id')
                     ->required()
                     ->relationship('gateway', 'name'),
+                Select::make('gateway_service_name')
+                    ->relationship('gatewayService','name')
             ]);
     }
 
@@ -47,8 +49,8 @@ class PublicServiceResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('gatewayService.gateway.name'),
-                TextColumn::make('gatewayService.name'),
+                TextColumn::make('gateway.name'),
+                TextColumn::make('gateway_service_name'),
             ])
             ->filters([
                 //

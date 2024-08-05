@@ -17,4 +17,9 @@ class PublicService extends Model
         return $this->belongsTo(Gateway::class);
     }
 
+    public function gatewayService(): BelongsTo
+    {
+        return $this->belongsTo(GatewayService::class,'gateway_service_name','name');
+    }
+
 }
