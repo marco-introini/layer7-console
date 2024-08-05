@@ -87,7 +87,7 @@ class GetServicesCommand extends Command
             outro("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
 
             if (App::environment('production')) {
-                SlackAlert::message("Imported $numberOfServices services and $numberOfBackends backends from API Gateway");
+                SlackAlert::message("Imported $numberOfServices services and $numberOfBackends backends from $gateway->name API Gateway");
             }
 
         }

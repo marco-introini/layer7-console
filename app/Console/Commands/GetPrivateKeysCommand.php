@@ -9,6 +9,8 @@ use App\Models\GatewayCertificate;
 use App\Services\XmlService;
 use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
+use Spatie\SlackAlerts\Facades\SlackAlert;
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
@@ -21,6 +23,7 @@ class GetPrivateKeysCommand extends Command
     public function handle(): void
     {
         foreach (Gateway::all() as $gateway) {
+            $number = 0;
             info("Getting Private Keys form $gateway->name gateway");
             try {
                 $response = $gateway->getGatewayResponse('/restman/1.0/privateKeys');
@@ -43,18 +46,21 @@ class GetPrivateKeysCommand extends Command
                             'gateway_id' => $gateway->id,
                             'common_name' => $certVO->commonName,
                         ], [
-                            'type' => CertificateType::PRIVATE_KEY,
-                            'common_name' => $certVO->commonName,
-                            'gateway_cert_id' => $name,
-                            'valid_from' => $certVO->validFrom,
-                            'valid_to' => $certVO->validTo,
-                            'updated_at' => now(),
-                        ]);
+                        'type' => CertificateType::PRIVATE_KEY,
+                        'common_name' => $certVO->commonName,
+                        'gateway_cert_id' => $name,
+                        'valid_from' => $certVO->validFrom,
+                        'valid_to' => $certVO->validTo,
+                        'updated_at' => now(),
+                    ]);
                 }
 
                 info("Found private key $name");
+                $number++;
+            }
+            if (App::environment('production')) {
+                SlackAlert::message("Imported $number users from $gateway->name Layer7 API Gateway");
             }
         }
-
     }
 }
