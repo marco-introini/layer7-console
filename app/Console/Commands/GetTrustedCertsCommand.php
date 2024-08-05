@@ -54,6 +54,7 @@ class GetTrustedCertsCommand extends Command
                 ]);
 
                 info("Found certificate $name");
+                $number++;
             }
 
             if (App::environment('production')) {

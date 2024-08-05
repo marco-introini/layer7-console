@@ -59,7 +59,7 @@ class GetPrivateKeysCommand extends Command
                 $number++;
             }
             if (App::environment('production')) {
-                SlackAlert::message("Imported $number users from $gateway->name Layer7 API Gateway");
+                SlackAlert::message("Imported $number private keys from $gateway->name Layer7 API Gateway");
             }
         }
     }
