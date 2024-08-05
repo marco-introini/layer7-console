@@ -37,8 +37,7 @@ class PublicServiceResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Select::make('gateway_service_id')
-                    ->relationship('gatewayService', 'name')
-                    ->required(),
+                    ->relationship('gatewayService', 'name'),
             ]);
     }
 
