@@ -4,7 +4,9 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PublicServiceResource\Pages;
 use App\Models\PublicService;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -36,6 +38,14 @@ class PublicServiceResource extends Resource
                     ->relationship('gateway', 'name'),
                 Select::make('gateway_service_name')
                     ->relationship('gatewayService', 'name'),
+                Section::make('Public Documentation')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('attachments')
+                            ->disk(config('media-library.disk_name'))
+                            ->multiple()
+                            ->reorderable(),
+                    ])
+                    ->columns(1)
             ]);
     }
 
