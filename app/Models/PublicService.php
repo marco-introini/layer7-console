@@ -12,9 +12,9 @@ class PublicService extends Model
 
     protected $guarded = [];
 
-    public function gatewayService(): BelongsTo
+    public function gateway(): BelongsTo
     {
-        return $this->belongsTo(GatewayService::class);
+        return $this->belongsTo(Gateway::class);
     }
 
 }

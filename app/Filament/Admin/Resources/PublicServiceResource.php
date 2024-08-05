@@ -36,8 +36,9 @@ class PublicServiceResource extends Resource
                 TextArea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Select::make('gateway_service_id')
-                    ->relationship('gatewayService', 'name'),
+                Select::make('gateway_id')
+                    ->required()
+                    ->relationship('gateway', 'name'),
             ]);
     }
 
