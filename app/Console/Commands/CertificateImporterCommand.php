@@ -7,8 +7,9 @@ use App\Models\Company;
 use App\Models\PublicService;
 use App\Models\User;
 use App\ValueObjects\CertificateVO;
+use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateImporterCommand extends Command
 {
@@ -25,19 +26,25 @@ class CertificateImporterCommand extends Command
         $companyId = $this->argument('company');
         $userId = $this->argument('user');
 
-        if (! File::exists($privateKeyFileName) || $publicCertFileName) {
+        if (! Storage::disk('importer')->exists($privateKeyFileName) || ! Storage::disk('importer')->exists($publicCertFileName)) {
             $this->error("The keypair does not exist. Both {$privateKeyFileName} and {$publicCertFileName} must be present");
 
             return;
         }
 
-        $privateKey = File::get($privateKeyFileName);
-        $publicCert = File::get($publicCertFileName);
+        $privateKey = Storage::disk('importer')->get($privateKeyFileName);
+        $publicCert = Storage::disk('importer')->get($publicCertFileName);
         $certificateInfo = CertificateVO::fromPemCertificate($publicCert);
 
-        $service = PublicService::findOrFail($serviceId);
-        $company = Company::findOrFail($companyId);
-        $user = User::findOrFail($userId);
+        try {
+            $service = PublicService::findOrFail($serviceId);
+            $company = Company::findOrFail($companyId);
+            $user = User::findOrFail($userId);
+        }catch (Exception $exception){
+            $this->error($exception->getMessage());
+            return;
+        }
+
         if ($user->company->id !== $company->id) {
             $this->error("The user {$user->name} does not belong to the company {$company->name}");
 
