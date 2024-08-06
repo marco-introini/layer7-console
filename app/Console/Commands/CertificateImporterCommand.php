@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enumerations\CertificateRequestStatus;
 use App\Models\Certificate;
 use App\Models\Company;
 use App\Models\PublicService;
@@ -40,8 +41,9 @@ class CertificateImporterCommand extends Command
             $service = PublicService::findOrFail($serviceId);
             $company = Company::findOrFail($companyId);
             $user = User::findOrFail($userId);
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->error($exception->getMessage());
+
             return;
         }
 
@@ -50,10 +52,7 @@ class CertificateImporterCommand extends Command
 
             return;
         }
-        Certificate::firstOrCreate([
-            'common_name' => $certificateInfo->commonName,
-            'user_id' => $user->id,
-        ], [
+        Certificate::create([
             'user_id' => $user->id,
             'public_service_id' => $service->id,
             'company_id' => $company->id,
@@ -61,7 +60,8 @@ class CertificateImporterCommand extends Command
             'valid_from' => $certificateInfo->validFrom,
             'valid_to' => $certificateInfo->validTo,
             'private_key' => $privateKey,
-            'public_key' => $publicCert,
-        ]);
+            'public_cert' => $publicCert,
+            'status' => CertificateRequestStatus::ISSUED,
+        ])->save();
     }
 }
