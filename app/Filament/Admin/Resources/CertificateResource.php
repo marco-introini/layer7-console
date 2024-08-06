@@ -111,6 +111,7 @@ class CertificateResource extends Resource
             ->columns([
                 TextColumn::make('status')
                     ->badge()
+                    ->sortable()
                     ->color(fn (Certificate $certificate): string => $certificate->getFilamentColor())
                     ->sortable(),
                 TextColumn::make('user.name')
@@ -119,16 +120,42 @@ class CertificateResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('publicService.name')
+                    ->sortable()
+                    ->searchable()
+                    ->wrap()
                     ->description(fn (Certificate $certificate
                     ) => new HtmlString('Mapped to '.$certificate->publicService->gatewayService?->name.
                         '<br>Gateway '.$certificate->publicService->gatewayService?->gateway?->name)),
+                TextColumn::make('common_name')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn (Certificate $certificate
+                    ) => new HtmlString('From: '.$certificate->valid_from
+                        .'<br>To: '.$certificate->valid_to)),
                 TextColumn::make('requested_at')
                     ->label('Request Date')
+                    ->date('Y-m-d H:m')
+                    ->size(TextColumn\TextColumnSize::ExtraSmall)
                     ->sortable()
                     ->searchable(),
             ])
+            ->groups([
+                'company.name',
+                'user.name',
+                'publicService.name',
+            ])
+            ->defaultGroup('company.name')
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('public service')
+                    ->relationship('publicService', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('company')
+                    ->relationship('company', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
