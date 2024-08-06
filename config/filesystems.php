@@ -58,8 +58,14 @@ return [
 
         'media' => [
             'driver' => 'local',
-            'root'   => public_path('media'),
-            'url'    => env('APP_URL').'/media',
+            'root' => public_path('media'),
+            'url' => env('APP_URL').'/media',
+        ],
+
+        'importer' => [
+            'driver' => 'local',
+            'root' => storage_path('importer'),
+            'throw' => false,
         ],
 
     ],
