@@ -11,6 +11,7 @@ clear_all: clear
 	rm -f .idea/httpRequests/*
 	rm -f storage/app/livewire-tmp/*
 	rm -fr public/media
+	rm -f ./storage/logs/laravel.log
 
 clear:
 	php artisan route:clear
