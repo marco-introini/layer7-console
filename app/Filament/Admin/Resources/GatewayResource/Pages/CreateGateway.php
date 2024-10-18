@@ -3,7 +3,6 @@
 namespace App\Filament\Admin\Resources\GatewayResource\Pages;
 
 use App\Filament\Admin\Resources\GatewayResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateGateway extends CreateRecord

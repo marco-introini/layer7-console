@@ -11,6 +11,7 @@ use App\ValueObjects\CertificateVO;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 use Spatie\SlackAlerts\Facades\SlackAlert;
+
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
 
@@ -46,13 +47,13 @@ class GetPrivateKeysCommand extends Command
                             'gateway_id' => $gateway->id,
                             'common_name' => $certVO->commonName,
                         ], [
-                        'type' => CertificateType::PRIVATE_KEY,
-                        'common_name' => $certVO->commonName,
-                        'gateway_cert_id' => $name,
-                        'valid_from' => $certVO->validFrom,
-                        'valid_to' => $certVO->validTo,
-                        'updated_at' => now(),
-                    ]);
+                            'type' => CertificateType::PRIVATE_KEY,
+                            'common_name' => $certVO->commonName,
+                            'gateway_cert_id' => $name,
+                            'valid_from' => $certVO->validFrom,
+                            'valid_to' => $certVO->validTo,
+                            'updated_at' => now(),
+                        ]);
                 }
 
                 info("Found private key $name");

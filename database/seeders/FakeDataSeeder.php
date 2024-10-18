@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Certificate;
 use App\Models\Company;
-use App\Models\GatewayUser;
 use App\Models\GatewayService;
+use App\Models\GatewayUser;
 use App\Models\PublicService;
 use App\Models\User;
 use Illuminate\Database\Seeder;

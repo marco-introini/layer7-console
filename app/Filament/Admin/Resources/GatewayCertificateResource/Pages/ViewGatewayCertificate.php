@@ -7,7 +7,6 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewGatewayCertificate extends ViewRecord
 {
-
     protected static string $resource = GatewayCertificateResource::class;
 
     protected function getActions(): array
@@ -15,5 +14,4 @@ class ViewGatewayCertificate extends ViewRecord
         return [
         ];
     }
-
 }

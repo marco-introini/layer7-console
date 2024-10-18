@@ -15,6 +15,7 @@ enum CertificateValidity: string
     {
         $values = array_column(self::cases(), 'value');
         $names = array_column(self::cases(), 'value');
+
         return array_combine($names, $values);
     }
 

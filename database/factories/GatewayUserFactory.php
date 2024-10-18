@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\GatewayCertificate;
 use App\Models\Gateway;
+use App\Models\GatewayCertificate;
 use App\Models\GatewayUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

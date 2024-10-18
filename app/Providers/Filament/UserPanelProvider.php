@@ -59,6 +59,6 @@ class UserPanelProvider extends PanelProvider
             ])
             ->tenant(Company::class)
             ->tenantMenu(false)
-            ->plugin(new LocalLogins());
+            ->plugin(new LocalLogins);
     }
 }

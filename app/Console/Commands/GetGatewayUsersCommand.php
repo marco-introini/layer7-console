@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use App\Enumerations\CertificateType;
 use App\Exceptions\GatewayConnectionException;
-use App\Models\GatewayCertificate;
 use App\Models\Gateway;
+use App\Models\GatewayCertificate;
 use App\Models\GatewayUser;
 use App\Models\IgnoredUser;
 use App\ValueObjects\CertificateVO;

@@ -20,5 +20,4 @@ class IgnoredUser extends Model
     {
         return $this->belongsTo(Gateway::class);
     }
-
 }

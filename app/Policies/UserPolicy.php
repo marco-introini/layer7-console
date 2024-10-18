@@ -48,6 +48,7 @@ class UserPolicy
         if ($user->admin && $user->company_id == $model->company_id) {
             return true;
         }
+
         return false;
     }
 
@@ -62,6 +63,7 @@ class UserPolicy
         if ($user->admin && $user->company_id == $model->company_id) {
             return true;
         }
+
         return false;
     }
 
@@ -76,6 +78,7 @@ class UserPolicy
         if ($user->admin && $user->company_id == $model->company_id) {
             return true;
         }
+
         return false;
     }
 
@@ -90,6 +93,7 @@ class UserPolicy
         if ($user->admin && $user->company_id == $model->company_id) {
             return true;
         }
+
         return false;
     }
 }

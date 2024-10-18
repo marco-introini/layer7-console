@@ -13,7 +13,7 @@ enum CertificateType: string
     {
         $values = array_column(self::cases(), 'value');
         $names = array_column(self::cases(), 'name');
+
         return array_combine($values, $names);
     }
-
 }

@@ -110,9 +110,9 @@ class XmlService
         return $xml_array;
     }
 
-    static public function findValuesOfKey($array, $keyToFind): array
+    public static function findValuesOfKey($array, $keyToFind): array
     {
-        $iterator  = new RecursiveArrayIterator($array);
+        $iterator = new RecursiveArrayIterator($array);
         $recursive = new RecursiveIteratorIterator(
             $iterator,
             RecursiveIteratorIterator::SELF_FIRST

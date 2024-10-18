@@ -11,7 +11,6 @@ class GatewayConnectionException extends Exception
         parent::__construct();
     }
 
-
     /**
      * Report the exception.
      */
@@ -24,5 +23,4 @@ class GatewayConnectionException extends Exception
     {
         return $this->connectionError;
     }
-
 }

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Enumerations\CertificateType;
-use App\Models\GatewayCertificate;
 use App\Models\Gateway;
+use App\Models\GatewayCertificate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 

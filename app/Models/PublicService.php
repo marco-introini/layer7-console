@@ -21,7 +21,6 @@ class PublicService extends Model implements HasMedia
 
     public function gatewayService(): BelongsTo
     {
-        return $this->belongsTo(GatewayService::class,'gateway_service_name','name');
+        return $this->belongsTo(GatewayService::class, 'gateway_service_name', 'name');
     }
-
 }

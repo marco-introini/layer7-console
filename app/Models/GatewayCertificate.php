@@ -14,12 +14,12 @@ class GatewayCertificate extends Model
     use HasFactory;
 
     protected $guarded = [];
+
     protected $casts = [
         'type' => CertificateType::class,
         'valid_from' => 'datetime',
         'valid_to' => 'datetime',
     ];
-
 
     /** @return BelongsToMany<GatewayUser> */
     public function users(): BelongsToMany

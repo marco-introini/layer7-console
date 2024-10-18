@@ -9,7 +9,6 @@ use Illuminate\Support\Arr;
 
 class FilamentTabsHelper
 {
-
     /**
      * @return array<string,Tab>
      */

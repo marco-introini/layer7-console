@@ -4,7 +4,6 @@ namespace App\Filament\Admin\Resources\CertificateResource\Pages;
 
 use App\Enumerations\CertificateRequestStatus;
 use App\Filament\Admin\Resources\CertificateResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateCertificate extends CreateRecord
