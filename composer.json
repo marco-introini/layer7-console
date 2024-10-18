@@ -33,8 +33,8 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.1",
         "larastan/larastan": "^2.0",
-        "pestphp/pest": "^2.18",
-        "pestphp/pest-plugin-laravel": "^2.2",
+        "pestphp/pest": "^3.4",
+        "pestphp/pest-plugin-laravel": "^3.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
