@@ -11,7 +11,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('public_services', function (Blueprint $table) {
-            $table->dropForeign('public_services_gateway_service_id_foreign');
             $table->dropColumn('gateway_service_id');
             $table->foreignIdFor(Gateway::class)
                 ->after('description')

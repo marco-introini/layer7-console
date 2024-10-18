@@ -13,9 +13,8 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description');
             $table->foreignIdFor(GatewayService::class)
-                ->nullable()
-                ->constrained()
-                ->nullOnDelete();
+                ->nullable();
+
             $table->timestamps();
         });
     }
