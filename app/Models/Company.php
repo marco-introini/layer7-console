@@ -12,13 +12,13 @@ class Company extends Model
 
     protected $guarded = [];
 
-    /** @return HasMany<User> */
+    /** @return HasMany<User,Company> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'company_id');
     }
 
-    /** @return HasMany<Certificate> */
+    /** @return HasMany<Company,Certificate> */
     public function certificates(): HasMany
     {
         return $this->hasMany(Certificate::class, 'company_id');

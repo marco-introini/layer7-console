@@ -23,6 +23,7 @@ class Certificate extends Model
         'status' => CertificateRequestStatus::class,
     ];
 
+    /** @return BelongsTo<Certificate, User> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
