@@ -108,7 +108,7 @@ class GatewayCertificateResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('type')
-                    ->options(CertificateType::associativeForFilamentFilter()),
+                    ->options(CertificateType::class),
             ])
             ->actions([
             ])

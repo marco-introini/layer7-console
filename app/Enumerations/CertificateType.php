@@ -2,18 +2,16 @@
 
 namespace App\Enumerations;
 
-enum CertificateType: string
+use Filament\Support\Contracts\HasLabel;
+
+enum CertificateType: string implements HasLabel
 {
     case TRUSTED_CERT = 'Trusted Certificate';
     case PRIVATE_KEY = 'Private Key';
     case USER_CERTIFICATE = 'User Certificate';
 
-    /** @return array<string,string> */
-    public static function associativeForFilamentFilter(): array
+    public function getLabel(): ?string
     {
-        $values = array_column(self::cases(), 'value');
-        $names = array_column(self::cases(), 'name');
-
-        return array_combine($values, $names);
+        return $this->value;
     }
 }
